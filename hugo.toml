@@ -1,0 +1,69 @@
+baseURL = "https://your-junuxyz.github.io/"
+languageCode = "en-us"
+title = "junuxyz"
+theme = "PaperMod"
+
+[pagination]
+  pagerSize = 5
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+[minify]
+  disableXML = true
+  minifyOutput = true
+
+[params]
+  env = "production" # to enable google analytics, opengraph, twitter-cards and schema.
+  description = "hi" 
+  author = "Junu"
+  defaultTheme = "light"
+  
+  # Profile section
+  [params.profileMode]
+    enabled = true
+    title = "Junu"
+    subtitle = "."
+    imageUrl = "/images/avatar.jpg" # will add this image later
+    imageWidth = 120
+    imageHeight = 120
+    
+    [[params.profileMode.buttons]]
+      name = "Posts"
+      url = "/posts"
+    [[params.profileMode.buttons]]
+      name = "About"
+      url = "/about"
+
+
+  # Social Icons
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/junuxyz/"
+  [[params.socialIcons]]
+    name = "linkedin"
+    url = "https://www.linkedin.com/in/junu-park-2b210229a/"
+ 
+  # Custom assets
+  [params.assets]
+    customCSS = ["css/custom.css"]
+
+# Main menu
+[menu]
+  [[main]]
+    identifier = "posts"
+    name = "Blog"
+    url = "/posts/"
+    weight = 10
+  [[main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 20
+  [[main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+    weight = 30
