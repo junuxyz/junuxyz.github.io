@@ -1,4 +1,6 @@
-baseURL = "https://your-junuxyz.github.io/"
+# --- CORRECTED AND CLEANED HUGO.TOML ---
+
+baseURL = "https://junuxyz.github.io/" # CORRECTED: Removed "your-" from the URL
 languageCode = "en-us"
 title = "junuxyz"
 theme = "PaperMod"
@@ -16,27 +18,27 @@ buildExpired = false
   minifyOutput = true
 
 [params]
-  env = "production" # to enable google analytics, opengraph, twitter-cards and schema.
-  description = "hi" 
+  env = "production"
+  description = "hi"
   author = "Junu"
-  defaultTheme = "light"
-  
+  defaultTheme = "auto" # Set to 'auto' to respect user's system setting
+  disableThemeToggle = false # Set to 'false' to enable the theme switcher
+
   # Profile section
   [params.profileMode]
     enabled = true
     title = "Junu"
     subtitle = "."
-    imageUrl = "/images/avatar.jpg" # will add this image later
+    imageUrl = "/images/avatar.jpg"
     imageWidth = 120
     imageHeight = 120
-    
+
     [[params.profileMode.buttons]]
       name = "Posts"
       url = "/posts"
     [[params.profileMode.buttons]]
       name = "About"
       url = "/about"
-
 
   # Social Icons
   [[params.socialIcons]]
@@ -45,8 +47,8 @@ buildExpired = false
   [[params.socialIcons]]
     name = "linkedin"
     url = "https://www.linkedin.com/in/junu-park-2b210229a/"
- 
-  # Custom assets
+
+  # Custom assets - This should now be read correctly
   [params.assets]
     customCSS = ["css/custom.css"]
 
