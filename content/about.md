@@ -1,7 +1,6 @@
-+++
-date = '2025-06-26T11:07:08+09:00'
-draft = true
-title = 'About'
-+++
+---
+title: "About"
+layout: "about"
+---
 
-hi, I'm Junu
+Hi I'm Junu.
