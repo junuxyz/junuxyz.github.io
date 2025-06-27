@@ -1,9 +1,9 @@
 # --- CORRECTED AND CLEANED HUGO.TOML ---
 
-baseURL = "https://junuxyz.github.io/" # CORRECTED: Removed "your-" from the URL
+baseURL = "https://junuxyz.github.io/"
 languageCode = "en-us"
 title = "junuxyz"
-theme = "PaperMod"
+theme = "custom"
 
 [pagination]
   pagerSize = 5
@@ -19,52 +19,25 @@ buildExpired = false
 
 [params]
   env = "production"
-  description = "hi"
+  description = "Personal blog and thoughts"
   author = "Junu"
-  defaultTheme = "auto" # Set to 'auto' to respect user's system setting
-  disableThemeToggle = false # Set to 'false' to enable the theme switcher
-
-  # Profile section
-  [params.profileMode]
-    enabled = true
-    title = "Junu"
-    subtitle = "."
-    imageUrl = "/images/avatar.jpg"
-    imageWidth = 120
-    imageHeight = 120
-
-    [[params.profileMode.buttons]]
-      name = "Posts"
-      url = "/posts"
-    [[params.profileMode.buttons]]
-      name = "About"
-      url = "/about"
-
+  
   # Social Icons
-  [[params.socialIcons]]
-    name = "github"
-    url = "https://github.com/junuxyz/"
-  [[params.socialIcons]]
-    name = "linkedin"
-    url = "https://www.linkedin.com/in/junu-park-2b210229a/"
-
-  # Custom assets - This should now be read correctly
-  [params.assets]
-    customCSS = ["css/custom.css"]
+  # (github and linkedin removed)
 
 # Main menu
 [menu]
-  [[main]]
+  [[menu.main]]
     identifier = "posts"
     name = "Blog"
     url = "/posts/"
     weight = 10
-  [[main]]
+  [[menu.main]]
     identifier = "about"
     name = "About"
     url = "/about/"
     weight = 20
-  [[main]]
+  [[menu.main]]
     identifier = "tags"
     name = "Tags"
     url = "/tags/"

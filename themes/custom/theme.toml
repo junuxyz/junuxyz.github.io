@@ -1,0 +1,12 @@
+name = "Custom"
+license = "MIT"
+licenselink = "https://github.com/junuxyz/hugo-custom-theme/blob/main/LICENSE"
+description = "A clean, minimal custom Hugo theme"
+homepage = "https://github.com/junuxyz/hugo-custom-theme"
+tags = ["blog", "minimal", "clean", "responsive"]
+features = ["responsive", "dark-mode"]
+min_version = "0.55.0"
+
+[author]
+  name = "Junu"
+  homepage = "https://junuxyz.github.io/" 
