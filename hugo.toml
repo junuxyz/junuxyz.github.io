@@ -13,6 +13,11 @@ buildDrafts = false
 buildFuture = false
 buildExpired = false
 
+# Enable taxonomies
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
 [minify]
   disableXML = true
   minifyOutput = true
@@ -28,17 +33,27 @@ buildExpired = false
 # Main menu
 [menu]
   [[menu.main]]
-    identifier = "posts"
-    name = "Blog"
-    url = "/posts/"
+    identifier = "thoughts"
+    name = "Thoughts"
+    url = "/categories/thoughts/"
     weight = 10
+  [[menu.main]]
+    identifier = "ml"
+    name = "ML"
+    url = "/categories/ml/"
+    weight = 20
+  [[menu.main]]
+    identifier = "posts"
+    name = "All Posts"
+    url = "/posts/"
+    weight = 30
   [[menu.main]]
     identifier = "about"
     name = "About"
     url = "/about/"
-    weight = 20
+    weight = 40
   [[menu.main]]
     identifier = "tags"
     name = "Tags"
     url = "/tags/"
-    weight = 30
+    weight = 50

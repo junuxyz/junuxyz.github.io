@@ -2,6 +2,7 @@
 title = "A Useful Mental Model on How to Build Your Unique Career"
 date = 2025-03-08T00:00:00+09:00
 draft = false
+categories = ['Thoughts']
 +++
 
 
