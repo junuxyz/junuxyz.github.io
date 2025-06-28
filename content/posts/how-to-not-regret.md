@@ -1,3 +1,4 @@
++++
 date = '2025-06-28T09:00:12+09:00'
 draft = false
 title = 'How to Not Regret'
