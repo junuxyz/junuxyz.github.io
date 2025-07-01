@@ -1,0 +1,32 @@
+
+# Hugo build output
+public/
+
+# Hugo build lock file
+.hugo_build.lock
+
+# Obsidian vault files
+content/posts/.obsidian/
+content/posts/Templates/
+*.canvas
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
