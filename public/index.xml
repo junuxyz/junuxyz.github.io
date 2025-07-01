@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>junuxyz</title>
-    <link>http://localhost:1313/</link>
+    <link>https://junuxyz.github.io/</link>
     <description>Recent content on junuxyz</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 28 Jun 2025 09:00:12 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://junuxyz.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>How to Not Regret</title>
-      <link>http://localhost:1313/posts/how-to-not-regret/</link>
+      <link>https://junuxyz.github.io/posts/how-to-not-regret/</link>
       <pubDate>Sat, 28 Jun 2025 09:00:12 +0900</pubDate>
-      <guid>http://localhost:1313/posts/how-to-not-regret/</guid>
+      <guid>https://junuxyz.github.io/posts/how-to-not-regret/</guid>
       <description>Today, I am going to talk about how to not regret. This is important to many of us, since we spend lots of time regretting our past, suffering about the future, and blaming our current selves.&#xA;The answer to this is quite straightforward: Do your best in the given situation. I know, it sounds predictable and perhaps a bit cliché, but please, keep reading. You think you&amp;rsquo;ve failed and lost too many good chances?</description>
     </item>
     <item>
       <title>A Useful Mental Model on How to Build Your Unique Career</title>
-      <link>http://localhost:1313/posts/a-useful-mental-model-on-how-to-build-your-unique-career/</link>
+      <link>https://junuxyz.github.io/posts/a-useful-mental-model-on-how-to-build-your-unique-career/</link>
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/posts/a-useful-mental-model-on-how-to-build-your-unique-career/</guid>
+      <guid>https://junuxyz.github.io/posts/a-useful-mental-model-on-how-to-build-your-unique-career/</guid>
       <description>If you want to be a pro, imagine the job role or the company you want to get in. Google, Tesla, Facebook, Apple, etc&amp;hellip; logically you need to work as much or harder than that everyday.&#xA;Then, what should you work on?&#xA;Hard problems; the problems people are facing in the domain.&#xA;Find out and contemplate on&#xA;what the problem is why it&amp;rsquo;s a problem what have been done to solve the problem why those problems don&amp;rsquo;t work what can be done to solve that problem why that can be a candidate logically (rationally) and do it </description>
     </item>
     <item>
       <title>About</title>
-      <link>http://localhost:1313/about/</link>
+      <link>https://junuxyz.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/</guid>
+      <guid>https://junuxyz.github.io/about/</guid>
       <description>Hi I&amp;rsquo;m Junu.</description>
     </item>
   </channel>

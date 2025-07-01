@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on junuxyz</title>
-    <link>http://localhost:1313/categories/</link>
+    <link>https://junuxyz.github.io/categories/</link>
     <description>Recent content in Categories on junuxyz</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 08 Mar 2025 00:00:00 +0900</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Jun 2025 09:00:12 +0900</lastBuildDate>
+    <atom:link href="https://junuxyz.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Thoughts</title>
-      <link>http://localhost:1313/categories/thoughts/</link>
-      <pubDate>Sat, 08 Mar 2025 00:00:00 +0900</pubDate>
-      <guid>http://localhost:1313/categories/thoughts/</guid>
+      <link>https://junuxyz.github.io/categories/thoughts/</link>
+      <pubDate>Sat, 28 Jun 2025 09:00:12 +0900</pubDate>
+      <guid>https://junuxyz.github.io/categories/thoughts/</guid>
       <description></description>
     </item>
   </channel>
