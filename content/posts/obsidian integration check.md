@@ -5,7 +5,7 @@ draft = false
 categories = ['ML']
 +++
 
-# hello world
+# obsidian integration check
 
 checking if obsidian integration is successful
 
