@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ML on junuxyz</title>
+    <link>https://junuxyz.github.io/categories/ml/</link>
+    <description>Recent content in ML on junuxyz</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Jul 2025 20:03:21 +0900</lastBuildDate>
+    <atom:link href="https://junuxyz.github.io/categories/ml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>obsidian integration check</title>
+      <link>https://junuxyz.github.io/posts/obsidian-integration-check/</link>
+      <pubDate>Tue, 15 Jul 2025 20:03:21 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/obsidian-integration-check/</guid>
+      <description>&lt;h1 id=&#34;obsidian-integration-check&#34;&gt;obsidian integration check&lt;/h1&gt;&#xA;&lt;p&gt;checking if obsidian integration is successful&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://junuxyz.github.io/images/junuxyz_blog_logo.png&#34; alt=&#34;Blog Logo&#34;&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
