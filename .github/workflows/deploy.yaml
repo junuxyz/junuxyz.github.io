@@ -19,15 +19,22 @@ jobs:
           find content/posts -name "Templates" -type d -exec rm -rf {} + 2>/dev/null || true
           find content/posts -name "*.canvas" -delete 2>/dev/null || true
           
-          # Convert Obsidian wiki links to Hugo format
+          # FIRST: Convert Obsidian IMAGE links (must be done BEFORE wiki links)
+          find content/posts -name "*.md" -type f -exec sed -i 's/!\[\[\([^]]*\)\]\]/![Image](\/images\/\1)/g' {} \;
+          
+          # SECOND: Convert remaining Obsidian wiki links to Hugo format (non-image links only)
           find content/posts -name "*.md" -type f -exec sed -i 's/\[\[\([^]]*\)\]\]/[\1]({{< ref "\1" >}})/g' {} \;
           
-          # Convert Obsidian image links and move attachments
-          find content/posts -name "*.md" -type f -exec sed -i 's/!\[\[\([^]]*\)\]\]/![Image](\/images\/\1)/g' {} \;
+          # Move attachments to static/images
           if [ -d "content/posts/attachments" ]; then
+            echo "Found attachments directory, copying images..."
             mkdir -p static/images
             cp -r content/posts/attachments/* static/images/ 2>/dev/null || true
+            echo "Images copied to static/images:"
+            ls -la static/images/ || true
             rm -rf content/posts/attachments
+          else
+            echo "No attachments directory found"
           fi
 
       - name: Setup Hugo
