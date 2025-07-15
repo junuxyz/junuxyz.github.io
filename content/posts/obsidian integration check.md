@@ -9,4 +9,5 @@ categories = ['ML']
 
 checking if obsidian integration is successful
 
-![[junuxyz_blog_logo.png]]
+
+![Blog Logo](/images/junuxyz_blog_logo.png)
