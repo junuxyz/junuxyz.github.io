@@ -1,6 +1,6 @@
 +++
 title = "obsidian integration check"
-date = 2025-07-15T20:03:21+0900
+date = 2025-07-15T20:03:21+09:00
 draft = false
 categories = ['ML']
 +++
