@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ML on junuxyz</title>
+    <link>https://junuxyz.github.io/categories/ml/</link>
+    <description>Recent content in ML on junuxyz</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Jul 2025 21:45:17 +0900</lastBuildDate>
+    <atom:link href="https://junuxyz.github.io/categories/ml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>(shallow) Dive into VSCode Debugger</title>
+      <link>https://junuxyz.github.io/posts/shallow-dive-into-vscode-debugger/</link>
+      <pubDate>Wed, 16 Jul 2025 21:45:17 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/shallow-dive-into-vscode-debugger/</guid>
+      <description>&lt;h1 id=&#34;shallow-dive-into-vscode-debugger&#34;&gt;(shallow) Dive into VSCode Debugger&lt;/h1&gt;&#xA;&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;I know debugging skills are very important and one of the &amp;ldquo;must have&amp;rdquo; skills for developers. However I did not explicitly tried to learn how to use and utilize VSCode debugger effectively. While reading &lt;a href=&#34;https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/&#34;&gt;this&lt;/a&gt; during my entry to c++, I thought now was the right time to look into features VS Code gives, which were worth note taking. Today is just a shallow dive and hope to learn deeper when I need it.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
