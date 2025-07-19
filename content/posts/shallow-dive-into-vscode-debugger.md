@@ -24,7 +24,8 @@ If what you are trying to compile is simple enough(especially if it's just one f
 
 ## Breakpoints
 
-![[breakpoints.png|400]]
+  <img src="/attachments/breakpoints.png" width="400" alt="breakpoints">
+
 *this image is from the VS Code Docs!*
 
 Breakpoints are one of the main features of debugging. They capture the state of variables, call stack, and loaded scripts on the lines where breakpoints are placed.
@@ -44,15 +45,15 @@ There are three types of conditions:
 
 For example (Expression condition), if I set `getValue() = 3` in line 11 in the below code, it will pass the breakpoint.
 
-![[Pasted image 20250717000409.png|400]]
+![[shallow-dive-into-vscode-debugger-expression-1.png|400]]
 
 But if I set `getValue() = 4` 
 
-![[Pasted image 20250717000530.png|400]]
+![[shallow-dive-into-vscode-debugger-expression-2.png|400]]
 
 it will correctly stop at the breakpoint.
 
-![[Pasted image 20250717000612.png|400]]
+![[shallow-dive-into-vscode-debugger-expression-3.png|400]]
 
 To create conditional breakpoint, right-click in the editor margin and select **Add Conditional Breakpoint**.
 
@@ -63,9 +64,9 @@ A logpoint is a variant of breakpoint, but works differently. Instead of stoppin
 This feature is for easy/light log message addings.
 
 For example if I 
-![[Pasted image 20250717001257.png|400]]
+![[shallow-dive-into-vscode-debugger-log-message-1.png|400]]
 
-![[Pasted image 20250717001329.png|400]]
+![[Pasted image shallow-dive-into-vscode-debugger-log-message-2.png|400]]
 
 
 
