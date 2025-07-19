@@ -689,3 +689,16 @@ blockquote p {
 * {
     transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 } 
+
+/* Center and size all images in blog content */
+.markdown-body img,
+.content img,
+.post-content img,
+article img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+  max-width: 100%;
+  height: auto;
+} 
