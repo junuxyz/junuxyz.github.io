@@ -22,6 +22,9 @@ jobs:
           # FIRST: Convert Obsidian IMAGE links (must be done BEFORE wiki links)
           find content/posts -name "*.md" -type f -exec sed -i 's/!\[\[\([^]]*\)\]\]/![Image](\/images\/\1)/g' {} \;
           
+          # Convert HTML <img src="/attachments/..."> to <img src="/images/...">
+          find content/posts -name "*.md" -type f -exec sed -i 's/src="\/attachments\//src="\/images\//g' {} \;
+          
           # SECOND: Convert remaining Obsidian wiki links to Hugo format (non-image links only)
           find content/posts -name "*.md" -type f -exec sed -i 's/\[\[\([^]]*\)\]\]/[\1]({{< ref "\1" >}})/g' {} \;
           
