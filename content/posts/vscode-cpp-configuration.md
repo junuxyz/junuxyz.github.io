@@ -3,6 +3,7 @@ title = "VSCode C++ Configuration"
 date = 2025-07-15T21:39:10+09:00
 draft = true
 categories = ['ML']
+tags = ['vscode']
 +++
 
 # VSCode C++ Configuration

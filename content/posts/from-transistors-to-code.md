@@ -29,7 +29,6 @@ We will not cover beneath this layer, which introduces to a whole new physical w
 
 Logic gates are constructed by transistors.
 
-
 ## 3. Logic Circuits
 
 _Logic Circuits_ are combined with logic gates to create logic that are more complicated.
