@@ -34,6 +34,18 @@
               "icon": "lucide-file",
               "title": "lab01-adding-vector"
             }
+          },
+          {
+            "id": "ee39bc545966fabe",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "static/images/shallow-dive-into-vscode-debugger-log-message-2.png"
+              },
+              "icon": "lucide-image",
+              "title": "shallow-dive-into-vscode-debugger-log-message-2"
+            }
           }
         ],
         "currentTab": 1
@@ -187,9 +199,17 @@
   },
   "active": "ffdeba0705e9511e",
   "lastOpenFiles": [
+    "static/images/shallow-dive-into-vscode-debugger-log-message-2.png",
+    "conflict-files-obsidian-git.md",
+    "static/images/breakpoints.png",
+    "content/posts/lab01-adding-vector.md",
+    "static/images/shallow-dive-into-vscode-debugger-log-message-1.png",
+    "static/images/shallow-dive-into-vscode-debugger-hit-count.png",
+    "static/images/shallow-dive-into-vscode-debugger-expression-3.png",
+    "static/images/shallow-dive-into-vscode-debugger-expression-2.png",
+    "static/images/shallow-dive-into-vscode-debugger-expression-1.png",
     "content/posts/trying-out-uv-as-my-new-package-managing-tool.md",
     "content/posts/vscode-cpp-configuration.md",
-    "content/posts/lab01-adding-vector.md",
     "content/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
     "content/posts/from-transistors-to-code.md",
     "content/posts/how-to-not-regret.md",
