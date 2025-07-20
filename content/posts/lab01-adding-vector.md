@@ -151,3 +151,5 @@ result was almost the same.
 We can conclude that vector addition is so simple + PyTorch optimized it well that there seems no room for optimizing vector addition better than PyTorch. PyTorch is as good.
 
 I guess we will have to cover things computationally heavier, such as matmul.
+
+Source code can be found in https://github.com/junuxyz/labs/tree/main/lab_01
