@@ -9,7 +9,7 @@ tags = ['vscode']
 
 I know debugging skills are very important and one of the "must have" skills for developers. However I did not explicitly tried to learn how to use and utilize VSCode debugger effectively. While reading [this](https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/) during my entry to c++, I thought now was the right time to look into features VS Code gives, which were worth note taking. Today is just a shallow dive and hope to learn deeper when I need it.
 
->Don’t neglect learning to use a debugger. As your programs get more complicated, the amount of time you spend learning to use the integrated debugger effectively will pale in comparison to amount of time you save finding and fixing issues.
+>Don't neglect learning to use a debugger. As your programs get more complicated, the amount of time you spend learning to use the integrated debugger effectively will pale in comparison to amount of time you save finding and fixing issues.
 >***learncpp***
 
 ## Installation
@@ -24,7 +24,6 @@ One of the most basic and frequently used debugging function is stepping, which 
 
 *Note: Shortkeys mentioned are based on Windows keyboard and may differ in different devices!*
 
-
 **Step into(F11)**: executes the next statement(next line) in normal execution path of the program. Will enter function calls and execute them line by line, recursively.
 
 **Step over(F10)**: executes the next statement like Step into but will skip line-by-line function execution and return control **after the function has been executed**.
@@ -33,49 +32,50 @@ One of the most basic and frequently used debugging function is stepping, which 
 
 ## Breakpoints
 
-  <img src="/attachments/breakpoints.png" width="400" alt="breakpoints">
+![breakpoints](/images/breakpoints.png)
 
 *this image is from the VS Code Docs!*
 
 Breakpoints are one of the main features of debugging. They capture the state of variables, call stack, and loaded scripts on the lines where breakpoints are placed.
 Note that you can actually modify values in the state variables as you want!
 
-You can click on the **editor margin** or use F9 on the current line to set/unset breakpoints.
-
+You can click on the **editor margin** or use F9 on the current line to set/unset breakpoints.
 
 ### Conditional Breakpoints
 
 This is a feature I've never used before but seems very helpful. Conditional Breakpoint only hits when it meets the condition specified.
 
 There are three types of conditions:
-- **Expression condition**: The breakpoint is hit whenever the expression evaluates to `true`.
+- **Expression condition**: The breakpoint is hit whenever the expression evaluates to `true`.
 - **Hit count**: controls how many times a breakpoint needs to be hit before it interrupts execution. Whether a hit count is respected, and the exact syntax of the expression, can vary among debugger extensions.
 - **Wait for breakpoint**: The breakpoint is activated when another breakpoint is hit
 
 For example (Expression condition), if I set `getValue() = 3` in line 11 in the below code, it will pass the breakpoint.
 
-![[shallow-dive-into-vscode-debugger-expression-1.png|400]]
+![debugger expression1](/images/shallow-dive-into-vscode-debugger-expression-1.png)
 
 But if I set `getValue() = 4` 
 
-![[shallow-dive-into-vscode-debugger-expression-2.png|400]]
+![debugger expression2](/images/shallow-dive-into-vscode-debugger-expression-2.png)
 
 it will correctly stop at the breakpoint.
 
-![[shallow-dive-into-vscode-debugger-expression-3.png|400]]
+![debugger expression3](/images/shallow-dive-into-vscode-debugger-expression-3.png)
 
-To create conditional breakpoint, right-click in the editor margin and select **Add Conditional Breakpoint**.
 
+To create conditional breakpoint, right-click in the editor margin and select **Add Conditional Breakpoint**.
 
 ### Log Points
 
 A logpoint is a variant of breakpoint, but works differently. Instead of stopping at a point, whenever it passes that line, it prints a log message in the debug console.
 This feature is for easy/light log message addings.
 
-For example if I 
-![[shallow-dive-into-vscode-debugger-log-message-1.png|400]]
+For example if I
 
-![[Pasted image shallow-dive-into-vscode-debugger-log-message-2.png|400]]
+![log message 1](/images/shallow-dive-into-vscode-debugger-log-message-1.png)
+
+![log message 2](/images/shallow-dive-into-vscode-debugger-log-message-2.png)
+
 
 
 ## Debugging C++ in VS Code
@@ -86,7 +86,6 @@ For example if I
 > - **Windows**: the Visual Studio Windows Debugger or GDB (using Cygwin or MinGW)
 
 since I use WSL(Windows Subsystem for Linux) 2 as my dev environment, I use GDB debuggers.
-
 
 ## WIP
 
