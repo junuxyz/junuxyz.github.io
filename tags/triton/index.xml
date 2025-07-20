@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ML on junuxyz</title>
-    <link>https://junuxyz.github.io/categories/ml/</link>
-    <description>Recent content in ML on junuxyz</description>
+    <title>Triton on junuxyz</title>
+    <link>https://junuxyz.github.io/tags/triton/</link>
+    <description>Recent content in Triton on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Jul 2025 16:26:31 +0900</lastBuildDate>
-    <atom:link href="https://junuxyz.github.io/categories/ml/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://junuxyz.github.io/tags/triton/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lab01: Adding Vector</title>
       <link>https://junuxyz.github.io/posts/lab01-adding-vector/</link>
       <pubDate>Sun, 20 Jul 2025 16:26:31 +0900</pubDate>
       <guid>https://junuxyz.github.io/posts/lab01-adding-vector/</guid>
       <description>&lt;p&gt;This is a simple experiment to just get a feel of the abstraction PyTorch provides, and all the internal complexity hidden below. We will also compare the performance of basic vector addition between PyTorch, Triton, and CUDA.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;Note: This experiment was done in NVIDIA RTX 3050ti laptop GPU&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;vector-addition-in-pytorch&#34;&gt;Vector Addition in PyTorch&lt;/h3&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randn(size, device&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cuda&amp;#39;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;b &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randn(size, device&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cuda&amp;#39;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;empty_like(a)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; b&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;PyTorch output:&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(output)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;empty_like(a)&lt;/code&gt; creates the same size, dtype, and device(&amp;lsquo;cuda&amp;rsquo;) as the input tensor &lt;code&gt;a&lt;/code&gt;. It does not initialize the memory into something else, but use the garbage value of it so it&amp;rsquo;s a bit faster than using &lt;code&gt;torch.zeros()&lt;/code&gt; or &lt;code&gt;torch.ones()&lt;/code&gt;.&#xA;The exact operation of vector addition is hidden in operator &lt;code&gt;+&lt;/code&gt; in PyTorch.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;!-- raw HTML omitted --&gt;&#xA;&lt;h3 id=&#34;vector-addition-in-triton&#34;&gt;Vector Addition in Triton&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/triton-lang/triton&#34;&gt;Triton&lt;/a&gt; is an open source library ran by OpenAI, which aims to be easier to code than CUDA (fewer knobs to control, don&amp;rsquo;t need to know as deep as CUDA) but doesn&amp;rsquo;t lose the performance.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>A (shallow) Dive into VSCode Debugger</title>
-      <link>https://junuxyz.github.io/posts/a-shallow-dive-into-vscode-debugger/</link>
-      <pubDate>Wed, 16 Jul 2025 21:45:17 +0900</pubDate>
-      <guid>https://junuxyz.github.io/posts/a-shallow-dive-into-vscode-debugger/</guid>
-      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;I know debugging skills are very important and one of the &amp;ldquo;must have&amp;rdquo; skills for developers. However I did not explicitly tried to learn how to use and utilize VSCode debugger effectively. While reading &lt;a href=&#34;https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/&#34;&gt;this&lt;/a&gt; during my entry to c++, I thought now was the right time to look into features VS Code gives, which were worth note taking. Today is just a shallow dive and hope to learn deeper when I need it.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

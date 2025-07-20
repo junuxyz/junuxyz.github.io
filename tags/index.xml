@@ -6,6 +6,35 @@
     <description>Recent content in Tags on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <lastBuildDate>Sun, 20 Jul 2025 16:26:31 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Labs</title>
+      <link>https://junuxyz.github.io/tags/labs/</link>
+      <pubDate>Sun, 20 Jul 2025 16:26:31 +0900</pubDate>
+      <guid>https://junuxyz.github.io/tags/labs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pytorch</title>
+      <link>https://junuxyz.github.io/tags/pytorch/</link>
+      <pubDate>Sun, 20 Jul 2025 16:26:31 +0900</pubDate>
+      <guid>https://junuxyz.github.io/tags/pytorch/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Triton</title>
+      <link>https://junuxyz.github.io/tags/triton/</link>
+      <pubDate>Sun, 20 Jul 2025 16:26:31 +0900</pubDate>
+      <guid>https://junuxyz.github.io/tags/triton/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vscode</title>
+      <link>https://junuxyz.github.io/tags/vscode/</link>
+      <pubDate>Wed, 16 Jul 2025 21:45:17 +0900</pubDate>
+      <guid>https://junuxyz.github.io/tags/vscode/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
