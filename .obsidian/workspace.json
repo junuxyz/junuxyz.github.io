@@ -1,0 +1,202 @@
+{
+  "main": {
+    "id": "f24d7de0a4563bfa",
+    "type": "split",
+    "children": [
+      {
+        "id": "ca43d689a934035a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3e001af5f2410f6d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/from-transistors-to-code.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "from-transistors-to-code"
+            }
+          },
+          {
+            "id": "ffdeba0705e9511e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/lab01-adding-vector.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "lab01-adding-vector"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "42cab3c09021158a",
+    "type": "split",
+    "children": [
+      {
+        "id": "6db0392c40e1b146",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "598548e247043a17",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "33d275938ba2e4f3",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "b5035bbbcf4b3b9a",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "042c16bc468b58f2",
+    "type": "split",
+    "children": [
+      {
+        "id": "1c42001d68405c1f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4270a917c64597d8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "content/about.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for about"
+            }
+          },
+          {
+            "id": "137068d868fbf7b9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "content/about.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from about"
+            }
+          },
+          {
+            "id": "9b889c2ee7a9bfac",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "7e47b3a32287c236",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content/about.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of about"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "obsidian-git:Open Git source control": false,
+      "templater-obsidian:Templater": false
+    }
+  },
+  "active": "ffdeba0705e9511e",
+  "lastOpenFiles": [
+    "content/posts/trying-out-uv-as-my-new-package-managing-tool.md",
+    "content/posts/vscode-cpp-configuration.md",
+    "content/posts/lab01-adding-vector.md",
+    "content/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
+    "content/posts/from-transistors-to-code.md",
+    "content/posts/how-to-not-regret.md",
+    "content/posts/a-useful-mental-model-on-how-to-build-your-unique-career.md",
+    "content/posts/a-shallow-dive-into-vscode-debugger.md",
+    "static/images/Pasted image 20250720161929.png",
+    "content/about.md",
+    "static/images/junuxyz_blog_logo.png"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "static/images",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "content/posts"
+}

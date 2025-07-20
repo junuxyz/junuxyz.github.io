@@ -3,6 +3,7 @@ title = "A (shallow) Dive into VSCode Debugger"
 date = 2025-07-16T21:45:17+09:00
 draft = false
 categories = ['ML']
+tags = ['vscode']
 +++
 ## Intro
 
