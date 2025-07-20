@@ -1,13 +1,9 @@
 +++
-title = "(shallow) Dive into VSCode Debugger"
+title = "A (shallow) Dive into VSCode Debugger"
 date = 2025-07-16T21:45:17+09:00
 draft = false
 categories = ['ML']
 +++
-
-# (shallow) Dive into VSCode Debugger
-
-
 ## Intro
 
 I know debugging skills are very important and one of the "must have" skills for developers. However I did not explicitly tried to learn how to use and utilize VSCode debugger effectively. While reading [this](https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/) during my entry to c++, I thought now was the right time to look into features VS Code gives, which were worth note taking. Today is just a shallow dive and hope to learn deeper when I need it.
@@ -21,6 +17,18 @@ Configuring development environment is especially important when it comes to C/C
 
 If what you are trying to compile is simple enough(especially if it's just one file you're trying to debug), default configuration works fine. So to experience the VS Code debugging, just click 'Run and Debug' section on the left corner and click the run and debug (or just type `F5` as a shortcut). If the directory you're trying to compile is complex, you would need to configure/edit `.vscode/launch.json` manually (which I will explore more in the [future](https://code.visualstudio.com/docs/debugtest/debugging-configuration) ..)
 
+## Stepping
+
+One of the most basic and frequently used debugging function is stepping, which sequentially proceeds statement based on line or breakpoints(we will cover breakpoints soon).
+
+*Note: Shortkeys mentioned are based on Windows keyboard and may differ in different devices!*
+
+
+**Step into(F11)**: executes the next statement(next line) in normal execution path of the program. Will enter function calls and execute them line by line, recursively.
+
+**Step over(F10)**: executes the next statement like Step into but will skip line-by-line function execution and return control **after the function has been executed**.
+
+**Step out(Shift+F11)**: Does NOT execute the next line of code. It executes all remainig code in the function currently being executed. Usually used when you accidently stepped in but don't want to look into the details of function.
 
 ## Breakpoints
 
@@ -69,7 +77,6 @@ For example if I
 ![[Pasted image shallow-dive-into-vscode-debugger-log-message-2.png|400]]
 
 
-
 ## Debugging C++ in VS Code
 
 > Visual Studio Code supports the following debuggers for C/C++ depending on the operating system you are using:
@@ -88,3 +95,4 @@ I will add some more (something beyond tutorial resources) information and pract
 https://code.visualstudio.com/docs/debugtest/debugging
 https://www.youtube.com/watch?v=3HiLLByBWkg
 https://code.visualstudio.com/docs/cpp/cpp-debug
+https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/
