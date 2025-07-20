@@ -12,33 +12,18 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Process Obsidian content
+      - name: Process content
         run: |
           # Remove Obsidian vault files
           find content/posts -name ".obsidian" -type d -exec rm -rf {} + 2>/dev/null || true
           find content/posts -name "Templates" -type d -exec rm -rf {} + 2>/dev/null || true
           find content/posts -name "*.canvas" -delete 2>/dev/null || true
           
-          # FIRST: Convert Obsidian IMAGE links (must be done BEFORE wiki links)
+          # Convert Obsidian image links to Hugo format
           find content/posts -name "*.md" -type f -exec sed -i 's/!\[\[\([^]]*\)\]\]/![Image](\/images\/\1)/g' {} \;
           
-          # Convert HTML <img src="/attachments/..."> to <img src="/images/...">
-          find content/posts -name "*.md" -type f -exec sed -i 's/src="\/attachments\//src="\/images\//g' {} \;
-          
-          # SECOND: Convert remaining Obsidian wiki links to Hugo format (non-image links only)
-          find content/posts -name "*.md" -type f -exec sed -i 's/\[\[\([^]]*\)\]\]/[\1]({{< ref "\1" >}})/g' {} \;
-          
-          # Move attachments to static/images
-          if [ -d "content/posts/attachments" ]; then
-            echo "Found attachments directory, copying images..."
-            mkdir -p static/images
-            cp -r content/posts/attachments/* static/images/ 2>/dev/null || true
-            echo "Images copied to static/images:"
-            ls -la static/images/ || true
-            rm -rf content/posts/attachments
-          else
-            echo "No attachments directory found"
-          fi
+          # Convert /static/images/ paths to /images/ paths
+          find content/posts -name "*.md" -type f -exec sed -i 's/\/static\/images\//\/images\//g' {} \;
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
