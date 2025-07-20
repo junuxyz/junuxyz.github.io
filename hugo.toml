@@ -1,5 +1,3 @@
-# --- CORRECTED AND CLEANED HUGO.TOML ---
-
 baseURL = "https://junuxyz.github.io/"
 languageCode = "en-us"
 title = "junuxyz"
@@ -21,6 +19,11 @@ buildExpired = false
 [minify]
   disableXML = true
   minifyOutput = true
+
+# Syntax highlighting configuration
+[markup]
+  [markup.highlight]
+    noClasses = false
 
 [params]
   env = "production"
