@@ -22,6 +22,12 @@ buildExpired = false
   disableXML = true
   minifyOutput = true
 
+# Syntax highlighting configuration
+[markup]
+  [markup.highlight]
+    noClasses = false
+    style = "github"
+
 [params]
   env = "production"
   description = "Personal blog and thoughts"
