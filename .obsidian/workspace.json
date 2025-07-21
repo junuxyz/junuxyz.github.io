@@ -36,19 +36,21 @@
             }
           },
           {
-            "id": "ee39bc545966fabe",
+            "id": "13e62799826d0a34",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "static/images/shallow-dive-into-vscode-debugger-log-message-2.png"
+                "file": "content/posts/lab01-1-adding-vector-in-cuda.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "shallow-dive-into-vscode-debugger-log-message-2"
+              "icon": "lucide-file",
+              "title": "lab01-1-adding-vector-in-cuda"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -105,7 +107,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 206.50469207763672,
+    "collapsed": true
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -197,12 +200,15 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "ffdeba0705e9511e",
+  "active": "13e62799826d0a34",
   "lastOpenFiles": [
-    "static/images/lab01-performance-comparance.png",
-    "content/posts/lab01-adding-vector.md",
-    "themes/custom/static/css/syntax.css",
     "static/images/shallow-dive-into-vscode-debugger-log-message-2.png",
+    "content/posts/lab01-1-adding-vector-in-cuda.md",
+    "static/images/cuda-gpu-layers.png",
+    "static/images/cuda-gpu-architecture.png",
+    "content/posts/lab01-adding-vector.md",
+    "static/images/lab01-performance-comparance.png",
+    "themes/custom/static/css/syntax.css",
     "conflict-files-obsidian-git.md",
     "static/images/breakpoints.png",
     "static/images/shallow-dive-into-vscode-debugger-log-message-1.png",
@@ -217,8 +223,6 @@
     "content/posts/how-to-not-regret.md",
     "content/posts/a-useful-mental-model-on-how-to-build-your-unique-career.md",
     "content/posts/a-shallow-dive-into-vscode-debugger.md",
-    "static/images/Pasted image 20250720161929.png",
-    "content/about.md",
-    "static/images/junuxyz_blog_logo.png"
+    "content/about.md"
   ]
 }
