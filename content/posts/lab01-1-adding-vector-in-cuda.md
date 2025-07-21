@@ -20,13 +20,14 @@ If it is something not that complex but just has many things to compute (such as
 Below is an illustration provided from the official docs which is a (very simple) comparison on GPU (left) vs CPU (right) which will help us understand the difference intuitively.
 
 ![[cuda-gpu-architecture.png]]
+### Building Blocks of GPU Architecture
+
 It is good to have a solid understanding of the hierarchy of a typical GPU. Let's breifly look at the building blocks in a bottom-up manner:
 
 1. **Thread**: This is the fundamental unit in CUDA/GPU programming. It executes one instance of your kernel function and has its own private registers.
 2. **Warp(=32 Threads)**: The smallest unit of scheduling and execution on an SM(or Streaming Multiprocessor). Threads within a warp execute in lockstep. This is an important hardware detail, not explicitly defined by the programmer in kernel launch but crucial for performance. 
 3. **Thread Block(up to 1024 threads, typically multiple warps):** A group of threads that are guaranteed to reside on the same SM. Threads within a block can synchronize via `__syncthreads()` and share data quickly via on-chip shared memory.
 4. **Grid (multiple thread blocks):** This is the complete collection of all thread blocks for a single kernel launch. Blocks within a grid are independent and can only communciate via the slower global memory. The GPU scheduler assigns these blocks to available SMs.
-
 
 ### What is CUDA?
 
