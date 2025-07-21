@@ -1,24 +1,17 @@
 {{ define "main" }}
 <div class="container">
-    {{ if .IsHome }}
-    {{ else }}
     <header class="page-header">
-        <h1>{{ .Title }}</h1>
-        {{ if .Description }}
-        <p class="page-description">{{ .Description }}</p>
-        {{ end }}
+        <h1>All Posts</h1>
     </header>
-    {{ end }}
-    
-    {{ if .Pages }}
+    {{ $pages := where .Site.RegularPages "Type" "posts" }}
+    {{ if $pages }}
     <div class="posts">
-        {{ range .Pages }}
+        {{ range $pages.ByDate.Reverse }}
         <article class="post-entry">
             <header class="post-header">
                 <h2 class="post-title">
                     <a href="{{ .Permalink }}">{{ .Title }}</a>
                 </h2>
-                {{ if and (ne .Title "About") (not (eq .Date.Year 1)) }}
                 <div class="post-meta">
                     <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
                         {{ .Date.Format "January 2, 2006" }}
@@ -31,9 +24,7 @@
                     </span>
                     {{ end }}
                 </div>
-                {{ end }}
             </header>
-            
             {{ if .Summary }}
             <div class="post-summary">
                 {{ .Summary | truncate 80 }}
