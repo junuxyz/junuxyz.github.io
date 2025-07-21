@@ -152,4 +152,8 @@ We can conclude that vector addition is so simple + PyTorch optimized it well th
 
 I guess we will have to cover things computationally heavier, such as matmul.
 
-Source code can be found in https://github.com/junuxyz/labs/tree/main/lab_01
+*Note: Source code can be found in [here](https://github.com/junuxyz/labs/tree/main/lab_01)*
+
+*Note: Ran the actual tutorial code from [Triton Tutorials](https://triton-lang.org/main/getting-started/tutorials/01-vector-add.html#sphx-glr-getting-started-tutorials-01-vector-add-py) and got the plot below:*
+
+![[lab01-performance-comparance.png]]
