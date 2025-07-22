@@ -45,11 +45,7 @@ buildExpired = false
     name = "ML"
     url = "/categories/ml/"
     weight = 20
-  [[menu.main]]
-    identifier = "posts"
-    name = "All Posts"
-    url = "/posts/"
-    weight = 30
+
   [[menu.main]]
     identifier = "about"
     name = "About"
