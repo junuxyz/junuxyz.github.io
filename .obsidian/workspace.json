@@ -201,9 +201,9 @@
   },
   "active": "13e62799826d0a34",
   "lastOpenFiles": [
-    "content/posts/Templates/hugo-post.md",
-    "content/posts/lab01-1-adding-vector-in-cuda.md",
     "conflict-files-obsidian-git.md",
+    "content/posts/lab01-1-adding-vector-in-cuda.md",
+    "content/posts/Templates/hugo-post.md",
     "content/posts/lab01-adding-vector.md",
     "themes/custom/layouts/index.html",
     "static/images/shallow-dive-into-vscode-debugger-log-message-2.png",
