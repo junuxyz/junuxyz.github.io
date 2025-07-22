@@ -5,7 +5,6 @@ draft = false
 categories = ['ML']
 tags = ['vscode']
 +++
-## Intro
 
 I know debugging skills are very important and one of the "must have" skills for developers. However I did not explicitly tried to learn how to use and utilize VSCode debugger effectively. While reading [this](https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/) during my entry to c++, I thought now was the right time to look into features VS Code gives, which were worth note taking. Today is just a shallow dive and hope to learn deeper when I need it.
 

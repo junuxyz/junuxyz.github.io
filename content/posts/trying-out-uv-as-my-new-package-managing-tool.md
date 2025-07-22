@@ -7,7 +7,7 @@ categories = ['']
 
 ## Intro
 
-Dependency hell is a known problem in Machine Learning ecosystem. Hardware(eg. NVIDIA chips) with major libraries such as PyTorch, NumPy etc. can easily create all sorts of dependency issues. That is why making a system for maximum reproducability is important.
+Dependency hell is a known problem in Machine Learning ecosystem. Hardware(eg. NVIDIA RTX chips) with major libraries such as PyTorch, NumPy etc. can easily create all sorts of dependency issues. That is why making a system for maximum reproducability is important.
 
 I've previously used poetry or conda for package managing for Python but found it hard and clunky to use sometimes. Recently I've found a rising tool for package managing called [uv](https://github.com/astral-sh/uv/). This is a brief introduction of what uv is and my first impression of the tool.
 
