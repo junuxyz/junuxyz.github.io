@@ -129,3 +129,26 @@ Name(first_name='The', last_name='Primagen')
 
 As you can see there are two parameters for namedtuple: first one is the class name and second are field names seperated by single space.
 
+We can use additional methods supported in namedtuples such as,
+
+```shell
+Name(first_name='The', last_name='Primagen')
+>>> prime.last_name
+'Primagen'
+>>> prime._asdict()
+{'first_name': 'The', 'last_name': 'Primagen'}
+```
+
+
+### Slicing
+
+**Why slices and range exclude last item**
+because it works well with the zero-based(starting from 0) indexing used in Python.
+
+More specifically, it's 
+- easy to see the length of a slice or range when only the stop position is given.
+- easy to compute the length of a slice or range when start and stop are given by subtracting them.
+- easy to split a sequence in two parts at any index `x` using the same `x` without overlapping.
+
+
+**Slice Objects**
