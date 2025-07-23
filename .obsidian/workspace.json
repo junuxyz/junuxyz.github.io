@@ -135,8 +135,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672,
-    "collapsed": true
+    "width": 206.50469207763672
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -230,6 +229,8 @@
   },
   "active": "3ec78cf9fed98019",
   "lastOpenFiles": [
+    "content/posts/fast-api.md",
+    "content/posts/fluent-python-cheat-sheet.md",
     "content/posts/from-transistors-to-code.md",
     "content/posts/how-to-not-regret.md",
     "content/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
@@ -237,7 +238,6 @@
     "content/posts/trying-out-uv-as-my-new-package-managing-tool.md",
     "content/posts/vscode-cpp-configuration.md",
     "content/posts/neet-code.md",
-    "content/posts/fluent-python-cheat-sheet.md",
     "content/posts/a-useful-mental-model-on-how-to-build-your-unique-career.md",
     "content/posts/a-shallow-dive-into-vscode-debugger.md",
     "content/posts/lab01-adding-vector.md",
