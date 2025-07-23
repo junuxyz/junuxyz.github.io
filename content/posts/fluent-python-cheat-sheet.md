@@ -261,4 +261,22 @@ Note: This is a nice pattern to know about Python API conventions: Python usuall
 
 Both of the functions take two arguments which are `reversed: bool` and `key: string`.
 
-Sorting is 
+```shell
+>>> l = ['a', 'b', 'c']
+>>> sorted_l = sorted(l) # example of `sorted`
+>>> id(l)
+139738067138496
+>>> sorted_l
+['a', 'b', 'c']
+>>> id(sorted_l)
+139738065799168 # another array created
+>>> l.sort() # example of `list.sort`
+```
+
+Sorting is very helpful because once the sequence is sorted, each elements can be very efficiently searched.
+
+### Managing Ordered Sequence with `bisect`
+
+
+For example, [Binary Search Algorithm](https://en.wikipedia.org/wiki/Binary_search) is provided via `bisect` module in Python standard library.
+
