@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/neet-code.md",
+                "file": "content/posts/fluent-python-cheat-sheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "neet-code"
+              "title": "fluent-python-cheat-sheet"
             }
           }
         ],
@@ -135,7 +135,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672
+    "width": 206.50469207763672,
+    "collapsed": true
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -229,15 +230,17 @@
   },
   "active": "3ec78cf9fed98019",
   "lastOpenFiles": [
-    "content/posts/fluent-python-cheat-sheet.md",
+    "content/posts/from-transistors-to-code.md",
+    "content/posts/how-to-not-regret.md",
+    "content/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
+    "content/posts/lab01-1-adding-vector-in-cuda.md",
+    "content/posts/trying-out-uv-as-my-new-package-managing-tool.md",
+    "content/posts/vscode-cpp-configuration.md",
     "content/posts/neet-code.md",
+    "content/posts/fluent-python-cheat-sheet.md",
     "content/posts/a-useful-mental-model-on-how-to-build-your-unique-career.md",
     "content/posts/a-shallow-dive-into-vscode-debugger.md",
-    "content/posts/trying-out-uv-as-my-new-package-managing-tool.md",
     "content/posts/lab01-adding-vector.md",
-    "content/posts/lab01-1-adding-vector-in-cuda.md",
-    "content/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
-    "content/posts/vscode-cpp-configuration.md",
     "conflict-files-obsidian-git.md",
     "content/posts/Templates/hugo-post.md",
     "themes/custom/layouts/index.html",
@@ -252,8 +255,6 @@
     "static/images/shallow-dive-into-vscode-debugger-expression-3.png",
     "static/images/shallow-dive-into-vscode-debugger-expression-2.png",
     "static/images/shallow-dive-into-vscode-debugger-expression-1.png",
-    "content/posts/from-transistors-to-code.md",
-    "content/posts/how-to-not-regret.md",
     "content/about.md"
   ]
 }

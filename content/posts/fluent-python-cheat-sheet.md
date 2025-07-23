@@ -142,13 +142,123 @@ Name(first_name='The', last_name='Primagen')
 
 ### Slicing
 
+You can slice not only lists but other sequence types like strings or tuples.
+
 **Why slices and range exclude last item**
 because it works well with the zero-based(starting from 0) indexing used in Python.
 
-More specifically, it's 
+More specifically, it's
 - easy to see the length of a slice or range when only the stop position is given.
 - easy to compute the length of a slice or range when start and stop are given by subtracting them.
 - easy to split a sequence in two parts at any index `x` using the same `x` without overlapping.
 
 
-**Slice Objects**
+**Using $+$ and $*$ with Sequences**
+
+Multiplying list with integer copies of the same sequence works.
+
+```shell
+>>> l = [1,2,3]  
+>>> l2 = l * 3  
+>>> l2  
+[1, 2, 3, 1, 2, 3, 1, 2, 3]  
+>>> id(l)  
+139738068947456  
+>>> id(l2)  
+139738067406976
+```
+
+**Building Lists of Lists**
+
+The problem appears when the elements in the list are mutable items. The most common case is building lists of lists.
+
+```shell
+>>> board1 = [['_'] * 3 for i in range(3)]  
+>>> board1  
+[['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]  
+>>> board1[1][2] = 'x'  
+>>> board1  
+[['_', '_', '_'], ['_', '_', 'x'], ['_', '_', '_']]
+>>> id(board1[0])
+139738042877824
+>>> id(board1[1])
+139738043505344
+>>> id(board1[2])
+139738043329344
+```
+
+board1 works fine, meaning it has different address for each sub arrays.
+
+but if we multiply list, it just references the same list:
+
+```shell
+>>> board2 = [['_'] * 3] * 3
+>>> board2
+[['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
+>>> board[1][2] = 'x'
+>>> board2
+[['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
+>>> board2[1][2] = 'x'
+>>> board2
+[['_', '_', 'x'], ['_', '_', 'x'], ['_', '_', 'x']]
+>>> id(board2[0])
+139738065760064
+>>> id(board2[1])
+139738065760064
+>>> id(board2[2])
+139738065760064
+```
+
+which means it just appends the same row three times.
+
+
+**Augmented Assignments** (`+=` and `*=`)
+
+augmented assignments are NOT the same as adding or multiplying.
+While `+` internaly uses special function `__add__()`, `+=` uses special function `__iadd__()`.
+**Only if `__iadd__()` is not implemented in the class, it works the same as `__add__()`.**
+
+so, when does it change?
+In mutable sequences (such as lists), `__iadd__()` will be changed **in place** (using less memory) but in other cases, it will work as `__add__()` which means `a = a + b`.
+
+```shell
+>>> l = [1,2,3]
+>>> id(l)
+139738065799168
+>>> mul_list = l * 3 # __mul__()
+>>> id(mul_list)
+139738068947456 # different address
+>>> l *= 3 # __imul__()
+>>> id(l)
+139738065799168 # changed in place
+```
+
+**A+= Assignment Puzzler**
+
+
+```shell
+>>> t = (1, 2, [30, 40])
+>>> t[2] += [50, 60]
+```
+
+This is a corner case that I won't go into details since it seems too peripheral.
+To explain breifly, this will both make an error but also augment the list into `[30, 40, 50, 60]`.
+
+> • Putting mutable items in tuples is not a good idea.
+> • **Augmented assignment is not an atomic operation**—we just saw it throwing an exception after doing part of its job.
+> • Inspecting Python bytecode is not too difficult, and is often helpful to see what is going on under the hood.
+
+
+### Sorting
+
+There are mainly two built-in sorting functions, which is `list.sort` and `sorted`.
+
+`list.sort` does create a copy, but sort the list in place. It returns `None` to remind it.
+
+Note: This is a nice pattern to know about Python API conventions: Python usually outputs `None` to make it clear the function doesn't create a copy but changes the object in place.
+
+`sorted` creates a new list and returns it. Therefore, takes additional memory. This also means it can take any kinds of iterable object including immutable ones, such as tuples. Note that it always outputs a new **list**.
+
+Both of the functions take two arguments which are `reversed: bool` and `key: string`.
+
+Sorting is 
