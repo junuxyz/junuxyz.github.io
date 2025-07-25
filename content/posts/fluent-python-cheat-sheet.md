@@ -3,10 +3,10 @@ title = "Fluent Python Cheat Sheet for Newbies"
 date = 2025-07-22T18:50:06+09:00
 draft = false
 categories = ['ML']
-tags = ['ml', 'python']
+tags = ['python']
 +++
 
-High-level ML frameworks and libraries (e.g., PyTorch, JAX, TensorFlow, NumPy, Triton, and may more) are mostly based on Python.
+High-level ML frameworks and libraries (e.g., PyTorch, JAX, TensorFlow, NumPy, Triton, and many more) are mostly based on Python.
 
 I've known Python for a while, but I've never learned it to a professional degree and wouldn't say I'm good at Python programming. So, I decided to read _Fluent Python_ (which seems to be one of the 'bible' figures of Python) to cover some topics and improve my Python programming skills.
 

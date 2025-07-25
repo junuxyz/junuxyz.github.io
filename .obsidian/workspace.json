@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/ddca-lecture-note.md",
+                "file": "content/posts/fluent-python-cheat-sheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ddca-lecture-note"
+              "title": "fluent-python-cheat-sheet"
             }
           }
         ],
@@ -121,8 +121,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672,
-    "collapsed": true
+    "width": 206.50469207763672
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -216,10 +215,10 @@
   },
   "active": "70c3f935d9b133ce",
   "lastOpenFiles": [
+    "content/posts/ddca-lecture-note.md",
     "content/posts/fluent-python-cheat-sheet.md",
     "content/posts/lab02-ml-api-serving-benchmark.md",
     "content/posts/fast-api.md",
-    "content/posts/ddca-lecture-note.md",
     "content/posts/how-to-not-regret.md",
     "content/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
     "content/posts/lab01-1-adding-vector-in-cuda.md",
