@@ -16,7 +16,9 @@ _Note: This is not designed to be a replacement of the book, but for a handy rev
 
 Let's start.
 
-## Part 2. Data Structures
+# Part 2. Data Structures
+
+## Sequences
 
 A _sequence_ in Python is a general term for an ordered collection of items. This means the items have a specific order, and you can access them by their position (their index).
 
@@ -349,3 +351,42 @@ Fast loading and saving are available via `.frombytes` and `.tofile`
 Removing items from the middle of a `deque` is not as fast. It's optimized for appending and popping from the end. Used in LIFO queue.
 
 deque internally is implemented as a doubly linked list of fixed-size blocks. Therefore traversing to the middle would be more ineffecient than accesing the ends.
+
+<br>
+## Dicts and Sets
+
+> Hash tables are the engines behind Python's high-performance dicts.
+
+All mapping types in the std library use the basic dict in their implementation, which means all keys(while values are not required) must be _hashable_.
+
+- atomic immutable types (such as `str`)
+- `frozen set`
+- `tuple` is hashable only if all its items are hashable
+
+
+```shell
+>>> tl = (1,2,[30,40])
+>>> hash(tl)
+Traceback (most recent call last): 
+File "<stdin>", line 1, in <module>
+TypeError: unhashable type: 'list'
+>>> tf = (1,2,frozenset([30,40])) 
+>>> hash(tf)
+5149391500123939311
+```
+
+
+
+duck typing means Python doesn't care what something is only cares what it can do.
+
+```shell
+>>> a = dict(one=1, two=2, three=3)
+>>> b = {'one': 1, 'two': 2, 'three': 3}
+# combine multiple iterable objects element-wise
+>>> c = dict(zip(['one', 'two', 'three'], [1,2,3]))
+>>> d = dict([('two',2), ('one', 1), ('three', 3)])
+>>> e = dict({'three': 3, 'one': 1, 'two': 2})
+>>> a == b == c == d == e  
+True
+```
+
