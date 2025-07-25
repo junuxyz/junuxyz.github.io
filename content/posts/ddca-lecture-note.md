@@ -1,11 +1,11 @@
 +++
-title = "From Transistors to Code -- Summary notes for the Digital Design and Computer Architecture Course"
+title = "Lecture Note: Digital Design and Computer Architecture(Onur Mutlu)"
 date = 2025-07-17T13:13:16+09:00
 draft = true
 categories = ['ML']
+tags = ['lecture']
 +++
 
-# From Transistors to Code -- Summary notes for the Digital Design and Computer Architecture Course
 
 One of the most important concepts in Computer Science is **_abstraction_**, which simplifies lower layers, making them easy to use. This allows individuals working with higher layers (in most cases) to avoid concerns about 1. what things are and 2. how things work "under the hood." This approach offers advantages such as convenience, simplicity, and efficiency.
 
@@ -17,7 +17,7 @@ _Note 1: The content is primarily based on the lecture [Digital Design and Compu
 
 _Note 2: This blog post can be considered a form of abstraction of the course, as I have ommited trivial or less important parts and tried to keep it simple, compact, and easy to understand. The main goal of this post is to introduce all the layers, from bottom to top in accessible language._
 
-## 1. Transistors
+### 1. Transistors
 
 Transistors are the fundamental building block of modern computer.
 Transistors are cheap, easy to add on, and very efficient.
@@ -25,11 +25,11 @@ Transistors are cheap, easy to add on, and very efficient.
 In the text book 
 We will not cover beneath this layer, which introduces to a whole new physical world of creating a transistor.
 
-## 2. Logic Gates
+### 2. Logic Gates
 
 Logic gates are constructed by transistors.
 
-## 3. Logic Circuits
+### 3. Logic Circuits
 
 _Logic Circuits_ are combined with logic gates to create logic that are more complicated.
 We use _boolean algebra_(or _boolean equations_) to express logic circuits.
@@ -38,7 +38,7 @@ There are two types of Logic Circuits: Combinational Logic and Sequential Logic.
 
 Let's first dive into Combinational Logic Circuits.
 
-## 3-1. Combinational Logic Circuits
+### 3-1. Combinational Logic Circuits
 
 Some terms to note:
 - _Complement_: variable with a bar over it (eg. $\overline{A}$) which means invert
@@ -47,7 +47,7 @@ Some terms to note:
 - _Minterm_: **product** that includes all input variables
 - _Maxterm_: **sum** (which means `OR` in boolean algebra) that includes all input variables
 
-### POS and SOP
+**POS and SOP**
 
 _Truth table_ is a table that lists all the unique set of inputs and outputs. While truth tables are easy to understand and expresses all the unique states of the Boolean Function, it is a relatively expensive and inefficient representation. So we usually use a standardized form for a boolean expression. There are two standardized forms(also called _canonical representations_) which are _Sum of Products(SOP) form_ and _Product of Sums (POS) form_.
 
@@ -92,7 +92,7 @@ Note that SOP or POS does NOT directly lead to minimal form of boolean function.
 
 SOP is a maxterm form since it's "**Sum** of ..." and POS is a minterm form because it's "**Product** of ...".
 
-### Logic Simplification (or _Minimization_)
+**Logic Simplification** (**or _Minimization_**)
 
 There are multiple ways to express the same logic, and these variants lead to different hardware features.
 
@@ -100,19 +100,14 @@ By using Boolean Algebra, we can simplify the SOP or POS logic (which are the un
 
 We can think of it like this: Truth table -> SOP/POS form -> Boolean Simplification Rules
 
-For example, $Y = (\overline{A}\overline{B}\overline{C}) + (A\overline{B}\overline{C}) + (A\overline{A}C)$ can be simplified as $Y = (\overline{B}\overline{C}) + (A\overline{B})$ 
+For example, $Y = (\overline{A}\overline{B}\overline{C}) + (A\overline{B}\overline{C}) + (A\overline{A}C)$ can be simplified as $Y = (\overline{B}\overline{C}) + (A\overline{B})$.
 You can practice simplifying Boolean Algebra problems on this [website](https://www.boolean-algebra.com/) if you are interested.
 
 
-### Basic Combinational Blocks
+**Basic Combinational Blocks**
 
 Combinational Building Blocks are a higher level abstraction of combinational logic, which hides the unnecessary gate-level details(eg. `AND`, `OR`, `NOT` etc), serving as a building block for more complex systems.
 
 
+### 3-2. Sequential Logic Circuits
 
-
-
-When ready to publish:
-1. Add appropriate category: `categories = ['Thoughts']` or `['ML']`
-2. Change `draft = false` in frontmatter
-3. Git plugin will auto-commit and deploy

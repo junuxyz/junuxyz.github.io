@@ -1,12 +1,12 @@
 +++
 title = "Fluent Python Cheat Sheet for Newbies"
 date = 2025-07-22T18:50:06+09:00
-draft = true
+draft = false
 categories = ['ML']
 tags = ['ml', 'python']
 +++
 
-High-level ML frameworks and libraries (e.g., PyTorch, JAX, TensorFlow, NumPy, Triton) are mostly based on Python.
+High-level ML frameworks and libraries (e.g., PyTorch, JAX, TensorFlow, NumPy, Triton, and may more) are mostly based on Python.
 
 I've known Python for a while, but I've never learned it to a professional degree and wouldn't say I'm good at Python programming. So, I decided to read _Fluent Python_ (which seems to be one of the 'bible' figures of Python) to cover some topics and improve my Python programming skills.
 
@@ -18,14 +18,13 @@ Let's start.
 
 # Part 2. Data Structures
 
-## Sequences
+## Chapter 2. Sequences
 
 A _sequence_ in Python is a general term for an ordered collection of items. This means the items have a specific order, and you can access them by their position (their index).
 
 We can divide sequences into types that can hold items of different type(_Container sequence_) or types that can't (_Flat sequence_). Flat sequences are more compact but are limited to holding primitive values.
 
 Another way to divide is by mutability(_Mutable sequences_ vs _Immutable sequences_).
-
 
 ### Listcomps and Genexps
 
@@ -353,16 +352,36 @@ Removing items from the middle of a `deque` is not as fast. It's optimized for a
 deque internally is implemented as a doubly linked list of fixed-size blocks. Therefore traversing to the middle would be more ineffecient than accesing the ends.
 
 <br>
-## Dicts and Sets
+## Chapter 3. Dicts and Sets
 
 > Hash tables are the engines behind Python's high-performance dicts.
 
 All mapping types in the std library use the basic dict in their implementation, which means all keys(while values are not required) must be _hashable_.
 
+This means, in order to understand how dictionary or set in Python works under the hood, we should understand about hash first.
+
+**About _hash_**
+
+_What is hash and what does it mean to be hashable?_
+
+A _hash_ is a numeric value that Python calculates for a hashable object.
+It's like a unique, short fingerprint for that specific object.
+_hashable_ means it can be hashed.
+
+_Why does hash make searching faster?_
+
+When we feed in a hashable key-value pair, Python will take the (hashable) key and feed it to a _hash function_. This function will quickly compute an integer number called _hash value_.
+
+This hash value is then mathematically mapped to a specific index (or bucket) within an internal array that the dictionary uses to store its items.
+
+This makes **direct memory access available**. This means, hash table design allows Python to use key to **go directly** to the calculated index in its internal value, without needing to scan other parts of the memory.
+
+
+_What are the hashable types?_
 - atomic immutable types (such as `str`)
 - `frozen set`
 - `tuple` is hashable only if all its items are hashable
-
+	- If we look at the example below, unlike `tf`, `tl` will produce an error since there is an unhashable list inside the tuples.
 
 ```shell
 >>> tl = (1,2,[30,40])
@@ -370,14 +389,14 @@ All mapping types in the std library use the basic dict in their implementation,
 Traceback (most recent call last): 
 File "<stdin>", line 1, in <module>
 TypeError: unhashable type: 'list'
+>>>
 >>> tf = (1,2,frozenset([30,40])) 
 >>> hash(tf)
 5149391500123939311
 ```
 
 
-
-duck typing means Python doesn't care what something is only cares what it can do.
+There are multiple ways to create dicts.
 
 ```shell
 >>> a = dict(one=1, two=2, three=3)
@@ -389,4 +408,10 @@ duck typing means Python doesn't care what something is only cares what it can d
 >>> a == b == c == d == e  
 True
 ```
+
+
+**Handling Missing Keys with `setdefault`**
+
+When looking up table and checking if it's key is missing, it's more efficient to use `setdefault` than `d.get(k, default)`.
+
 
