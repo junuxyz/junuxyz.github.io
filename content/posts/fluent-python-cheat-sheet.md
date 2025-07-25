@@ -12,6 +12,8 @@ I've known Python for a while, but I've never learned it to a professional degre
 
 One thing that was hard for me while reading this book was that it was too dense to just understand and skip. I needed to type in the code, but even that wasn't enough. I figured this is a dictionary-like book that is hard to read repeatedly, so I decided to write a much more compact, digestable, and straightforward course note that works as a cheat sheet but also keeps the context as much as possible.
 
+_Note: This is not designed to be a replacement of the book, but for a handy review note or cheat sheet used daily._
+
 Let's start.
 
 ## Part 2. Data Structures
@@ -277,6 +279,73 @@ Sorting is very helpful because once the sequence is sorted, each elements can b
 
 ### Managing Ordered Sequence with `bisect`
 
+It is good to keep the sorted sequence since sorting is **expensive**.
+`bisect.bisect` and `bisect.insort` helps a much efficient way to search and insert than `list` functions.
 
-For example, [Binary Search Algorithm](https://en.wikipedia.org/wiki/Binary_search) is provided via `bisect` module in Python standard library.
+[Binary Search Algorithm](https://en.wikipedia.org/wiki/Binary_search) is provided via `bisect` module in Python standard library.
 
+Bisect is an efficient way to search and insert elements into a sequence **while keeping the order** in an ordered sequence.
+
+`bisect()` returns the location where the element should be inserted in order to maintain the order while `insort()` finds the location and inserts the element.
+
+a quick minimal example would be:
+
+```shell
+>>> import bisect
+>>> l = [1, 2, 3, 4, 5]
+>>> l
+[1, 2, 3, 4, 5]
+# bisect only tells you the location
+>>> bisect.bisect(l, 6)
+5
+>>> bisect.bisect(l, 3)
+3
+>>> bisect.bisect(l, 4)
+4
+# insort actually inserts the array
+# this is an in-place exchange so only one block of
+# memory will be added
+>>> bisect.insort(l, 3)
+>>> l
+[1, 2, 3, 3, 4, 5]
+>>> bisect.bisect(l, 3)
+4
+```
+
+### When a List is Not the Answer
+
+**Arrays**
+
+When creating an array, 
+1. you provide a typecode
+2. a letter to determine the underlying C type used to store each item in the array.
+
+For example
+
+```shell
+>>> from array import array
+>>> from random import random
+>>> floats = array ('d', (random() for i in range(2**10)))
+```
+'b': signed char
+'d': double
+
+whatever you assign to, the array will interpret as the type you assigned to it.
+
+Fast loading and saving are available via `.frombytes` and `.tofile`
+ Binary file can be 60x faster than reading numbers in text file.
+
+
+**Memory Views**
+
+> A memoryview is essentially a generalized NumPy array structure in Python itself (without the math). It allows you to share memory between data-structures (things like PIL images, SQLlite databases, NumPy arrays, etc.) without first copying.
+
+**NumPy and SciPy**
+
+**Deque**
+
+`deque` (not _dequeue_) stands for 'double-ended queue'.
+
+Removing items from the middle of a `deque` is not as fast. It's optimized for appending and popping from the end. Used in LIFO queue.
+
+deque internally is implemented as a doubly linked list of fixed-size blocks. Therefore traversing to the middle would be more ineffecient than accesing the ends.
