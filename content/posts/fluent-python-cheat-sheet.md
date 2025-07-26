@@ -415,3 +415,25 @@ True
 When looking up table and checking if it's key is missing, it's more efficient to use `setdefault` than `d.get(k, default)`.
 
 
+### Mappings with Flexible Key Lookup
+
+This is used to return some made up value when missing key is searched.
+
+We can do this either by 1. `default dict` instead of `dict` or 2. any other mapping type + `__missing__` method.
+
+**defaultdict**
+
+```python
+index = collections.defaultdict(list)
+```
+
+if default factory is not provided, `KeyError` will be raised for missing keys.
+
+
+### Variations of dict
+
+`collections.OrderedDict`
+Maintains keys in insertion order
+FIFO when it's default, but LIFO if `my_odict.popitem(last=True)`
+
+`collections.ChainMap`
