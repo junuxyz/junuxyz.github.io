@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AI on junuxyz</title>
+    <link>https://junuxyz.github.io/tags/ai/</link>
+    <description>Recent content in AI on junuxyz</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Jul 2025 13:12:50 +0900</lastBuildDate>
+    <atom:link href="https://junuxyz.github.io/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>At its core, AI is about finding patterns</title>
+      <link>https://junuxyz.github.io/posts/at-its-core-ai-is-about-finding-patterns/</link>
+      <pubDate>Tue, 29 Jul 2025 13:12:50 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/at-its-core-ai-is-about-finding-patterns/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Written in 2023-10-01. Just wanted to archive my old thoughts.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Today I watched a &lt;a href=&#34;https://youtu.be/CUnVY5IBvBA?si=IdfcA71fR3JtVfnP&#34;&gt;video&lt;/a&gt; and what struck me the most was this insight: &lt;strong&gt;In the end, what AI does is pattern recognition.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;“If I had to explain what AI does in one sentence, I’d say: &lt;strong&gt;AI discovers latent patterns.&lt;/strong&gt;&lt;br&gt;&#xA;In any domain where such latent patterns exist, AI will soon surpass human ability—and eventually replace humans.”&#xA;&lt;em&gt;From the video&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;This might sound like an oversimplification, but I believe one of the main reasons humans have progressed this far is our ability to &lt;strong&gt;recognize and classify patterns.&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
