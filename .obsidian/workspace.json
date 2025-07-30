@@ -111,12 +111,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/why-ai.md",
+                "file": "content/posts/fluent-python-cheat-sheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "why-ai"
+              "title": "fluent-python-cheat-sheet"
             }
           }
         ],
@@ -271,8 +271,8 @@
   },
   "active": "e91e62bef005f022",
   "lastOpenFiles": [
-    "content/posts/at-its-core-ai-is-about-finding-patterns.md",
     "content/posts/why-ai.md",
+    "content/posts/at-its-core-ai-is-about-finding-patterns.md",
     "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
     "content/about.md",
     "content/posts/fluent-python-cheat-sheet.md",

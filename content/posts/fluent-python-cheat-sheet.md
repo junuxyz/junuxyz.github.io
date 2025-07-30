@@ -437,3 +437,8 @@ Maintains keys in insertion order
 FIFO when it's default, but LIFO if `my_odict.popitem(last=True)`
 
 `collections.ChainMap`
+
+
+### dict and set under the hood
+
+because there is no hash table to support searches with the in operator on a list, so a full scan must be made, resulting in times that grow linearly with the size of the haystack.
