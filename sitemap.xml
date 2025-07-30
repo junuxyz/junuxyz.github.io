@@ -2,10 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://junuxyz.github.io/categories/</loc>
+    <lastmod>2025-07-29T22:29:14+09:00</lastmod>
+  </url><url>
     <loc>https://junuxyz.github.io/</loc>
     <lastmod>2025-07-29T22:29:14+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/posts/</loc>
+    <lastmod>2025-07-29T22:29:14+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/categories/thoughts/</loc>
+    <lastmod>2025-07-29T22:29:14+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/posts/what-i-like-what-i-dislike-what-i-want-to-be/</loc>
     <lastmod>2025-07-29T22:29:14+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/tags/ai/</loc>
@@ -14,13 +23,7 @@
     <loc>https://junuxyz.github.io/posts/at-its-core-ai-is-about-finding-patterns/</loc>
     <lastmod>2025-07-29T13:12:50+09:00</lastmod>
   </url><url>
-    <loc>https://junuxyz.github.io/categories/</loc>
-    <lastmod>2025-07-29T13:12:50+09:00</lastmod>
-  </url><url>
     <loc>https://junuxyz.github.io/tags/</loc>
-    <lastmod>2025-07-29T13:12:50+09:00</lastmod>
-  </url><url>
-    <loc>https://junuxyz.github.io/categories/thoughts/</loc>
     <lastmod>2025-07-29T13:12:50+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/posts/fluent-python-cheat-sheet/</loc>
