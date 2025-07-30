@@ -352,7 +352,7 @@ Removing items from the middle of a `deque` is not as fast. It's optimized for a
 deque internally is implemented as a doubly linked list of fixed-size blocks. Therefore traversing to the middle would be more ineffecient than accesing the ends.
 
 <br>
-## Chapter 3. Dicts and Sets
+## Chapter 3. dicts and sets
 
 > Hash tables are the engines behind Python's high-performance dicts.
 
@@ -363,6 +363,9 @@ This means, in order to understand how dictionary or set in Python works under t
 **About _hash_**
 
 _What is hash and what does it mean to be hashable?_
+
+
+> The hash() built-in function works directly with built-in types and falls back to calling __hash__ for user-defined types. If two objects compare equal, their hash values must also be equal, otherwise the hash table algorithm does not work.
 
 A _hash_ is a numeric value that Python calculates for a hashable object.
 It's like a unique, short fingerprint for that specific object.
@@ -395,6 +398,15 @@ TypeError: unhashable type: 'list'
 5149391500123939311
 ```
 
+_What is a hash table?_
+
+Hash table is a sparse array. Cells in hash table are often called _buckets_
+Python tries to keep at least 1/3 of the buckets empty; if the hash table becomes too crowded, it is copied to a new location with room for more buckets (dynamic memory allocation)
+
+When different hash values result in the same bucket, it is called _hash collision_. There are several ways to deal with hash collision. Python uses _open addressing_ which uses a complex internal algorithm to assign the next bucket. The main goal is to reduce hash collision as much as possible.
+
+
+**Variations of dicts**
 
 There are multiple ways to create dicts.
 
@@ -441,4 +453,8 @@ FIFO when it's default, but LIFO if `my_odict.popitem(last=True)`
 
 ### dict and set under the hood
 
+**list vs set/dict**
 because there is no hash table to support searches with the in operator on a list, so a full scan must be made, resulting in times that grow linearly with the size of the haystack.
+
+**Practical Consequences of How dict Works**
+
