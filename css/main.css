@@ -1,11 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
-/* ========================================
-   DESIGN SYSTEM VARIABLES
-   ======================================== */
+/**
+ * ==========================================================================
+ * DESIGN SYSTEM
+ * ==========================================================================
+ * CSS custom properties defining the visual design system
+ * All values are optimized for accessibility and readability
+ */
 
 :root {
-    /* Colors - Light Mode */
+    /* Color Palette - Light Theme */
     --bg: #FAF8F5;
     --text: #2A2622;
     --text-secondary: #6B5D54;
@@ -15,21 +19,21 @@
     --code-bg: #F5F2ED;
     --code-text: #A85643;
     
-    /* Spacing */
+    /* Layout & Spacing */
     --header-padding: 2rem;
     --content-padding: 4rem;
     --content-max-width: 900px;
     
-    /* Typography */
+    /* Typography Stack */
     --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-serif: 'Crimson Text', Georgia, serif;
     --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
     
-    /* Transitions */
+    /* Animation */
     --transition: all 0.3s ease;
 }
 
-/* Dark mode variables */
+/** Dark theme color overrides */
 .dark {
     --bg: #1A1714;
     --text: #F5F0EA;
@@ -41,11 +45,16 @@
     --code-text: #F0866C;
 }
 
-/* ========================================
-   GLOBAL RESET & BASE
-   ======================================== */
+/**
+ * ==========================================================================
+ * BASE STYLES
+ * ==========================================================================
+ * Global reset and fundamental styling
+ */
 
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -53,21 +62,26 @@
 
 html {
     scroll-behavior: smooth;
+    font-size: 100%; /* 16px base */
 }
 
 body {
     font-family: var(--font-sans);
-    font-size: 1.0625rem;
+    font-size: 1.0625rem; /* 17px for better readability */
     line-height: 1.75;
     color: var(--text);
     background: var(--bg);
     transition: var(--transition);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ========================================
-   HEADER LAYOUT
-   Blog title on the left, navigation on the right
-   ======================================== */
+/**
+ * ==========================================================================
+ * HEADER COMPONENTS
+ * ==========================================================================
+ * Sticky header with logo and navigation
+ */
 
 .header {
     background: var(--bg);
@@ -88,7 +102,7 @@ body {
     justify-content: space-between;
 }
 
-/* Logo/Title - positioned to the left */
+/** Logo */
 .logo a {
     font-size: 1.5rem;
     font-weight: 700;
@@ -101,7 +115,7 @@ body {
     color: var(--accent);
 }
 
-/* Right side navigation */
+/** Navigation container */
 .header-right {
     display: flex;
     align-items: center;
@@ -118,29 +132,13 @@ body {
     text-decoration: none;
     font-weight: 500;
     transition: var(--transition);
-    position: relative;
 }
 
 .nav-item:hover {
     color: var(--accent);
 }
 
-.nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--accent);
-    transition: width 0.3s ease;
-}
-
-.nav-item:hover::after {
-    width: 100%;
-}
-
-/* Theme toggle button */
+/** Theme toggle button */
 #theme-toggle {
     background: var(--code-bg);
     border: 2px solid var(--border);
@@ -152,7 +150,6 @@ body {
     justify-content: center;
     cursor: pointer;
     transition: var(--transition);
-    position: relative;
 }
 
 #theme-toggle:hover {
@@ -169,11 +166,8 @@ body {
     color: white;
 }
 
-/* Theme icon visibility */
-.dark .sun-icon {
-    display: none;
-}
-
+/** Theme icon state management */
+.dark .sun-icon,
 .moon-icon {
     display: none;
 }
@@ -182,10 +176,12 @@ body {
     display: block;
 }
 
-/* ========================================
-   MAIN CONTENT LAYOUT
-   Content centered and properly spaced
-   ======================================== */
+/**
+ * ==========================================================================
+ * LAYOUT COMPONENTS
+ * ==========================================================================
+ * Main content containers and spacing
+ */
 
 .main {
     min-height: calc(100vh - 200px);
@@ -198,9 +194,12 @@ body {
     padding: 0 var(--content-padding);
 }
 
-/* ========================================
-   TYPOGRAPHY
-   ======================================== */
+/**
+ * ==========================================================================
+ * TYPOGRAPHY SYSTEM
+ * ==========================================================================
+ * Scalable typography with consistent spacing
+ */
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sans);
@@ -222,6 +221,7 @@ h2 {
     padding-bottom: 0.75rem;
 }
 
+/** Decorative underline for h2 elements */
 h2::after {
     content: '';
     position: absolute;
@@ -244,10 +244,7 @@ p {
     color: var(--text);
 }
 
-/* ========================================
-   LINKS
-   ======================================== */
-
+/** Default link styling */
 a {
     color: var(--accent);
     text-decoration: none;
@@ -259,10 +256,14 @@ a:hover {
     color: var(--accent-light);
 }
 
-/* ========================================
-   HOME PAGE STYLING
-   ======================================== */
+/**
+ * ==========================================================================
+ * PAGE COMPONENTS
+ * ==========================================================================
+ * Home page and content page specific styling
+ */
 
+/** Homepage intro section */
 .home-intro {
     text-align: center;
     margin-bottom: 4rem;
@@ -279,43 +280,27 @@ a:hover {
     font-style: italic;
 }
 
-/* ========================================
-   POSTS LIST
-   ======================================== */
+/**
+ * ==========================================================================
+ * POST COMPONENTS
+ * ==========================================================================
+ * Blog post listing and individual post styling
+ */
 
+/** Post listing container */
 .posts {
     display: flex;
     flex-direction: column;
     gap: 3rem;
 }
 
+/** Individual post entry */
 .post-entry {
-    position: relative;
     padding-left: 2rem;
     transition: var(--transition);
 }
 
-.post-entry::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.5rem;
-    bottom: 0;
-    width: 3px;
-    background: var(--accent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 2px;
-}
-
-.post-entry:hover::before {
-    opacity: 1;
-}
-
-.post-entry:hover {
-    transform: translateX(4px);
-}
-
+/** Post metadata and content */
 .post-title {
     font-size: 2.25rem;
     margin-bottom: 0.5rem;
@@ -341,6 +326,7 @@ a:hover {
     align-items: center;
 }
 
+/** Tag styling */
 .post-tags {
     display: flex;
     gap: 0.5rem;
@@ -374,10 +360,35 @@ a:hover {
     font-weight: 600;
 }
 
-/* ========================================
-   SINGLE POST STYLING
-   ======================================== */
+/** Minimal post links layout */
+.posts-minimal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
 
+.post-link {
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.post-link a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.4;
+    display: block;
+}
+
+.post-link a:hover {
+    color: var(--accent);
+}
+
+/** Single post layout and content styling */
 .post {
     max-width: none;
 }
@@ -412,9 +423,12 @@ a:hover {
     margin-bottom: 0.5rem;
 }
 
-/* ========================================
-   POST NAVIGATION
-   ======================================== */
+/**
+ * ==========================================================================
+ * NAVIGATION COMPONENTS
+ * ==========================================================================
+ * Post-to-post navigation elements
+ */
 
 .post-nav {
     margin-top: 4rem;
@@ -444,9 +458,7 @@ a:hover {
 }
 
 .nav-link:hover {
-    background: var(--accent);
-    color: white;
-    transform: translateY(-2px);
+    color: var(--accent);
 }
 
 .nav-label {
@@ -458,7 +470,7 @@ a:hover {
 }
 
 .nav-link:hover .nav-label {
-    color: white;
+    color: var(--accent);
 }
 
 .nav-title {
@@ -466,11 +478,14 @@ a:hover {
     line-height: 1.3;
 }
 
-/* ========================================
-   CODE BLOCKS & SYNTAX HIGHLIGHTING
-   ======================================== */
+/**
+ * ==========================================================================
+ * CODE HIGHLIGHTING
+ * ==========================================================================
+ * Syntax highlighting and code block styling
+ */
 
-/* Inline code styling */
+/** Inline code elements */
 :not(pre) > code {
     background: var(--code-bg);
     color: var(--code-text);
@@ -481,13 +496,12 @@ a:hover {
     white-space: nowrap;
 }
 
-/* Code block container generated by Hugo */
+/** Code block containers */
 .highlight {
     margin: 2rem 0;
     position: relative;
 }
 
-/* Let syntax.css handle the detailed styling of .chroma */
 .chroma {
     border-radius: 6px;
     padding: 1em;
@@ -497,7 +511,7 @@ a:hover {
     font-family: var(--font-mono);
 }
 
-/* Reset <code> styles inside a Chroma block */
+/** Reset code styles within syntax highlighted blocks */
 .chroma code {
     font-family: inherit;
     font-size: inherit;
@@ -506,30 +520,29 @@ a:hover {
     background: transparent;
     padding: 0;
     border-radius: 0;
-    white-space: pre; /* Ensure proper wrapping inside pre */
+    white-space: pre;
 }
 
 
-/* ========================================
-   BLOCKQUOTES
-   ======================================== */
-
+/** Blockquote styling */
 blockquote {
     border-left: 3px solid var(--accent);
     padding-left: 1.5rem;
     margin: 2rem 0;
     font-style: italic;
     color: var(--text-secondary);
-    position: relative;
 }
 
 blockquote p {
     margin-bottom: 0;
 }
 
-/* ========================================
-   FOOTER
-   ======================================== */
+/**
+ * ==========================================================================
+ * FOOTER COMPONENTS
+ * ==========================================================================
+ * Site footer with social links
+ */
 
 .footer {
     background: var(--bg);
@@ -560,9 +573,12 @@ blockquote p {
     color: var(--accent);
 }
 
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
+/**
+ * ==========================================================================
+ * RESPONSIVE DESIGN
+ * ==========================================================================
+ * Mobile-first responsive breakpoints
+ */
 
 @media (max-width: 768px) {
     :root {
@@ -574,10 +590,7 @@ blockquote p {
         height: 70px;
     }
     
-    .header-right {
-        gap: 1rem;
-    }
-    
+    .header-right,
     .nav {
         gap: 1rem;
     }
@@ -601,6 +614,14 @@ blockquote p {
         gap: 0.5rem;
     }
     
+    .posts-minimal {
+        gap: 0.25rem;
+    }
+    
+    .post-link a {
+        font-size: 1.125rem;
+    }
+    
     h1 { font-size: 2rem; }
     h2 { font-size: 1.6rem; }
     h3 { font-size: 1.3rem; }
@@ -621,9 +642,12 @@ blockquote p {
     }
 }
 
-/* ========================================
-   TAXONOMY PAGES (TAGS, CATEGORIES)
-   ======================================== */
+/**
+ * ==========================================================================
+ * TAXONOMY COMPONENTS
+ * ==========================================================================
+ * Tag and category listing pages
+ */
 
 .terms-list {
     display: grid;
@@ -638,11 +662,6 @@ blockquote p {
     border-radius: 8px;
     border-left: 3px solid var(--accent);
     transition: var(--transition);
-}
-
-.term-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .term-name {
@@ -664,16 +683,12 @@ blockquote p {
     margin: 0;
 }
 
-.no-terms {
-    text-align: center;
-    color: var(--text-secondary);
-    font-style: italic;
-    padding: 4rem 0;
-}
-
-/* ========================================
-   UTILITY CLASSES
-   ======================================== */
+/**
+ * ==========================================================================
+ * UTILITY CLASSES
+ * ==========================================================================
+ * Reusable utility components
+ */
 
 .page-header {
     margin-bottom: 3rem;
@@ -685,7 +700,8 @@ blockquote p {
     margin-top: 1rem;
 }
 
-.no-posts {
+.no-posts,
+.no-terms {
     text-align: center;
     color: var(--text-secondary);
     font-style: italic;
@@ -696,30 +712,32 @@ blockquote p {
     text-align: center;
 }
 
-/* ========================================
-   SMOOTH TRANSITIONS
-   ======================================== */
-
+/** Global smooth transitions for theme switching */
 * {
     transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 } 
 
-/* Center and size all images in blog content */
+/**
+ * ==========================================================================
+ * MEDIA COMPONENTS
+ * ==========================================================================
+ * Image styling for blog content
+ */
+
 .markdown-body img,
 .content img,
 .post-content img,
 .post img,
 article img,
 .container img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 600px;
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: var(--transition);
+    display: block;
+    margin: 0 auto;
+    width: 600px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
 }
 
 .dark .markdown-body img,
@@ -728,182 +746,167 @@ article img,
 .dark .post img,
 .dark article img,
 .dark .container img {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* ========================================
-   HUGO CHROMA GITHUB SYNTAX HIGHLIGHTING
-   ======================================== */
+/**
+ * ==========================================================================
+ * SYNTAX HIGHLIGHTING - GITHUB THEME
+ * ==========================================================================
+ * Chroma syntax highlighting with GitHub light/dark themes
+ * Optimized for readability and accessibility
+ */
 
-/* GitHub Light Theme (Default) */
-/* Background */ .bg { background-color: #ffffff; }
-/* PreWrapper */ .chroma { background-color: #ffffff; }
-/* Other */ .chroma .x {  }
-/* Error */ .chroma .err { color: #a61717; background-color: #e3d2d2 }
-/* CodeLine */ .chroma .cl {  }
-/* LineLink */ .chroma .lnlinks { outline: none; text-decoration: none; color: inherit }
-/* LineTableTD */ .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
-/* LineTable */ .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
-/* LineHighlight */ .chroma .hl { background-color: #e5e5e5 }
-/* LineNumbersTable */ .chroma .lnt { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
-/* LineNumbers */ .chroma .ln { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #7f7f7f }
-/* Line */ .chroma .line { display: flex; }
-/* Keyword */ .chroma .k { color: #000000; font-weight: bold }
-/* KeywordConstant */ .chroma .kc { color: #000000; font-weight: bold }
-/* KeywordDeclaration */ .chroma .kd { color: #000000; font-weight: bold }
-/* KeywordNamespace */ .chroma .kn { color: #000000; font-weight: bold }
-/* KeywordPseudo */ .chroma .kp { color: #000000; font-weight: bold }
-/* KeywordReserved */ .chroma .kr { color: #000000; font-weight: bold }
-/* KeywordType */ .chroma .kt { color: #445588; font-weight: bold }
-/* Name */ .chroma .n {  }
-/* NameAttribute */ .chroma .na { color: #008080 }
-/* NameBuiltin */ .chroma .nb { color: #0086b3 }
-/* NameBuiltinPseudo */ .chroma .bp { color: #999999 }
-/* NameClass */ .chroma .nc { color: #445588; font-weight: bold }
-/* NameConstant */ .chroma .no { color: #008080 }
-/* NameDecorator */ .chroma .nd { color: #3c5d5d; font-weight: bold }
-/* NameEntity */ .chroma .ni { color: #800080 }
-/* NameException */ .chroma .ne { color: #990000; font-weight: bold }
-/* NameFunction */ .chroma .nf { color: #990000; font-weight: bold }
-/* NameFunctionMagic */ .chroma .fm {  }
-/* NameLabel */ .chroma .nl { color: #990000; font-weight: bold }
-/* NameNamespace */ .chroma .nn { color: #555555 }
-/* NameOther */ .chroma .nx {  }
-/* NameProperty */ .chroma .py {  }
-/* NameTag */ .chroma .nt { color: #000080 }
-/* NameVariable */ .chroma .nv { color: #008080 }
-/* NameVariableClass */ .chroma .vc { color: #008080 }
-/* NameVariableGlobal */ .chroma .vg { color: #008080 }
-/* NameVariableInstance */ .chroma .vi { color: #008080 }
-/* NameVariableMagic */ .chroma .vm {  }
-/* Literal */ .chroma .l {  }
-/* LiteralDate */ .chroma .ld {  }
-/* LiteralString */ .chroma .s { color: #dd1144 }
-/* LiteralStringAffix */ .chroma .sa { color: #dd1144 }
-/* LiteralStringBacktick */ .chroma .sb { color: #dd1144 }
-/* LiteralStringChar */ .chroma .sc { color: #dd1144 }
-/* LiteralStringDelimiter */ .chroma .dl { color: #dd1144 }
-/* LiteralStringDoc */ .chroma .sd { color: #dd1144 }
-/* LiteralStringDouble */ .chroma .s2 { color: #dd1144 }
-/* LiteralStringEscape */ .chroma .se { color: #dd1144 }
-/* LiteralStringHeredoc */ .chroma .sh { color: #dd1144 }
-/* LiteralStringInterpol */ .chroma .si { color: #dd1144 }
-/* LiteralStringOther */ .chroma .sx { color: #dd1144 }
-/* LiteralStringRegex */ .chroma .sr { color: #009926 }
-/* LiteralStringSingle */ .chroma .s1 { color: #dd1144 }
-/* LiteralStringSymbol */ .chroma .ss { color: #990073 }
-/* LiteralNumber */ .chroma .m { color: #009999 }
-/* LiteralNumberBin */ .chroma .mb { color: #009999 }
-/* LiteralNumberFloat */ .chroma .mf { color: #009999 }
-/* LiteralNumberHex */ .chroma .mh { color: #009999 }
-/* LiteralNumberInteger */ .chroma .mi { color: #009999 }
-/* LiteralNumberIntegerLong */ .chroma .il { color: #009999 }
-/* LiteralNumberOct */ .chroma .mo { color: #009999 }
-/* Operator */ .chroma .o { color: #000000; font-weight: bold }
-/* OperatorWord */ .chroma .ow { color: #000000; font-weight: bold }
-/* Punctuation */ .chroma .p {  }
-/* Comment */ .chroma .c { color: #999988; font-style: italic }
-/* CommentHashbang */ .chroma .ch { color: #999988; font-style: italic }
-/* CommentMultiline */ .chroma .cm { color: #999988; font-style: italic }
-/* CommentSingle */ .chroma .c1 { color: #999988; font-style: italic }
-/* CommentSpecial */ .chroma .cs { color: #999999; font-weight: bold; font-style: italic }
-/* CommentPreproc */ .chroma .cp { color: #999999; font-weight: bold; font-style: italic }
-/* CommentPreprocFile */ .chroma .cpf { color: #999999; font-weight: bold; font-style: italic }
-/* Generic */ .chroma .g {  }
-/* GenericDeleted */ .chroma .gd { color: #000000; background-color: #ffdddd }
-/* GenericEmph */ .chroma .ge { color: #000000; font-style: italic }
-/* GenericError */ .chroma .gr { color: #aa0000 }
-/* GenericHeading */ .chroma .gh { color: #999999 }
-/* GenericInserted */ .chroma .gi { color: #000000; background-color: #ddffdd }
-/* GenericOutput */ .chroma .go { color: #888888 }
-/* GenericPrompt */ .chroma .gp { color: #555555 }
-/* GenericStrong */ .chroma .gs { font-weight: bold }
-/* GenericSubheading */ .chroma .gu { color: #aaaaaa }
-/* GenericTraceback */ .chroma .gt { color: #aa0000 }
-/* GenericUnderline */ .chroma .gl { text-decoration: underline }
-/* TextWhitespace */ .chroma .w { color: #bbbbbb }
+/** Light theme syntax highlighting */
+.bg { background-color: #ffffff; }
+.chroma { background-color: #ffffff; }
+.chroma .err { color: #a61717; background-color: #e3d2d2 }
+.chroma .lnlinks { outline: none; text-decoration: none; color: inherit }
+.chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
+.chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
+.chroma .hl { background-color: #e5e5e5 }
+.chroma .lnt,
+.chroma .ln { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em; color: #7f7f7f }
+.chroma .line { display: flex; }
 
-/* GitHub Dark Theme (for .dark mode) */
+/** Keywords and language constructs */
+.chroma .k,
+.chroma .kc,
+.chroma .kd,
+.chroma .kn,
+.chroma .kp,
+.chroma .kr { color: #000000; font-weight: bold }
+.chroma .kt { color: #445588; font-weight: bold }
+
+/** Names and identifiers */
+.chroma .na { color: #008080 }
+.chroma .nb { color: #0086b3 }
+.chroma .bp { color: #999999 }
+.chroma .nc { color: #445588; font-weight: bold }
+.chroma .no { color: #008080 }
+.chroma .nd { color: #3c5d5d; font-weight: bold }
+.chroma .ni { color: #800080 }
+.chroma .ne,
+.chroma .nf,
+.chroma .nl { color: #990000; font-weight: bold }
+.chroma .nn { color: #555555 }
+.chroma .nt { color: #000080 }
+.chroma .nv,
+.chroma .vc,
+.chroma .vg,
+.chroma .vi { color: #008080 }
+
+/** Strings and literals */
+.chroma .s,
+.chroma .sa,
+.chroma .sb,
+.chroma .sc,
+.chroma .dl,
+.chroma .sd,
+.chroma .s2,
+.chroma .se,
+.chroma .sh,
+.chroma .si,
+.chroma .sx,
+.chroma .s1 { color: #dd1144 }
+.chroma .sr { color: #009926 }
+.chroma .ss { color: #990073 }
+.chroma .m,
+.chroma .mb,
+.chroma .mf,
+.chroma .mh,
+.chroma .mi,
+.chroma .il,
+.chroma .mo { color: #009999 }
+
+/** Operators and comments */
+.chroma .o,
+.chroma .ow { color: #000000; font-weight: bold }
+.chroma .c,
+.chroma .ch,
+.chroma .cm,
+.chroma .c1 { color: #999988; font-style: italic }
+.chroma .cs,
+.chroma .cp,
+.chroma .cpf { color: #999999; font-weight: bold; font-style: italic }
+
+/** Generic elements */
+.chroma .gd { color: #000000; background-color: #ffdddd }
+.chroma .ge { color: #000000; font-style: italic }
+.chroma .gr { color: #aa0000 }
+.chroma .gh { color: #999999 }
+.chroma .gi { color: #000000; background-color: #ddffdd }
+.chroma .go { color: #888888 }
+.chroma .gp { color: #555555 }
+.chroma .gs { font-weight: bold }
+.chroma .gu { color: #aaaaaa }
+.chroma .gt { color: #aa0000 }
+.chroma .gl { text-decoration: underline }
+.chroma .w { color: #bbbbbb }
+
+/** Dark theme overrides */
 .dark .bg { color: #e6edf3; background-color: #0d1117; }
 .dark .chroma { color: #e6edf3; background-color: #0d1117; }
-.dark .chroma .x {  }
 .dark .chroma .err { color: #f85149 }
-.dark .chroma .cl {  }
-.dark .chroma .lnlinks { outline: none; text-decoration: none; color: inherit }
-.dark .chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
-.dark .chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
 .dark .chroma .hl { color: #6e7681 }
-.dark .chroma .lnt { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #737679 }
-.dark .chroma .ln { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em;color: #6e7681 }
-.dark .chroma .line { display: flex; }
-.dark .chroma .k { color: #ff7b72 }
-.dark .chroma .kc { color: #79c0ff }
-.dark .chroma .kd { color: #ff7b72 }
-.dark .chroma .kn { color: #ff7b72 }
-.dark .chroma .kp { color: #79c0ff }
-.dark .chroma .kr { color: #ff7b72 }
-.dark .chroma .kt { color: #ff7b72 }
-.dark .chroma .n {  }
-.dark .chroma .na {  }
-.dark .chroma .nb {  }
-.dark .chroma .bp {  }
-.dark .chroma .nc { color: #f0883e; font-weight: bold }
-.dark .chroma .no { color: #79c0ff; font-weight: bold }
-.dark .chroma .nd { color: #d2a8ff; font-weight: bold }
-.dark .chroma .ni { color: #ffa657 }
-.dark .chroma .ne { color: #f0883e; font-weight: bold }
-.dark .chroma .nf { color: #d2a8ff; font-weight: bold }
-.dark .chroma .fm {  }
-.dark .chroma .nl { color: #79c0ff; font-weight: bold }
+.dark .chroma .lnt { color: #737679 }
+.dark .chroma .ln { color: #6e7681 }
+.dark .chroma .k,
+.dark .chroma .kd,
+.dark .chroma .kn,
+.dark .chroma .kr,
+.dark .chroma .kt,
 .dark .chroma .nn { color: #ff7b72 }
-.dark .chroma .nx {  }
-.dark .chroma .py { color: #79c0ff }
-.dark .chroma .nt { color: #7ee787 }
-.dark .chroma .nv { color: #79c0ff }
-.dark .chroma .vc {  }
-.dark .chroma .vg {  }
-.dark .chroma .vi {  }
-.dark .chroma .vm {  }
-.dark .chroma .l { color: #a5d6ff }
-.dark .chroma .ld { color: #79c0ff }
-.dark .chroma .s { color: #a5d6ff }
-.dark .chroma .sa { color: #79c0ff }
-.dark .chroma .sb { color: #a5d6ff }
-.dark .chroma .sc { color: #a5d6ff }
-.dark .chroma .dl { color: #79c0ff }
-.dark .chroma .sd { color: #a5d6ff }
-.dark .chroma .s2 { color: #a5d6ff }
-.dark .chroma .se { color: #79c0ff }
-.dark .chroma .sh { color: #79c0ff }
-.dark .chroma .si { color: #a5d6ff }
-.dark .chroma .sx { color: #a5d6ff }
+.dark .chroma .kc,
+.dark .chroma .kp,
+.dark .chroma .no,
+.dark .chroma .nl,
+.dark .chroma .py,
+.dark .chroma .nv,
+.dark .chroma .ld,
+.dark .chroma .sa,
+.dark .chroma .dl,
+.dark .chroma .se,
+.dark .chroma .sh,
 .dark .chroma .sr { color: #79c0ff }
-.dark .chroma .s1 { color: #a5d6ff }
-.dark .chroma .ss { color: #a5d6ff }
-.dark .chroma .m { color: #a5d6ff }
-.dark .chroma .mb { color: #a5d6ff }
-.dark .chroma .mf { color: #a5d6ff }
-.dark .chroma .mh { color: #a5d6ff }
-.dark .chroma .mi { color: #a5d6ff }
-.dark .chroma .il { color: #a5d6ff }
+.dark .chroma .nc,
+.dark .chroma .ne,
+.dark .chroma .ni { color: #f0883e; font-weight: bold }
+.dark .chroma .nd,
+.dark .chroma .nf { color: #d2a8ff; font-weight: bold }
+.dark .chroma .nt { color: #7ee787 }
+.dark .chroma .l,
+.dark .chroma .s,
+.dark .chroma .sb,
+.dark .chroma .sc,
+.dark .chroma .sd,
+.dark .chroma .s2,
+.dark .chroma .si,
+.dark .chroma .sx,
+.dark .chroma .s1,
+.dark .chroma .ss,
+.dark .chroma .m,
+.dark .chroma .mb,
+.dark .chroma .mf,
+.dark .chroma .mh,
+.dark .chroma .mi,
+.dark .chroma .il,
 .dark .chroma .mo { color: #a5d6ff }
-.dark .chroma .o { color: #ff7b72; font-weight: bold }
+.dark .chroma .o,
 .dark .chroma .ow { color: #ff7b72; font-weight: bold }
-.dark .chroma .p {  }
-.dark .chroma .c { color: #8b949e; font-style: italic }
-.dark .chroma .ch { color: #8b949e; font-style: italic }
-.dark .chroma .cm { color: #8b949e; font-style: italic }
-.dark .chroma .c1 { color: #8b949e; font-style: italic }
-.dark .chroma .cs { color: #8b949e; font-weight: bold; font-style: italic }
-.dark .chroma .cp { color: #8b949e; font-weight: bold; font-style: italic }
-.dark .chroma .cpf { color: #8b949e; font-weight: bold; font-style: italic }
-.dark .chroma .g {  }
+.dark .chroma .c,
+.dark .chroma .ch,
+.dark .chroma .cm,
+.dark .chroma .c1,
+.dark .chroma .cs,
+.dark .chroma .cp,
+.dark .chroma .cpf { color: #8b949e; font-style: italic }
 .dark .chroma .gd { color: #ffa198; background-color: #490202 }
 .dark .chroma .ge { font-style: italic }
 .dark .chroma .gr { color: #ffa198 }
 .dark .chroma .gh { color: #79c0ff; font-weight: bold }
 .dark .chroma .gi { color: #56d364; background-color: #0f5323 }
-.dark .chroma .go { color: #8b949e }
+.dark .chroma .go,
 .dark .chroma .gp { color: #8b949e }
 .dark .chroma .gs { font-weight: bold }
 .dark .chroma .gu { color: #79c0ff }
