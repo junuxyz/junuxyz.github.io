@@ -6,8 +6,15 @@
     <description>Recent content in Thoughts on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Jul 2025 22:29:14 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 01 Aug 2025 16:00:15 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/categories/thoughts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The I/O and Pipelining Era of ML</title>
+      <link>https://junuxyz.github.io/posts/the-io-and-pipelining-era-of-ml/</link>
+      <pubDate>Fri, 01 Aug 2025 16:00:15 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/the-io-and-pipelining-era-of-ml/</guid>
+      <description>&lt;p&gt;Back in the days, constructing and finding novel neural networks(like CNN, RNN, GAN and many more) and scaling it to become &amp;ldquo;deeper&amp;rdquo; was the trend in Deep Learning research.&lt;/p&gt;&#xA;&lt;p&gt;After Transformers came out and as researchers noticed the power of Transformers, I feel the research trend shifted a lot into industrial and engineering problems. Yes, there were and are still some researches focusing on new architectures (like &lt;a href=&#34;https://arxiv.org/abs/2312.00752&#34;&gt;Mamba&lt;/a&gt;, &lt;a href=&#34;https://arxiv.org/abs/2501.00663&#34;&gt;Titans&lt;/a&gt; etc) but in general I feel the trend has changed.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>What I Like and What I Don&#39;t</title>
       <link>https://junuxyz.github.io/posts/what-i-like-what-i-dislike-what-i-want-to-be/</link>
