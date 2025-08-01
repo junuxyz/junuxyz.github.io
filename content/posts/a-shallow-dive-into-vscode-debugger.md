@@ -92,6 +92,9 @@ I will add some more (something beyond tutorial resources) information and pract
 
 ## Resources
 https://code.visualstudio.com/docs/debugtest/debugging
+
 https://www.youtube.com/watch?v=3HiLLByBWkg
+
 https://code.visualstudio.com/docs/cpp/cpp-debug
+
 https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/
