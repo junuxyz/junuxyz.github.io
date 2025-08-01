@@ -405,6 +405,9 @@ Python tries to keep at least 1/3 of the buckets empty; if the hash table become
 
 When different hash values result in the same bucket, it is called _hash collision_. There are several ways to deal with hash collision. Python uses _open addressing_ which uses a complex internal algorithm to assign the next bucket. The main goal is to reduce hash collision as much as possible.
 
+**set vs frozenset**
+The difference is **mutability**.
+frozenset is an immutable version of set. You can’t add, remove, or change its elements.
 
 **Variations of dicts**
 
@@ -456,5 +459,31 @@ FIFO when it's default, but LIFO if `my_odict.popitem(last=True)`
 **list vs set/dict**
 because there is no hash table to support searches with the in operator on a list, so a full scan must be made, resulting in times that grow linearly with the size of the haystack.
 
-**Practical Consequences of How dict Works**
 
+**dicts have significant memory overhead**
+
+When you use dictionaries, Python has to do extra work behind the scenes to make them fast for looking things up. This extra work involves creating a "hash table," which is like a special, spacious grid for organizing data.
+
+hash tables must be sparse to work, which means it’s NOT space efficient
+
+If you have many dictionaries, you are using memory-intensive hash tables. Tuples might be a better choice to avoid significant memory overhead.
+
+**Key Search is very fast**
+
+dict is trading space for time. They provide fast access regardless of the size of the dict.
+
+When **hash collisions** occur, whether `a` bumps `b` to a different memory location (A-B case) or `b` bumps `a` (B-A case), the key point is while Python has enough **memory space** to handle these adjustments, they are considered the same.
+
+Python's `==` (equality) check for dictionaries focuses solely on whether the **same key-value pairs** exist in both dictionaries. It doesn't care about the internal **order of keys** or the **specific memory addresses** where they're stored. As long as `key_A` maps to `value_A` and `key_B` maps to `value_B` in both dictionaries, they are considered equal, regardless of the behind-the-scenes memory acrobatics.
+
+
+**Adding items to a dict may change the order of existing keys**
+dynamic memory allocation may happen as more items are added to the hash table (in order to keep it sparse). During this process new but different hash collisions may happen which changes the order of existing keys.
+
+This is why modifying the contents of a `dict` **while** iterating is generally a bad idea.
+
+**How Sets work**
+
+set is similar to dict but the only difference is that each bucket holds only a reference to the element, while dict holds both key and value.
+
+set is a dictionary but does not have value attached. Only keys.

@@ -3,7 +3,6 @@ title = "What I Like and What I Don't"
 date = 2025-07-29T22:29:14+09:00
 draft = false
 categories = ['Thoughts']
-tags = ['']
 +++
 
 ### What I Like
@@ -32,7 +31,7 @@ tags = ['']
 
 2. **Exciting life**
 	
-	Why?
+	**Why?**
 	- I want to have reason to do something. A reason to wake up everyday. Not only because of responsibility but just the excitement of what I'm doing or what situation I am in. I often forget but if we just try to change our perspective, life can be an exciting adventure. 
 
 <br>
