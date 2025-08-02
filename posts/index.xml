@@ -6,8 +6,15 @@
     <description>Recent content in Posts on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Aug 2025 16:00:15 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 01 Aug 2025 16:59:45 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ideas I&#39;m interested in AI</title>
+      <link>https://junuxyz.github.io/posts/ideas-im-interested-in-ai/</link>
+      <pubDate>Fri, 01 Aug 2025 16:59:45 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/ideas-im-interested-in-ai/</guid>
+      <description>&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;high (abstract) level pattern recognition&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;writing style, nuance, insight&lt;/li&gt;&#xA;&lt;li&gt;understanding the underlying message despite of words and content, just the underlying message etc.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;how to deploy static models in dynamic world&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;continuous learning&lt;/li&gt;&#xA;&lt;li&gt;are our mental models also static? Maybe we think statically, too (based on our past knowledge and experience)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;how to make models more reliable&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;autonomous cars are not deployed yet because of 0.0001% edge cases. LLMs are less deployed yet because they can make mistakes to people.&lt;/li&gt;&#xA;&lt;li&gt;How can we deal with edge cases? Is it fundamentally&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Reinforcement Learning to its extent&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>The I/O and Pipelining Era of ML</title>
       <link>https://junuxyz.github.io/posts/the-io-and-pipelining-era-of-ml/</link>
