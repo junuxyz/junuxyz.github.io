@@ -167,12 +167,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/the-io-and-pipelining-era-of-ml.md",
+                "file": "content/posts/ideas-im-interested-in-ai.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "the-io-and-pipelining-era-of-ml"
+              "title": "ideas-im-interested-in-ai"
             }
           }
         ],
@@ -327,11 +327,11 @@
   },
   "active": "48d8f91bc9b62bf8",
   "lastOpenFiles": [
+    "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
+    "content/posts/the-io-and-pipelining-era-of-ml.md",
     "content/posts/what-to-pursue.md",
     "content/posts/ideas-im-interested-in-ai.md",
-    "content/posts/the-io-and-pipelining-era-of-ml.md",
     "content/posts/a-shallow-dive-into-vscode-debugger.md",
-    "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
     "content/posts/fluent-python-cheat-sheet.md",
     "content/posts/docker-80-20.md",
     "content/posts/why-ai.md",

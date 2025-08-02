@@ -9,23 +9,30 @@ categories = ['Thoughts']
 	- writing style, nuance, insight
 	- understanding the underlying message despite of words and content, just the underlying message etc.
 
-2. **how to deploy static models in dynamic world**
+2. **overcoming data bottleneck**
+	- data is the fossil fuel of AI but we have only one Internet - Ilya Sutskever
+	- how can we create more data?
+		- synthetic data
+		- RLHF and DPO
+		- metrifying subjective information
+
+3. **how to deploy static models in dynamic world**
 	- continuous learning
 	- are our mental models also static? Maybe we think statically, too (based on our past knowledge and experience)
 
-3. **how to make models more reliable**
+4. **how to make models more reliable**
 	- autonomous cars are not deployed yet because of 0.0001% edge cases. LLMs are less deployed yet because they can make mistakes to people.
 	- How can we deal with edge cases? Is it fundamentally 
 
-4. **Reinforcement Learning to its extent**
+5. **Reinforcement Learning to its extent**
 	- something like [AlphaProof](https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/)
 
-5. **Self Supervised Reinforcement Learning**
+6. **Self Supervised Reinforcement Learning**
 
-6. **Simulation Learning implied to Robotics**
+7. **Simulation Learning implied to Robotics**
 	- Convert human action (using something like SAM) into the robot's custom software and train it. Then use the software for robot to act as the trained dataset.
 	- Something like Real Steel
 
-7. **Education in AI**
+8. **Education in AI**
 	- What should be 'taught' and 'learned' in the "ChatGPT" era
  
