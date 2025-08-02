@@ -1,7 +1,7 @@
 +++
 title = "Ideas I'm interested in AI"
 date = 2025-08-01T16:59:45+09:00
-draft = true
+draft = false
 categories = ['Thoughts']
 +++
 
@@ -18,6 +18,7 @@ categories = ['Thoughts']
 	- How can we deal with edge cases? Is it fundamentally 
 
 4. **Reinforcement Learning to its extent**
+	- something like [AlphaProof](https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/)
 
 5. **Self Supervised Reinforcement Learning**
 
@@ -26,5 +27,5 @@ categories = ['Thoughts']
 	- Something like Real Steel
 
 7. **Education in AI**
-	- What should be 'taught' in the ChatGPT era
+	- What should be 'taught' and 'learned' in the "ChatGPT" era
  
