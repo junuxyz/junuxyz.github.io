@@ -3,6 +3,7 @@ title = "The I/O and Pipelining Era of ML"
 date = 2025-08-01T16:00:15+09:00
 draft = false
 categories = ['Thoughts']
+tags = ['short']
 +++
 
 Back in the days, constructing and finding novel neural networks(like CNN, RNN, GAN and many more) and scaling it to become "deeper" was the trend in Deep Learning research. 
