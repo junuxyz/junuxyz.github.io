@@ -11,14 +11,10 @@
             "id": "3e001af5f2410f6d",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/posts/from-transistors-to-code.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "from-transistors-to-code"
+              "title": "New tab"
             }
           },
           {
@@ -189,8 +185,7 @@
               "title": "mental-model-of-engineering"
             }
           }
-        ],
-        "currentTab": 12
+        ]
       }
     ],
     "direction": "vertical"
@@ -339,10 +334,10 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "244f2dc8139eaf1d",
+  "active": "3e001af5f2410f6d",
   "lastOpenFiles": [
-    "content/posts/ideas-im-interested-in-ai.md",
     "content/posts/mental-model-of-engineering.md",
+    "content/posts/ideas-im-interested-in-ai.md",
     "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
     "content/posts/the-io-and-pipelining-era-of-ml.md",
     "content/posts/what-to-pursue.md",
