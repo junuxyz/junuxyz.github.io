@@ -12,6 +12,7 @@ categories = ['Thoughts']
 2. **overcoming data bottleneck**
 	- data is the fossil fuel of AI but we have only one Internet - Ilya Sutskever
 	- how can we create more data?
+		- new sort of data
 		- synthetic data
 		- RLHF and DPO
 		- metrifying subjective information
