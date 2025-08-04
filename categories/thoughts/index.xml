@@ -6,8 +6,15 @@
     <description>Recent content in Thoughts on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Aug 2025 16:59:45 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 04 Aug 2025 14:43:35 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/categories/thoughts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mental Model of Engineering</title>
+      <link>https://junuxyz.github.io/posts/mental-model-of-engineering/</link>
+      <pubDate>Mon, 04 Aug 2025 14:43:35 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/mental-model-of-engineering/</guid>
+      <description>&lt;h3 id=&#34;the-process&#34;&gt;The Process&lt;/h3&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Define and Identify the problem.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Can you define and express the problem in numbers? (e.g. computing speed is so slow it takes more than 10 minutes to do x, this method has 20% more memory usage than the other method etc.)&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://youtu.be/YFUVMPOIeAo?si=ba_aXfU1Ge3GpRWR&#34;&gt;Think if that problem is even worth solving&lt;/a&gt;.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Analyze the root cause of the problem&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;What &lt;em&gt;exactly&lt;/em&gt; is the problem? Find the root cause&lt;/li&gt;&#xA;&lt;li&gt;Why do you think it&amp;rsquo;s a problem?&lt;/li&gt;&#xA;&lt;li&gt;Find where the bottleneck lies.&lt;/li&gt;&#xA;&lt;li&gt;Understand the mechanism (what goes under the hood?): input and output&lt;/li&gt;&#xA;&lt;li&gt;Complicated domains and subjects are mostly due to multiple layers of abstraction.&lt;/li&gt;&#xA;&lt;li&gt;Keep dividing until you narrow down to the core reason.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Solution Design&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Ideas I&#39;m interested in AI</title>
       <link>https://junuxyz.github.io/posts/ideas-im-interested-in-ai/</link>

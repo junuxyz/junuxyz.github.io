@@ -2,26 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://junuxyz.github.io/categories/</loc>
+    <lastmod>2025-08-04T14:43:35+09:00</lastmod>
+  </url><url>
     <loc>https://junuxyz.github.io/</loc>
+    <lastmod>2025-08-04T14:43:35+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/posts/mental-model-of-engineering/</loc>
     <lastmod>2025-08-04T14:43:35+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/posts/</loc>
     <lastmod>2025-08-04T14:43:35+09:00</lastmod>
   </url><url>
-    <loc>https://junuxyz.github.io/categories/</loc>
-    <lastmod>2025-08-01T16:59:45+09:00</lastmod>
+    <loc>https://junuxyz.github.io/tags/short/</loc>
+    <lastmod>2025-08-04T14:43:35+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/tags/</loc>
+    <lastmod>2025-08-04T14:43:35+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/categories/thoughts/</loc>
+    <lastmod>2025-08-04T14:43:35+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/posts/ideas-im-interested-in-ai/</loc>
     <lastmod>2025-08-01T16:59:45+09:00</lastmod>
-  </url><url>
-    <loc>https://junuxyz.github.io/categories/thoughts/</loc>
-    <lastmod>2025-08-01T16:59:45+09:00</lastmod>
-  </url><url>
-    <loc>https://junuxyz.github.io/tags/short/</loc>
-    <lastmod>2025-08-01T16:00:15+09:00</lastmod>
-  </url><url>
-    <loc>https://junuxyz.github.io/tags/</loc>
-    <lastmod>2025-08-01T16:00:15+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/posts/the-io-and-pipelining-era-of-ml/</loc>
     <lastmod>2025-08-01T16:00:15+09:00</lastmod>
