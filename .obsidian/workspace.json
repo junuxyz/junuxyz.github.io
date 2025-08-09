@@ -8,16 +8,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "3e001af5f2410f6d",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
             "id": "ffdeba0705e9511e",
             "type": "leaf",
             "state": {
@@ -334,8 +324,9 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "3e001af5f2410f6d",
+  "active": "598548e247043a17",
   "lastOpenFiles": [
+    "content/posts/2025-08-07.md",
     "content/posts/mental-model-of-engineering.md",
     "content/posts/ideas-im-interested-in-ai.md",
     "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
