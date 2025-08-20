@@ -222,7 +222,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "A to B",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -341,9 +341,11 @@
   },
   "active": "13e62799826d0a34",
   "lastOpenFiles": [
-    "content/posts/lab01-1-adding-vector-in-cuda.md",
+    "content/posts/a-shallow-dive-into-vscode-debugger.md",
     "content/posts/information-and-computation.md",
     "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
+    "static/images/GCP-image.png",
+    "content/posts/lab01-1-adding-vector-in-cuda.md",
     "static/images/simple-chat.png",
     "content/posts/in-depth-review-of-attention-is-all-you-need.md",
     "content/posts/mental-model-of-engineering.md",
@@ -353,7 +355,6 @@
     "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
     "content/posts/the-io-and-pipelining-era-of-ml.md",
     "content/posts/what-to-pursue.md",
-    "content/posts/a-shallow-dive-into-vscode-debugger.md",
     "content/posts/fluent-python-cheat-sheet.md",
     "content/posts/docker-80-20.md",
     "content/posts/why-ai.md",
@@ -376,7 +377,6 @@
     "static/images/breakpoints.png",
     "static/images/shallow-dive-into-vscode-debugger-log-message-1.png",
     "static/images/shallow-dive-into-vscode-debugger-hit-count.png",
-    "static/images/shallow-dive-into-vscode-debugger-expression-3.png",
-    "static/images/shallow-dive-into-vscode-debugger-expression-2.png"
+    "static/images/shallow-dive-into-vscode-debugger-expression-3.png"
   ]
 }

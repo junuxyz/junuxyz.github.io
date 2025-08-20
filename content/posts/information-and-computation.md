@@ -16,7 +16,7 @@ Even if we look at Dictionaries or Deep learning courses, it's still hard to cap
 
 I define the fundamental of AI as "computation of represented information".
 
-Let's break down what this means.
+Let's break it down what this means.
 
 It is very interesting how AI can predict protein synthesis, win against the Go champions in the world, how it can compare cat vs dog images, and how it answers the user's query by "predicting the next token".
 
