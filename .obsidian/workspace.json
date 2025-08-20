@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/lab01-1-adding-vector-in-cuda.md",
+                "file": "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lab01-1-adding-vector-in-cuda"
+              "title": "lab02-deploying-dialo-gpt-with-fastapi"
             }
           },
           {
@@ -174,8 +174,23 @@
               "icon": "lucide-file",
               "title": "mental-model-of-engineering"
             }
+          },
+          {
+            "id": "5bc248d17f58bd5a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/posts/information-and-computation.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "information-and-computation"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -324,10 +339,16 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "598548e247043a17",
+  "active": "13e62799826d0a34",
   "lastOpenFiles": [
-    "content/posts/2025-08-07.md",
+    "content/posts/lab01-1-adding-vector-in-cuda.md",
+    "content/posts/information-and-computation.md",
+    "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
+    "static/images/simple-chat.png",
+    "content/posts/in-depth-review-of-attention-is-all-you-need.md",
     "content/posts/mental-model-of-engineering.md",
+    "content/posts/lab01-adding-vector.md",
+    "content/posts/2025-08-07.md",
     "content/posts/ideas-im-interested-in-ai.md",
     "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
     "content/posts/the-io-and-pipelining-era-of-ml.md",
@@ -340,18 +361,12 @@
     "content/about.md",
     "content/posts/try-to-do-harder-things.md",
     "content/posts/ddca-lecture-note.md",
-    "content/posts/lab02-ml-api-serving-benchmark.md",
     "content/posts/fast-api.md",
     "content/posts/how-to-not-regret.md",
     "content/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
-    "content/posts/lab01-1-adding-vector-in-cuda.md",
     "content/posts/trying-out-uv-as-my-new-package-managing-tool.md",
     "content/posts/vscode-cpp-configuration.md",
     "content/posts/neet-code.md",
-    "content/posts/a-useful-mental-model-on-how-to-build-your-unique-career.md",
-    "content/posts/lab01-adding-vector.md",
-    "conflict-files-obsidian-git.md",
-    "content/posts/Templates/hugo-post.md",
     "themes/custom/layouts/index.html",
     "static/images/shallow-dive-into-vscode-debugger-log-message-2.png",
     "static/images/cuda-gpu-layers.png",
@@ -362,7 +377,6 @@
     "static/images/shallow-dive-into-vscode-debugger-log-message-1.png",
     "static/images/shallow-dive-into-vscode-debugger-hit-count.png",
     "static/images/shallow-dive-into-vscode-debugger-expression-3.png",
-    "static/images/shallow-dive-into-vscode-debugger-expression-2.png",
-    "static/images/shallow-dive-into-vscode-debugger-expression-1.png"
+    "static/images/shallow-dive-into-vscode-debugger-expression-2.png"
   ]
 }
