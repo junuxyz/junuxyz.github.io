@@ -6,8 +6,15 @@
     <description>Recent content in ML on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Jul 2025 18:50:06 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 20 Aug 2025 15:57:15 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/categories/ml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lab02: Deploying DialoGPT-Medium with FastAPI &amp; Docker</title>
+      <link>https://junuxyz.github.io/posts/lab02-deploying-dialo-gpt-with-fastapi/</link>
+      <pubDate>Wed, 20 Aug 2025 15:57:15 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/lab02-deploying-dialo-gpt-with-fastapi/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;In Lab02, We are going to look at how Jupyter/Colab Notebook models, codes are actually deployed as a service.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://junuxyz.github.io/images/simple-chat.png&#34; alt=&#34;Image&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;This is a simple chatbot called &lt;em&gt;simple chat&lt;/em&gt; which is containerized in Docker and run on FastAPI.&lt;/p&gt;&#xA;&lt;p&gt;We will build and deploy this chatbot using DialoGPT as the model, use FastAPI to create API endpoints, and deploy it with Docker.&lt;/p&gt;&#xA;&lt;p&gt;The goal of this lab is to experience the end-to-end of deploying and serving a LLM model from scratch, with minimal configuration.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Fluent Python Cheat Sheet for Newbies</title>
       <link>https://junuxyz.github.io/posts/fluent-python-cheat-sheet/</link>

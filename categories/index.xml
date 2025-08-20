@@ -6,20 +6,20 @@
     <description>Recent content in Categories on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 Aug 2025 14:43:35 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 20 Aug 2025 15:57:15 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ML</title>
+      <link>https://junuxyz.github.io/categories/ml/</link>
+      <pubDate>Wed, 20 Aug 2025 15:57:15 +0900</pubDate>
+      <guid>https://junuxyz.github.io/categories/ml/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Thoughts</title>
       <link>https://junuxyz.github.io/categories/thoughts/</link>
       <pubDate>Mon, 04 Aug 2025 14:43:35 +0900</pubDate>
       <guid>https://junuxyz.github.io/categories/thoughts/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>ML</title>
-      <link>https://junuxyz.github.io/categories/ml/</link>
-      <pubDate>Tue, 22 Jul 2025 18:50:06 +0900</pubDate>
-      <guid>https://junuxyz.github.io/categories/ml/</guid>
       <description></description>
     </item>
   </channel>
