@@ -3,7 +3,7 @@ title = "Lab02: Deploying DialoGPT-Medium with FastAPI & Docker"
 date = 2025-08-20T15:57:15+09:00
 draft = false
 categories = ['ML']
-tags = ['MLOps']
+tags = ['MLOps', 'labs']
 +++
 
 ## Introduction
