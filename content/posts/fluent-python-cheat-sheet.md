@@ -495,7 +495,7 @@ Only keys.
 <br>
 ## Chapter 4. Text vs Bytes
 
-As mentioned in page 97 ("In the end, most of the issues covered in this chapter do not affect programmers who deal only with ASCII text."), I will skip some parts since those are not my immediate interest for now.
+As mentioned in page 97 ("In the end, most of the issues covered in this chapter do not affect programmers who deal only with ASCII text."), I will skip most of the parts in this chapter since these does not seem to be my immediate interest for now.
 
 ### Byte Essentials
 
@@ -520,3 +520,49 @@ Check the Note below why `cafe[0]` is `int` but `cafe[:1]` isn't.
 _Note: The fact that `cafe[0]` retrieves an int but `cafe[:1]` returns a bytes object of length 1 should not be surprising. The only sequence type where `s[0] == s[:1]` is the str type. Al though practical, this behavior of `str` is exceptional. For every other sequence, `s[i]` returns one item, and `s[i:i+1]` returns a sequence of the same type with the `s[1]` item inside it_
 
 ### Handling Text Files
+
+The best pracitce of handling text file is to follow the **"Unicode sandwitch"** principle. It means that `bytes` should be decoded to `str` as early as possible on input, processed as `str`, and encoded to `bytes` as late as possible.
+
+
+# Part 3. Functions as Objects
+
+## Chapter 5. First-Class Function
+
+
+> Functions in Python are first-class objects. 
+> 
+> Programming language theorists define a “first-class object” as a program entity that can be: 
+> 	• Created at runtime
+> 	• Assigned to a variable or element in a data structure
+> 	• Passed as an argument to a function
+> 	• Returned as the result of a function
+
+
+### Treating Function Like an Object
+
+Example:
+
+```bash
+>>> def factorial(n):
+...     '''returns n'''
+...     return 1 if n < 2 else n * factorial(n-1)
+...
+>>> factorial(42)
+1405006117752879898543142606244511569936384000000000
+>>> factorial
+<function factorial at 0x7f66ffe57880>
+>>> fact = factorial
+>>> fact
+<function factorial at 0x7f66ffe57880>
+>>> fact(42)
+1405006117752879898543142606244511569936384000000000
+>>> list(map(fact, range(11)))
+[1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800]
+```
+
+
+### Higher-Order Functions
+
+Higher-Order Function is function that takes a function as argument or returns function as the result. (ex. `map`, `filter`, `reduce` ...)
+
+
