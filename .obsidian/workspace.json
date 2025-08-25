@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
+                "file": "content/posts/fluent-python-cheat-sheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lab02-deploying-dialo-gpt-with-fastapi"
+              "title": "fluent-python-cheat-sheet"
             }
           },
           {
@@ -247,7 +247,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672
+    "width": 206.50469207763672,
+    "collapsed": true
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -342,9 +343,9 @@
   },
   "active": "13e62799826d0a34",
   "lastOpenFiles": [
+    "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
     "content/posts/a-shallow-dive-into-vscode-debugger.md",
     "content/posts/information-and-computation.md",
-    "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
     "static/images/GCP-image.png",
     "content/posts/lab01-1-adding-vector-in-cuda.md",
     "static/images/simple-chat.png",

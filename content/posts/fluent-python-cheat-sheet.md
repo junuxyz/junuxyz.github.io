@@ -474,16 +474,49 @@ dict is trading space for time. They provide fast access regardless of the size 
 
 When **hash collisions** occur, whether `a` bumps `b` to a different memory location (A-B case) or `b` bumps `a` (B-A case), the key point is while Python has enough **memory space** to handle these adjustments, they are considered the same.
 
-Python's `==` (equality) check for dictionaries focuses solely on whether the **same key-value pairs** exist in both dictionaries. It doesn't care about the internal **order of keys** or the **specific memory addresses** where they're stored. As long as `key_A` maps to `value_A` and `key_B` maps to `value_B` in both dictionaries, they are considered equal, regardless of the behind-the-scenes memory acrobatics.
+Python's `==`(equality) check for dictionaries focuses solely on whether the **same key-value pairs** exist in both dictionaries. It doesn't care about the internal **order of keys** or the **specific memory addresses** where they're stored. As long as `key_A` maps to `value_A` and `key_B` maps to `value_B` in both dictionaries, they are considered equal, regardless of the behind-the-scenes memory acrobatics.
 
 
 **Adding items to a dict may change the order of existing keys**
-dynamic memory allocation may happen as more items are added to the hash table (in order to keep it sparse). During this process new but different hash collisions may happen which changes the order of existing keys.
+
+Dynamic memory allocation may happen as more items are added to the hash table (in order to keep it sparse). During this process, new but different hash collisions may happen while copying the existing keys which changes the order of them.
 
 This is why modifying the contents of a `dict` **while** iterating is generally a bad idea.
+If you need to scan and add items to a dictionary, first read all of the elements (without modification) and collect the needed additions in a second `dict`. Then update the original dict by appending the new one.
 
-**How Sets work**
+
+### How Sets work
 
 set is similar to dict but the only difference is that each bucket holds only a reference to the element, while dict holds both key and value.
 
-set is a dictionary but does not have value attached. Only keys.
+Basically, set is a dictionary but does not have value attached.
+Only keys.
+
+<br>
+## Chapter 4. Text vs Bytes
+
+As mentioned in page 97 ("In the end, most of the issues covered in this chapter do not affect programmers who deal only with ASCII text."), I will skip some parts since those are not my immediate interest for now.
+
+### Byte Essentials
+
+two types of binary sequences:
+- mutable `bytearray`
+- immutable `bytes`
+
+```bash
+>>> cafe = bytes('café', encoding='utf-8')
+>>> cafe
+b'caf\xc3\xa9'
+>>> cafe[0]
+99
+>>> cafe[:1]
+b'c'
+```
+
+bytes can be built from a `str`, given an encoding.
+All the elements in utf-8 encoded bytes are `int`s of range(256) (0~256).
+Check the Note below why `cafe[0]` is `int` but `cafe[:1]` isn't.
+
+_Note: The fact that `cafe[0]` retrieves an int but `cafe[:1]` returns a bytes object of length 1 should not be surprising. The only sequence type where `s[0] == s[:1]` is the str type. Al though practical, this behavior of `str` is exceptional. For every other sequence, `s[i]` returns one item, and `s[i:i+1]` returns a sequence of the same type with the `s[1]` item inside it_
+
+### Handling Text Files
