@@ -29,6 +29,7 @@ I chose DialoGPT just for the sake of its simplicity so that I can focus more on
 Check [here](https://huggingface.co/docs/transformers/en/model_doc/dialogpt) for more information about DialoGPT if you are interested.
 
 ## Steps
+
 ### 0. Setting Environment
 
  Since every configuration is in `lab_02/pyproject.toml`, at `lab_02/`, type these commands on CLI:
@@ -38,7 +39,6 @@ Check [here](https://huggingface.co/docs/transformers/en/model_doc/dialogpt) for
  source .venv/bin/activate
 ```
 
-<br>
 ### 1. Importing a Model
 
 First, we import the LLM we are going to use.
@@ -80,7 +80,6 @@ You: how are you?
 Bot: I'm good, how are you?
 ```
 
-<br>
 ### 2. FastAPI Integration
 
 Now we will use FastAPI to serve the model through API endpoint. This makes the model run on server (just like we use ChatGPT models via API keys)
@@ -205,7 +204,6 @@ After running `python main.py`, go into [localhost:8000/](localhost:8000/) and c
 
 Since `"/chat"` is a POST method, we need to use `curl` or service like PostMan in order to check if it works correctly.
 
-<br>
 ### 3. Frontend
 
 Now we need to make a frontend that presents the chat interface with the user and the chat bot. 
@@ -418,8 +416,6 @@ Forget about the extra performance/reliability configurations. We will only chec
 	- If the location starts with `/api`, it will proxy pass to `backend:8000`. This is available because of docker-compose which I will explain later.
 - If the request is exactly `/health` (notice it doesn't have a slash(`/`) after 'health'), Nginx will use the `location /health` block.
 - If neither of those matches, then Nginx falls back to the most general `location /` block. `/` acts as a catch-all for anything that hasn't been specifically handled by another `location` block.
-
-<br>
 
 ### 4. Dockerfile and docker-compose
 
