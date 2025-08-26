@@ -198,6 +198,31 @@ Check the Note below why <code>cafe[0]</code> is <code>int</code> but <code>cafe
 </span></span><span class=line><span class=cl><span class=m>1405006117752879898543142606244511569936384000000000</span>
 </span></span><span class=line><span class=cl>&gt;&gt;&gt; list<span class=o>(</span>map<span class=o>(</span>fact, range<span class=o>(</span>11<span class=o>)))</span>
 </span></span><span class=line><span class=cl><span class=o>[</span>1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800<span class=o>]</span>
-</span></span></code></pre></div><h3 id=higher-order-functions>Higher-Order Functions</h3><p>Higher-Order Function is function that takes a function as argument or returns function as the result. (ex. <code>map</code>, <code>filter</code>, <code>reduce</code> &mldr;)</p></div><nav class=post-nav><div class=nav-prev><a href=https://junuxyz.github.io/posts/lab01-adding-vector/ class=nav-link><span class=nav-label>← Previous</span>
+</span></span></code></pre></div><h3 id=higher-order-functions>Higher-Order Functions</h3><p>Higher-Order Function is function that takes a function as argument or returns function as the result. (ex. <code>map</code>, <code>filter</code>, <code>reduce</code>, <code>sorted</code> &mldr;)</p><p>For example, we can take functions as elements for the <code>key=</code> parameter in <code>sorted</code> function:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>&gt;&gt;&gt; <span class=nv>fruits</span> <span class=o>=</span> <span class=o>[</span><span class=s1>&#39;strawberry&#39;</span>, <span class=s1>&#39;fig&#39;</span>, <span class=s1>&#39;apple&#39;</span>, <span class=s1>&#39;cherry&#39;</span>, <span class=s1>&#39;rasberry&#39;</span>, <span class=s1>&#39;banana&#39;</span><span class=o>]</span>  
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># using len</span>
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; sorted<span class=o>(</span>fruits, <span class=nv>key</span><span class=o>=</span>len<span class=o>)</span>  
+</span></span><span class=line><span class=cl><span class=o>[</span><span class=s1>&#39;fig&#39;</span>, <span class=s1>&#39;apple&#39;</span>, <span class=s1>&#39;cherry&#39;</span>, <span class=s1>&#39;banana&#39;</span>, <span class=s1>&#39;rasberry&#39;</span>, <span class=s1>&#39;strawberry&#39;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># using custom function(reverse)</span>
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; def reverse<span class=o>(</span>word<span class=o>)</span>:  
+</span></span><span class=line><span class=cl>... <span class=k>return</span> word<span class=o>[</span>::-1<span class=o>]</span>
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; sorted<span class=o>(</span>fruits, <span class=nv>key</span><span class=o>=</span>reverse<span class=o>)</span>  
+</span></span><span class=line><span class=cl><span class=o>[</span><span class=s1>&#39;banana&#39;</span>, <span class=s1>&#39;apple&#39;</span>, <span class=s1>&#39;fig&#39;</span>, <span class=s1>&#39;rasberry&#39;</span>, <span class=s1>&#39;strawberry&#39;</span>, <span class=s1>&#39;cherry&#39;</span><span class=o>]</span>  
+</span></span></code></pre></div><p>Note that key is only used to determine the sorting order, but does NOT change the content.</p><h3 id=modern-replacements-for-map-filter-and-reduce>Modern Replacements for map, filter, and reduce</h3><p>We can use listcomp and genexp instead of map.
+For example,</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># map and  listcomp</span>
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; <span class=nv>a1</span> <span class=o>=</span> list<span class=o>(</span>map<span class=o>(</span>factorial, range<span class=o>(</span>6<span class=o>)))</span>  
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; <span class=nv>a2</span> <span class=o>=</span> <span class=o>[</span>factorial<span class=o>(</span>x<span class=o>)</span> <span class=k>for</span> x in range<span class=o>(</span>6<span class=o>)]</span>  
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; a1  
+</span></span><span class=line><span class=cl><span class=o>[</span>1, 1, 2, 6, 24, 120<span class=o>]</span>  
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; a2  
+</span></span><span class=line><span class=cl><span class=o>[</span>1, 1, 2, 6, 24, 120<span class=o>]</span>  
+</span></span></code></pre></div><p><strong>map vs generator</strong></p><p><code>map</code> and <code>generator</code> are two different types of iterators.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>&gt;&gt;&gt; <span class=nv>a3</span> <span class=o>=</span> map<span class=o>(</span>factorial, range<span class=o>(</span>6<span class=o>))</span>  
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; <span class=nv>a4</span> <span class=o>=</span> <span class=o>(</span>factorial<span class=o>(</span>x<span class=o>)</span> <span class=k>for</span> x in range<span class=o>(</span>6<span class=o>)</span>
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; type<span class=o>(</span>a3<span class=o>)</span>  
+</span></span><span class=line><span class=cl>&lt;class <span class=s1>&#39;map&#39;</span>&gt;  
+</span></span><span class=line><span class=cl>&gt;&gt;&gt; type<span class=o>(</span>a4<span class=o>)</span>  
+</span></span><span class=line><span class=cl>&lt;class <span class=s1>&#39;generator&#39;</span>&gt;
+</span></span></code></pre></div></div><nav class=post-nav><div class=nav-prev><a href=https://junuxyz.github.io/posts/lab01-adding-vector/ class=nav-link><span class=nav-label>← Previous</span>
 <span class=nav-title>Lab01: Adding Vector</span></a></div><div class=nav-next><a href=https://junuxyz.github.io/posts/at-its-core-ai-is-about-finding-patterns/ class=nav-link><span class=nav-label>Next →</span>
 <span class=nav-title>At its core, AI is about finding patterns</span></a></div></nav></article></div></main><footer class=footer><div class=footer-content><p>&copy; 2025 junuxyz. Built with <a href=https://gohugo.io/>Hugo</a>.</p></div></footer><script src=/js/theme.js></script></body></html>
