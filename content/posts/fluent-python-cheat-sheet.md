@@ -563,6 +563,53 @@ Example:
 
 ### Higher-Order Functions
 
-Higher-Order Function is function that takes a function as argument or returns function as the result. (ex. `map`, `filter`, `reduce` ...)
+Higher-Order Function is function that takes a function as argument or returns function as the result. (ex. `map`, `filter`, `reduce`, `sorted` ...)
 
+For example, we can take functions as elements for the `key=` parameter in `sorted` function:
+
+```shell
+>>> fruits = ['strawberry', 'fig', 'apple', 'cherry', 'rasberry', 'banana']  
+
+# using len
+>>> sorted(fruits, key=len)  
+['fig', 'apple', 'cherry', 'banana', 'rasberry', 'strawberry']
+
+# using custom function(reverse)
+>>> def reverse(word):  
+... return word[::-1]
+>>> sorted(fruits, key=reverse)  
+['banana', 'apple', 'fig', 'rasberry', 'strawberry', 'cherry']  
+```
+
+Note that key is only used to determine the sorting order, but does NOT change the content.
+
+
+### Modern Replacements for map, filter, and reduce
+
+We can use listcomp and genexp instead of map.
+For example,
+
+```shell
+# map and  listcomp
+>>> a1 = list(map(factorial, range(6)))  
+>>> a2 = [factorial(x) for x in range(6)]  
+>>> a1  
+[1, 1, 2, 6, 24, 120]  
+>>> a2  
+[1, 1, 2, 6, 24, 120]  
+```
+
+
+**map vs generator**
+
+`map` and `generator` are two different types of iterators.
+
+```shell
+>>> a3 = map(factorial, range(6))  
+>>> a4 = (factorial(x) for x in range(6)
+>>> type(a3)  
+<class 'map'>  
+>>> type(a4)  
+<class 'generator'>
+```
 
