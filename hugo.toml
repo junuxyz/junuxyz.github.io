@@ -24,6 +24,15 @@ buildExpired = false
 [markup]
   [markup.highlight]
     noClasses = false
+  
+  # Enable math processing in markdown
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      # Enable raw HTML in markdown (needed for math)
+      unsafe = true
+    [markup.goldmark.parser]
+      # Enable math delimiters
+      wrapStandAloneImageWithinParagraph = false
 
 [params]
   env = "production"
