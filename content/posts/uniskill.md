@@ -6,7 +6,7 @@ categories = ['ML']
 tags = ['Paper Review', 'Robot Learning', 'Video Learning']
 +++
 
-![[Pasted image 20250826133219.png]]
+![[unkskill.png]]
 # Abstract
 
 Imitating experts is challenging due to visual, physical differences between human and robot.
@@ -15,7 +15,6 @@ Previous methods used cross-embodiment datasets with shared scenes and tasks but
 
 This paper presents a new framework called **UniSkill** that learns embodiment-agnostic skill representation from large video dataset.
 
-<br>
 # 1. Introduction
 
 UniSkill uses image-editing pipeline for the neural network to focus on capturing the dynamics changes (over static content) between temproally distant video frames.
@@ -31,7 +30,6 @@ Experiment result:
 - performance improved as more data sources were added
 in BOTH simulation **and real world.**
 
-<br>
 # 2. Related Work
 
 ## Latent Action Models
@@ -64,7 +62,6 @@ Here's how it differs:
 | XSkill       | Aligns skills from human and robot videos via Sinkhorn-Knopp clustering.                                | This clustering with shared prototypes implicitly assumes some degree of alignment between human and robot videos. Human videos must cover the target robot task and be captured in similar environments for effective skill transfer. |
 | **UniSkill** | Takes a different approach by **learning predictive representations through future frame forecasting.** | This completely removes the need for domain or task alignment, allowing the model to benefit even from entirely unrelated human videos.                                                                                                |
 
-<br>
 # 3. Method
 
 ## 3.1. Problem Formulation
@@ -84,7 +81,7 @@ This is because there are a lot more unlabled humand/robot video data than high 
 
 ### $ISD$ (Inverse Skill Dynamics Model)
 
-#### $$ z_t = ISD(I_t, I_{t+k}) $$
+$$ z_t = ISD(I_t, I_{t+k}) $$
 
 - **Input:** Two temporally distant frames ($I_t$ and $I_{t+k}$) from a video $V$.
 - Problem: relying soley on RGB pixels/frames lead to encoding of embodiment-specific(in this case, human) details, which can hinder the learning of embodiment-agnostic behavior $z_t$.
@@ -93,7 +90,7 @@ This is because there are a lot more unlabled humand/robot video data than high 
 
 ### $FSD$ (Forward Skill Dynamics Model)
 
-#### $$ I_{t+k} = FSD(I_t, z_t). $$
+$$ I_{t+k} = FSD(I_t, z_t). $$
 
 - predicts the future frame $I_{t+k}$ by given $I_t$ and $z_t$ from ISD.
     - So basically UniSkill is using a form of self-supervised learning to train a universal skill representation($z_t$) that effecitvely encodes the dynamic changes between two video frames.

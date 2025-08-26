@@ -41,12 +41,24 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
+                "file": "content/posts/uniskill.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lab02-deploying-dialo-gpt-with-fastapi"
+              "title": "uniskill"
+            }
+          },
+          {
+            "id": "f5291969607bde98",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "static/images/unkskill.png"
+              },
+              "icon": "lucide-image",
+              "title": "unkskill"
             }
           },
           {
@@ -214,10 +226,11 @@
   },
   "active": "3055238a12063d47",
   "lastOpenFiles": [
+    "static/images/unkskill.png",
+    "content/posts/uniskill.md",
+    "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
     "content/posts/fluent-python-cheat-sheet.md",
     "content/posts/docker-80-20.md",
-    "content/posts/uniskill.md",
-    "static/images/Pasted image 20250826133219.png",
     "content/posts/different-ais.md",
     "content/posts/mixture-of-architectures.md",
     "static/images/moa-1.png",
@@ -230,7 +243,6 @@
     "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
     "content/about.md",
     "content/posts/lab01-adding-vector.md",
-    "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
     "static/images/GCP-image.png",
     "content/posts/lab01-1-adding-vector-in-cuda.md",
     "static/images/simple-chat.png",
