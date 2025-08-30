@@ -6,8 +6,15 @@
     <description>Recent content in Short on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 Aug 2025 14:43:35 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 30 Aug 2025 14:02:26 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/tags/short/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Engineering Era of AI</title>
+      <link>https://junuxyz.github.io/posts/the-engineering-era-of-ai/</link>
+      <pubDate>Sat, 30 Aug 2025 14:02:26 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/the-engineering-era-of-ai/</guid>
+      <description>&lt;p&gt;I feel like the trend of AI is shifting from model construct/pre-training to post-training/pipelining/engineering phase, which we use system-level knowledge to implement the model the fastest, efficient as possible.&lt;/p&gt;&#xA;&lt;p&gt;Of course new models/architectures(world models, System 2, GFlowNet, JEPA etc.), domains(robotics, biology etc.), and paradigms(Reinforcement Learning, Energy based models etc) will come but after all, the &amp;ldquo;verification&amp;rdquo; phase of AI seems done after the huge success and impact of ChatGPT.&lt;/p&gt;&#xA;&lt;p&gt;Now deployment to real world use is getting larger and larger. Big tech companies and AI startups are already noticing and are working on this (&lt;a href=&#34;https://openai.com/index/triton/&#34;&gt;more efficient LLM inference&lt;/a&gt;, faster and better image/video generation (e.g. &lt;a href=&#34;https://blog.google/products/gemini/updated-image-editing-model/&#34;&gt;Nano Banana&lt;/a&gt;), &lt;a href=&#34;https://developer.nvidia.com/isaac/lab&#34;&gt;Robot Learning simulation&lt;/a&gt;, and &lt;a href=&#34;https://www.meta.com/kr/en/ai-glasses/&#34;&gt;smart glasses&lt;/a&gt;) a lot on this. Still I think A LOT MORE are about to be deployed in various fields in various forms in the upcoming years.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Mental Model of Engineering</title>
       <link>https://junuxyz.github.io/posts/mental-model-of-engineering/</link>
