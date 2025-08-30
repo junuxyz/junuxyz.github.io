@@ -1,12 +1,11 @@
 +++
-title = "Ideas I'm interested in AI"
+title = "Ideas I'm interested in AI (Research & Field)"
 date = 2025-08-01T16:59:45+09:00
 draft = false
 categories = ['Thoughts']
 +++
 
 1. **high (abstract) level pattern recognition**
-	- writing style, nuance, insight
 	- understanding the underlying message despite of words and content, just the underlying message etc.
 
 2. **overcoming data bottleneck**
@@ -31,7 +30,7 @@ categories = ['Thoughts']
 6. **Self Supervised Reinforcement Learning**
 
 7. **Simulation Learning implied to Robotics**
-	- Convert human action (using something like SAM) into the robot's custom software and train it. Then use the software for robot to act as the trained dataset.
+	- Convert human action (using something like SAM) into the robot's custom simulation software and train it. Then use the software for robot to act as the trained dataset. = Isaac Labs.
 	- Something like Real Steel
 
 8. **Education in AI**
