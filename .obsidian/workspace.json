@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/the-engineering-era-of-ai.md",
+                "file": "content/posts/lab01-adding-vector.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "the-engineering-era-of-ai"
+              "title": "lab01-adding-vector"
             }
           },
           {
@@ -240,8 +240,9 @@
   },
   "active": "58aa3daebd6c12aa",
   "lastOpenFiles": [
-    "content/posts/ideas-im-interested-in-ai.md",
+    "content/posts/lab01-1-adding-vector-in-cuda.md",
     "content/posts/the-engineering-era-of-ai.md",
+    "content/posts/ideas-im-interested-in-ai.md",
     "content/posts/uniskill.md",
     "static/images/unkskill.png",
     "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
@@ -259,7 +260,6 @@
     "content/about.md",
     "content/posts/lab01-adding-vector.md",
     "static/images/GCP-image.png",
-    "content/posts/lab01-1-adding-vector-in-cuda.md",
     "static/images/simple-chat.png",
     "content/posts/in-depth-review-of-attention-is-all-you-need.md",
     "content/posts/2025-08-07.md",

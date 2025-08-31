@@ -33,7 +33,7 @@ The exact operation of vector addition is hidden in operator `+` in PyTorch.
 
 ### Vector Addition in Triton
 
-[Triton](https://github.com/triton-lang/triton) is an open source library ran by OpenAI, which aims to be easier to code than CUDA (fewer knobs to control, don't need to know as deep as CUDA) but doesn't lose the performance.
+[Triton](https://github.com/triton-lang/triton) is an open source library ran by OpenAI, which aims to be easier to code than CUDA (fewer knobs to control, don't need to know as deep as CUDA) but doesn't lose the performance. Check out more information via [here](https://openai.com/index/triton/).
 
 ```python
 import torch
