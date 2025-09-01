@@ -1,411 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
-
-/**
- * ==========================================================================
- * DESIGN SYSTEM
- * ==========================================================================
- * CSS custom properties defining the visual design system
- * All values are optimized for accessibility and readability
- */
-
-:root {
-    /* Color Palette - Light Theme */
-    --bg: #FAF8F5;
-    --text: #2A2622;
-    --text-secondary: #6B5D54;
-    --accent: #D4664A;
-    --accent-light: #E89A84;
-    --border: #E8E2D9;
-    --code-bg: #F5F2ED;
-    --code-text: #A85643;
+ :root {
+    /* Minimal color palette - dark theme only */
+    --bg: #1a202c;
+    --text: #e2e8f0;
+    --text-light: #a0aec0;
+    --accent: #63b3ed;
+    --border: #2d3748;
     
-    /* Layout & Spacing */
-    --header-padding: 2rem;
-    --content-padding: 4rem;
-    --content-max-width: 900px;
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --line-height: 1.6;
     
-    /* Typography Stack */
-    --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-serif: 'Crimson Text', Georgia, serif;
-    --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-    
-    /* Animation */
-    --transition: all 0.3s ease;
+    /* Layout */
+    --max-width: 650px;
+    --spacing: 1rem;
 }
 
-/** Dark theme color overrides */
-.dark {
-    --bg: #1A1714;
-    --text: #F5F0EA;
-    --text-secondary: #BFB5AB;
-    --accent: #F0866C;
-    --accent-light: #F5A893;
-    --border: #2F2821;
-    --code-bg: #252119;
-    --code-text: #F0866C;
-}
-
-/**
- * ==========================================================================
- * BASE STYLES
- * ==========================================================================
- * Global reset and fundamental styling
- */
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+/* Reset and base */
+* {
     margin: 0;
     padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-    font-size: 100%; /* 16px base */
+    box-sizing: border-box;
 }
 
 body {
-    font-family: var(--font-sans);
-    font-size: 1.0625rem; /* 17px for better readability */
-    line-height: 1.75;
+    font-family: var(--font-family);
+    line-height: var(--line-height);
     color: var(--text);
     background: var(--bg);
-    transition: var(--transition);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/**
- * ==========================================================================
- * HEADER COMPONENTS
- * ==========================================================================
- * Sticky header with logo and navigation
- */
-
-.header {
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    transition: var(--transition);
-}
-
-.header-content {
-    max-width: calc(var(--content-max-width) + 2 * var(--content-padding));
+    max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 var(--header-padding);
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 2rem var(--spacing);
 }
 
-/** Logo */
+/* Typography */
+h1, h2, h3 {
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+h1 { font-size: 2rem; font-weight: 700; }
+h2 { font-size: 1.5rem; font-weight: 600; margin-top: 2rem; }
+h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; }
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Links */
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header - ultra minimal */
+.header {
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
 .logo a {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text);
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.logo a:hover {
-    color: var(--accent);
-}
-
-/** Navigation container */
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
 }
 
 .nav {
-    display: flex;
-    gap: 2rem;
+    margin-top: 0.5rem;
 }
 
-.nav-item {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
+.nav a {
+    margin-right: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
 }
 
-.nav-item:hover {
-    color: var(--accent);
-}
-
-/** Theme toggle button */
-#theme-toggle {
-    background: var(--code-bg);
-    border: 2px solid var(--border);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-#theme-toggle:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-#theme-toggle svg {
-    color: var(--text);
-    transition: var(--transition);
-}
-
-#theme-toggle:hover svg {
-    color: white;
-}
-
-/** Theme icon state management */
-.dark .sun-icon,
-.moon-icon {
-    display: none;
-}
-
-.dark .moon-icon {
-    display: block;
-}
-
-/**
- * ==========================================================================
- * LAYOUT COMPONENTS
- * ==========================================================================
- * Main content containers and spacing
- */
-
-.main {
-    min-height: calc(100vh - 200px);
-    padding: 3rem 0;
-}
-
-.container {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 0 var(--content-padding);
-}
-
-/**
- * ==========================================================================
- * TYPOGRAPHY SYSTEM
- * ==========================================================================
- * Scalable typography with consistent spacing
- */
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.2;
-}
-
-h1 {
-    font-size: clamp(2.2rem, 5vw, 3rem);
+/* Posts list */
+.post-entry {
     margin-bottom: 2rem;
 }
 
-h2 {
-    font-size: clamp(1.8rem, 4vw, 2.4rem);
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 0.75rem;
-}
-
-/** Decorative underline for h2 elements */
-h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: var(--accent);
-    border-radius: 2px;
-}
-
-h3 {
-    font-size: clamp(1.5rem, 3vw, 1.9rem);
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-}
-
-p {
-    margin-bottom: 1.5rem;
-    color: var(--text);
-}
-
-/** Default link styling */
-a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-a:hover {
-    color: var(--accent-light);
-}
-
-/**
- * ==========================================================================
- * PAGE COMPONENTS
- * ==========================================================================
- * Home page and content page specific styling
- */
-
-/** Homepage intro section */
-.home-intro {
-    text-align: center;
-    margin-bottom: 4rem;
-    padding: 2rem 0;
-}
-
-.home-intro h1 {
-    margin-bottom: 1rem;
-}
-
-.site-description {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    font-style: italic;
-}
-
-/**
- * ==========================================================================
- * POST COMPONENTS
- * ==========================================================================
- * Blog post listing and individual post styling
- */
-
-/** Post listing container */
-.posts {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-}
-
-/** Individual post entry */
-.post-entry {
-    padding-left: 2rem;
-    transition: var(--transition);
-}
-
-/** Post metadata and content */
 .post-title {
-    font-size: 2.25rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
 }
 
 .post-title a {
     color: var(--text);
-    text-decoration: none;
 }
 
-.post-title a:hover {
-    color: var(--accent);
-}
-
-.post-meta {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-}
-
-/** Tag styling */
-.post-tags {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.tag {
-    background: var(--code-bg);
-    color: var(--code-text);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.tag:hover {
-    background: var(--accent);
-    color: white;
+.post-date {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
 }
 
 .post-summary {
-    color: var(--text);
-    line-height: 1.6;
+    color: var(--text-light);
+    line-height: 1.5;
 }
 
-.read-more {
-    display: inline-block;
-    margin-top: 1rem;
-    font-weight: 600;
-}
-
-/** Minimal post links layout */
-.posts-minimal {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.post-link {
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    transition: var(--transition);
-}
-
-.post-link a {
-    color: var(--text);
-    text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 1.4;
-    display: block;
-}
-
-.post-link a:hover {
-    color: var(--accent);
-}
-
-/** Single post layout and content styling */
-.post {
-    max-width: none;
-}
-
+/* Single post */
 .post-header {
-    margin-bottom: 3rem;
-    text-align: left;
+    margin-bottom: 2rem;
 }
 
-.post-content {
-    line-height: 1.8;
+.post-meta {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
 }
 
+/* Content spacing */
 .post-content h2,
-.post-content h3,
-.post-content h4 {
-    margin-top: 2.5rem;
+.post-content h3 {
+    margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
@@ -415,501 +129,107 @@ a:hover {
 
 .post-content ul,
 .post-content ol {
-    margin-bottom: 1.5rem;
-    padding-left: 2rem;
+    margin: 1rem 0 1.5rem 2rem;
 }
 
-.post-content li {
-    margin-bottom: 0.5rem;
+/* Code */
+code {
+    font-family: 'SF Mono', Monaco, 'Consolas', monospace;
+    font-size: 0.9em;
+    background: var(--border);
+    padding: 0.125rem 0.25rem;
+    border-radius: 3px;
 }
 
-/**
- * ==========================================================================
- * NAVIGATION COMPONENTS
- * ==========================================================================
- * Post-to-post navigation elements
- */
+pre {
+    background: var(--border);
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
 
-.post-nav {
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid var(--border);
+}
+
+th {
+    background-color: var(--border);
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 2px solid var(--accent);
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+/* Tags */
+.tag {
+    background: var(--border);
+    color: var(--text-light);
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    text-decoration: none;
+}
+
+.tag:hover {
+    color: var(--text);
+}
+
+/* Footer */
+.footer {
     margin-top: 4rem;
     padding-top: 2rem;
     border-top: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-.nav-prev {
-    text-align: left;
-}
-
-.nav-next {
-    text-align: right;
-}
-
-.nav-link {
-    display: block;
-    padding: 1rem;
-    background: var(--code-bg);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: var(--transition);
-    color: var(--text);
-}
-
-.nav-link:hover {
-    color: var(--accent);
-}
-
-.nav-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.nav-link:hover .nav-label {
-    color: var(--accent);
-}
-
-.nav-title {
-    font-weight: 500;
-    line-height: 1.3;
-}
-
-/**
- * ==========================================================================
- * CODE HIGHLIGHTING
- * ==========================================================================
- * Syntax highlighting and code block styling
- */
-
-/** Inline code elements */
-:not(pre) > code {
-    background: var(--code-bg);
-    color: var(--code-text);
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
-    font-size: 0.875em;
-    font-family: var(--font-mono);
-    white-space: nowrap;
-}
-
-/** Code block containers */
-.highlight {
-    margin: 2rem 0;
-    position: relative;
-}
-
-.chroma {
-    border-radius: 6px;
-    padding: 1em;
-    overflow-x: auto;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    font-family: var(--font-mono);
-}
-
-/** Reset code styles within syntax highlighted blocks */
-.chroma code {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    color: inherit;
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    white-space: pre;
-}
-
-
-/** Blockquote styling */
-blockquote {
-    border-left: 3px solid var(--accent);
-    padding-left: 1.5rem;
-    margin: 2rem 0;
-    font-style: italic;
-    color: var(--text-secondary);
-}
-
-blockquote p {
-    margin-bottom: 0;
-}
-
-/**
- * ==========================================================================
- * FOOTER COMPONENTS
- * ==========================================================================
- * Site footer with social links
- */
-
-.footer {
-    background: var(--bg);
-    color: var(--text-secondary);
     text-align: center;
-    padding: 3rem var(--header-padding);
-    border-top: 1px solid var(--border);
-    margin-top: 4rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
 }
 
-.footer-content p {
-    margin-bottom: 1rem;
-}
-
-.social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-
-.social-icon {
-    color: var(--text-secondary);
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.social-icon:hover {
-    color: var(--accent);
-}
-
-/**
- * ==========================================================================
- * RESPONSIVE DESIGN
- * ==========================================================================
- * Mobile-first responsive breakpoints
- */
-
-@media (max-width: 768px) {
-    :root {
-        --header-padding: 1rem;
-        --content-padding: 1.5rem;
+/* Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem 1rem;
     }
     
-    .header-content {
-        height: 70px;
-    }
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.375rem; }
     
-    .header-right,
-    .nav {
-        gap: 1rem;
-    }
-    
-    .nav-item {
-        font-size: 0.875rem;
-    }
-    
-    .post-nav {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .nav-next {
-        text-align: left;
-    }
-    
-    .post-meta {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-    
-    .posts-minimal {
-        gap: 0.25rem;
-    }
-    
-    .post-link a {
+    .post-title {
         font-size: 1.125rem;
     }
-    
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.6rem; }
-    h3 { font-size: 1.3rem; }
 }
-
-@media (max-width: 480px) {
-    :root {
-        --header-padding: 1rem;
-        --content-padding: 1rem;
-    }
-    
-    .header-right {
-        gap: 0.5rem;
-    }
-    
-    .nav {
-        display: none;
-    }
-}
-
-/**
- * ==========================================================================
- * TAXONOMY COMPONENTS
- * ==========================================================================
- * Tag and category listing pages
- */
-
-.terms-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.term-item {
-    background: var(--code-bg);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border-left: 3px solid var(--accent);
-    transition: var(--transition);
-}
-
-.term-name {
-    margin-bottom: 0.5rem;
-}
-
-.term-name a {
-    color: var(--text);
-    text-decoration: none;
-}
-
-.term-name a:hover {
-    color: var(--accent);
-}
-
-.term-count {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    margin: 0;
-}
-
-/**
- * ==========================================================================
- * UTILITY CLASSES
- * ==========================================================================
- * Reusable utility components
- */
-
-.page-header {
-    margin-bottom: 3rem;
-}
-
-.page-description {
-    color: var(--text-secondary);
-    font-size: 1.125rem;
-    margin-top: 1rem;
-}
-
-.no-posts,
-.no-terms {
-    text-align: center;
-    color: var(--text-secondary);
-    font-style: italic;
-    padding: 4rem 0;
-}
-
-.center {
-    text-align: center;
-}
-
-/** Global smooth transitions for theme switching */
-* {
-    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-} 
-
-/**
- * ==========================================================================
- * MEDIA COMPONENTS
- * ==========================================================================
- * Image styling for blog content
- */
-
-.markdown-body img,
-.content img,
-.post-content img,
-.post img,
-article img,
-.container img {
-    display: block;
-    margin: 0 auto;
-    width: 600px;
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: var(--transition);
-}
-
-.dark .markdown-body img,
-.dark .content img,
-.dark .post-content img,
-.dark .post img,
-.dark article img,
-.dark .container img {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-/**
- * ==========================================================================
- * SYNTAX HIGHLIGHTING - GITHUB THEME
- * ==========================================================================
- * Chroma syntax highlighting with GitHub light/dark themes
- * Optimized for readability and accessibility
- */
-
-/** Light theme syntax highlighting */
-.bg { background-color: #ffffff; }
-.chroma { background-color: #ffffff; }
-.chroma .err { color: #a61717; background-color: #e3d2d2 }
-.chroma .lnlinks { outline: none; text-decoration: none; color: inherit }
-.chroma .lntd { vertical-align: top; padding: 0; margin: 0; border: 0; }
-.chroma .lntable { border-spacing: 0; padding: 0; margin: 0; border: 0; }
-.chroma .hl { background-color: #e5e5e5 }
-.chroma .lnt,
-.chroma .ln { white-space: pre; -webkit-user-select: none; user-select: none; margin-right: 0.4em; padding: 0 0.4em 0 0.4em; color: #7f7f7f }
-.chroma .line { display: flex; }
-
-/** Keywords and language constructs */
-.chroma .k,
-.chroma .kc,
-.chroma .kd,
-.chroma .kn,
-.chroma .kp,
-.chroma .kr { color: #000000; font-weight: bold }
-.chroma .kt { color: #445588; font-weight: bold }
-
-/** Names and identifiers */
-.chroma .na { color: #008080 }
-.chroma .nb { color: #0086b3 }
-.chroma .bp { color: #999999 }
-.chroma .nc { color: #445588; font-weight: bold }
-.chroma .no { color: #008080 }
-.chroma .nd { color: #3c5d5d; font-weight: bold }
-.chroma .ni { color: #800080 }
-.chroma .ne,
-.chroma .nf,
-.chroma .nl { color: #990000; font-weight: bold }
-.chroma .nn { color: #555555 }
-.chroma .nt { color: #000080 }
-.chroma .nv,
-.chroma .vc,
-.chroma .vg,
-.chroma .vi { color: #008080 }
-
-/** Strings and literals */
-.chroma .s,
-.chroma .sa,
-.chroma .sb,
-.chroma .sc,
-.chroma .dl,
-.chroma .sd,
-.chroma .s2,
-.chroma .se,
-.chroma .sh,
-.chroma .si,
-.chroma .sx,
-.chroma .s1 { color: #dd1144 }
-.chroma .sr { color: #009926 }
-.chroma .ss { color: #990073 }
-.chroma .m,
-.chroma .mb,
-.chroma .mf,
-.chroma .mh,
-.chroma .mi,
-.chroma .il,
-.chroma .mo { color: #009999 }
-
-/** Operators and comments */
-.chroma .o,
-.chroma .ow { color: #000000; font-weight: bold }
-.chroma .c,
-.chroma .ch,
-.chroma .cm,
-.chroma .c1 { color: #999988; font-style: italic }
-.chroma .cs,
-.chroma .cp,
-.chroma .cpf { color: #999999; font-weight: bold; font-style: italic }
-
-/** Generic elements */
-.chroma .gd { color: #000000; background-color: #ffdddd }
-.chroma .ge { color: #000000; font-style: italic }
-.chroma .gr { color: #aa0000 }
-.chroma .gh { color: #999999 }
-.chroma .gi { color: #000000; background-color: #ddffdd }
-.chroma .go { color: #888888 }
-.chroma .gp { color: #555555 }
-.chroma .gs { font-weight: bold }
-.chroma .gu { color: #aaaaaa }
-.chroma .gt { color: #aa0000 }
-.chroma .gl { text-decoration: underline }
-.chroma .w { color: #bbbbbb }
-
-/** Dark theme overrides */
-.dark .bg { color: #e6edf3; background-color: #0d1117; }
-.dark .chroma { color: #e6edf3; background-color: #0d1117; }
-.dark .chroma .err { color: #f85149 }
-.dark .chroma .hl { color: #6e7681 }
-.dark .chroma .lnt { color: #737679 }
-.dark .chroma .ln { color: #6e7681 }
-.dark .chroma .k,
-.dark .chroma .kd,
-.dark .chroma .kn,
-.dark .chroma .kr,
-.dark .chroma .kt,
-.dark .chroma .nn { color: #ff7b72 }
-.dark .chroma .kc,
-.dark .chroma .kp,
-.dark .chroma .no,
-.dark .chroma .nl,
-.dark .chroma .py,
-.dark .chroma .nv,
-.dark .chroma .ld,
-.dark .chroma .sa,
-.dark .chroma .dl,
-.dark .chroma .se,
-.dark .chroma .sh,
-.dark .chroma .sr { color: #79c0ff }
-.dark .chroma .nc,
-.dark .chroma .ne,
-.dark .chroma .ni { color: #f0883e; font-weight: bold }
-.dark .chroma .nd,
-.dark .chroma .nf { color: #d2a8ff; font-weight: bold }
-.dark .chroma .nt { color: #7ee787 }
-.dark .chroma .l,
-.dark .chroma .s,
-.dark .chroma .sb,
-.dark .chroma .sc,
-.dark .chroma .sd,
-.dark .chroma .s2,
-.dark .chroma .si,
-.dark .chroma .sx,
-.dark .chroma .s1,
-.dark .chroma .ss,
-.dark .chroma .m,
-.dark .chroma .mb,
-.dark .chroma .mf,
-.dark .chroma .mh,
-.dark .chroma .mi,
-.dark .chroma .il,
-.dark .chroma .mo { color: #a5d6ff }
-.dark .chroma .o,
-.dark .chroma .ow { color: #ff7b72; font-weight: bold }
-.dark .chroma .c,
-.dark .chroma .ch,
-.dark .chroma .cm,
-.dark .chroma .c1,
-.dark .chroma .cs,
-.dark .chroma .cp,
-.dark .chroma .cpf { color: #8b949e; font-style: italic }
-.dark .chroma .gd { color: #ffa198; background-color: #490202 }
-.dark .chroma .ge { font-style: italic }
-.dark .chroma .gr { color: #ffa198 }
-.dark .chroma .gh { color: #79c0ff; font-weight: bold }
-.dark .chroma .gi { color: #56d364; background-color: #0f5323 }
-.dark .chroma .go,
-.dark .chroma .gp { color: #8b949e }
-.dark .chroma .gs { font-weight: bold }
-.dark .chroma .gu { color: #79c0ff }
-.dark .chroma .gt { color: #ff7b72 }
-.dark .chroma .gl { text-decoration: underline }
-.dark .chroma .w { color: #6e7681 }
