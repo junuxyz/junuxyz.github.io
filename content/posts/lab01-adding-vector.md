@@ -40,25 +40,39 @@ import torch
 import triton
 import triton.language as tl
 
-@triton.jit
-def add_kernel(x_ptr, y_ptr, output_ptr, n_elements, BLOCK_SIZE: tl.constexpr):
-	pid = tl.program_id(axis=0)
-	block_start = pid * BLOCK_SIZE
-	offsets = block_start + tl.arange(0, BLOCK_SIZE)
-	mask = offsets < n_elements
-	x = tl.load(x_ptr + offsets, mask=mask)
-	y = tl.load(y_ptr + offsets, mask=mask)
-	output = x + y
-	tl.store(output_ptr + offsets, output, mask=mask)
+@triton.jit # tells us this code will be compiled
+def add_kernel(
+    x_ptr, # Pointer to the first input vector.
+    y_ptr, # Pointer to the second input vector.
+    output_ptr, # Pointer to output vector.
+    n_elements, # Size of the vector.
+    BLOCK_SIZE: tl.constexpr, # Number of elements each program should process.
+    ):
+    pid = tl.program_id(axis=0)
+    block_start = pid * BLOCK_SIZE
+    offsets = block_start + tl.arange(0, BLOCK_SIZE)
 
-def triton_add(a: torch.Tensor, b:torch.Tensor) -> torch.Tensor:
-	output = torch.empty_like(a)
-	n_elements = output.numel()
+    mask = offsets < n_elements
 
-	BLOCK_SIZE = 128
-	grid = (triton.cdiv(n_elements, BLOCK_SIZE),)
-	add_kernel[grid](a, b, output, n_elements, BLOCK_SIZE=BLOCK_SIZE)
-	return output
+    # loads x and y from GPU RAM
+    x = tl.load(x_ptr + offsets, mask=mask)
+    y = tl.load(y_ptr + offsets, mask=mask)
+
+    output = x + y
+
+    # after calculation, put output back to main memory
+    tl.store(output_ptr + offsets, output, mask=mask)
+
+def triton_add(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
+    output = torch.empty_like(a)
+    n_elements = output.numel()
+
+    MAX_BLOCK_SIZE = 1024
+    grid = (triton.cdiv(n_elements, MAX_BLOCK_SIZE),)
+
+    add_kernel[grid](a, b, output, n_elements)
+
+    return output
 
 size = 128
 a = torch.randn(size, device='cuda')
@@ -70,7 +84,7 @@ print("Triton output")
 print(output)
 ```
 
-In order to understand this, we need to understand memories and parallel programming. Since this lab is just a tiny experiment, we will not go deep into all the concepts but rather explain what is happening here.
+In order to understand this, we need to understand memories and parallel programming. Since this lab is just a tiny experiment, we will not go deep into all the concepts but just explain what is happening here.
 
 `triton_add`
 - `n_elements = output.numel()` calculates the total work to do based on the output size which is 128 in this case.
