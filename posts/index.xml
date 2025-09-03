@@ -6,8 +6,15 @@
     <description>Recent content in Posts on junuxyz</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 Aug 2025 14:02:26 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 03 Sep 2025 11:13:40 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>limitations-of-current-rl</title>
+      <link>https://junuxyz.github.io/posts/limitations-of-current-rl/</link>
+      <pubDate>Wed, 03 Sep 2025 11:13:40 +0900</pubDate>
+      <guid>https://junuxyz.github.io/posts/limitations-of-current-rl/</guid>
+      <description>&lt;p&gt;Just read the paper &lt;em&gt;Welcome to the Era of Experience&lt;/em&gt; by Richard S. Sutton and David Silver, and while I admit the potential impact RL will have, I’m pretty concerned about what these authors believe or are trying to create.&lt;/p&gt;&#xA;&lt;p&gt;I believe AI in general needs to be controlled and understood by humans as much as possible, especially for making important and impactful judgments. However, RL lacks this understandability and controllability because of its unexplainable, black-box decision mechanism. It simply makes choices that will gain the maximum reward based on the reward function we define.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>The Engineering Era of AI</title>
       <link>https://junuxyz.github.io/posts/the-engineering-era-of-ai/</link>
