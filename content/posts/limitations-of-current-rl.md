@@ -1,5 +1,5 @@
 +++
-title = "limitations-of-current-rl"
+title = "Limitations of Current RL"
 date = 2025-09-03T11:13:40+09:00
 draft = false
 categories = ['Thoughts']
