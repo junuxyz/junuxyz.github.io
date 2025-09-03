@@ -1,9 +1,9 @@
 +++
-title = "Untitled"
+title = "limitations-of-current-rl"
 date = 2025-09-03T11:13:40+09:00
-draft = true
-categories = ['']
-tags = ['']
+draft = false
+categories = ['Thoughts']
+tags = ['short']
 +++
 
 Just read the paper _Welcome to the Era of Experience_ by Richard S. Sutton and David Silver, and while I admit the potential impact RL will have, I’m pretty concerned about what these authors believe or are trying to create.
@@ -16,4 +16,4 @@ So while I believe RL has the potential to enable novel developments and breakth
 
 I believe it will do GREAT in code generation (finding new algorithms), chip design, scientific discovery (e.g., biology), gaming, and finding strategies for well-defined A-to-B problems, and I am very excited about it. However, beyond that, value-related applications seem too dangerous.
 
-For the same reason, I think AI agents and robot learning should be based on more explainable systems such as VLA (Vision–Language–Action) rather than RL, since VLA is more scalable, reliable, and understandable. While I am skeptical about current RL, maybe there will be a breakthrough in reliable, aligned RL — which I am looking forward to.
+For the same reason, I think AI agents and robot learning should be based on more explainable systems such as VLA (Vision–Language–Action) rather than RL, since VLA is more scalable, reliable, and understandable. While I am skeptical about current RL, maybe there will be a breakthrough in reliable, aligned RL which I am looking forward to.

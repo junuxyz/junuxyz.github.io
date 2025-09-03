@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/Untitled.md",
+                "file": "content/posts/Limitations of Current RL.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Untitled"
+              "title": "Limitations of Current RL"
             }
           },
           {
@@ -255,7 +255,7 @@
   "active": "23e88722f9c77c20",
   "lastOpenFiles": [
     "content/posts/lab01-adding-vector.md",
-    "content/posts/Untitled.md",
+    "content/posts/Limitations of Current RL.md",
     "content/posts/lab01-1-adding-vector-in-cuda.md",
     "content/posts/the-engineering-era-of-ai.md",
     "content/posts/ideas-im-interested-in-ai.md",
