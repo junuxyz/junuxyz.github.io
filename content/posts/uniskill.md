@@ -104,7 +104,7 @@ How the robot is trained to exectue the skills it learned in the previous step.
 
 This uses the smaller, high-quality, action-labled robot dataset $D_a$
 
-#### $$ \phi^* = \text{argmax}_\phi E(o_t, o_{t+h}, a_{t:t+h}) \sim D_a [\log \pi_\phi(a_{t:t+h} | o_t, z_t)]. $$
+#### $$\phi^* = \text{argmax}_\phi E(o_t, o_{t+h}, a_{t:t+h}) \sim D_a [\log \pi_\phi(a_{t:t+h} | o_t, z_t)]. $$
 
 ### Breaking down the formula
 
