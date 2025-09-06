@@ -1,9 +1,9 @@
 +++
 title = "Mental Model of Engineering"
 date = 2025-08-04T14:43:35+09:00
+updated = 2025-09-06T14:32:00+09:00
 draft = false
 categories = ['Thoughts']
-tags = ['short']
 +++
 
 ### The Process
@@ -35,4 +35,4 @@ Keep iterating this cycle until you solve it. There is no more secret sauce, onl
 ### Axioms
 
 1. An individual cannot know every detail about everything but one can go through _a lot_ to find and fix a problem. You don't need to _know_ everything until you start solving the problem. You get to know along as you try to solve it. In other words, most knowledge should be a byproduct of trial and error, not earned by memorizing things and preparing for school exams.
-
+2. Understand what is changeable and what isn't in the given environment/system. What is changeable becomes a tradeoff/design problem. If you don't like the given system, break it and start from a more fundamental area. You have two choices: _build on top or destroy_.
