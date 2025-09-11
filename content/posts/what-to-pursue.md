@@ -6,9 +6,11 @@ categories = ['Thoughts']
 tags = ['short']
 +++
 
-Getting a job in Computer Science in 2025 feels more demanding than ever. The main reasons seem to be an influx of talent, government-driven support (especially in South Korea), and the resulting rise in competition. In the near future, widespread adoption of AI will be another challenge for junior software engineers, potentially redefining the role.
+Getting a job in Computer Science in 2025 feels more demanding than ever. The main reasons seem to be an influx of talent, government-driven support (especially in South Korea), and the resulting rise in competition. In the near future, widespread adoption of AI will be another challenge for junior software engineers, potentially redefining (or in the worst case, replacing) the role.
 
 So, what should we, as undergraduate students, aim for?
+
+Let's think about two questions:
 What does the company or lab want?
 What do I want?
 
@@ -16,7 +18,7 @@ I don't think the ideal state of employer and employee are that different (at le
 
 Whatever you're doing, go beyond tutorials and so-called “requirements.” Get your hands dirty. Explore. It will take time and you will fail a lot but at least it's a path not everyone went. The deeper you go, the more you'll learn and the more competent you'll become.
 
-I don’t think your specific domain matters all that much. If a company finds the perfect candidate for a role, they’ll hire them without hesitation. But the world doesn’t always work that way. Sometimes you need to change your direction to match the market. Sometimes, emerging fields have such scarcity that even those with unrelated backgrounds can get in. The world we live in is _dynamic_, not static.
+I don’t think your specific domain matters all that much. If a company finds the perfect candidate for a role, they’ll hire them without hesitation (that's just uncompetable and that person is just lucky). But the world doesn’t always work that way. Sometimes you need to change your direction to match the market. Sometimes, emerging fields have such scarcity that even those with unrelated backgrounds can get in. The world we live in is _dynamic_, not static.
 
 So what should we pursue?
 We should pursue projects that feel interesting, meaningful, and motivating and then grind. Whatever you do, go beyond the norm. Aim to be genuinely helpful. There will be numerous failures, iterations, and pivots. Embrace them. Apply the bitter lessons from your past.

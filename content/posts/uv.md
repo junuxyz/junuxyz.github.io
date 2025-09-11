@@ -1,19 +1,15 @@
 +++
 title = "Trying Out uv as my new package managing tool"
 date = 2025-07-20T00:06:57+09:00
-draft = true
-categories = ['']
+draft = false
+categories = ['ML']
+tags=['short']
 +++
 
-## Intro
 
 Dependency hell is a known problem in Machine Learning ecosystem. Hardware(eg. NVIDIA RTX chips) with major libraries such as PyTorch, NumPy etc. can easily create all sorts of dependency issues. That is why making a system for maximum reproducability is important.
 
-I've previously used poetry or conda for package managing for Python but found it hard and clunky to use sometimes. Recently I've found a rising tool for package managing called [uv](https://github.com/astral-sh/uv/). This is a brief introduction of what uv is and my first impression of the tool.
-
-
-
-## Performance
+I've previously used poetry or conda for package managing for Python but found it hard and clunky to use sometimes. Recently I've found a rising tool for package managing called [uv](https://github.com/astral-sh/uv/).
 
 I heard uv was very fast, optimized by using Rust, so I wanted to test how fast it was compared to pip install. 
 
@@ -41,13 +37,6 @@ noglob pip install torch 65.50s user 23.14s system 15% cpu 9:34.48 total
 Conclusion: uv is much faster and efficient when importing libraries.
 
 
-## Resources
+Checkout uv:
 https://github.com/astral-sh/uv/
 https://docs.astral.sh/uv/
-
-
-
-When ready to publish:
-1. Add appropriate category: `categories = ['Thoughts']` or `['ML']`
-2. Change `draft = false` in frontmatter
-3. Git plugin will auto-commit and deploy
