@@ -16,10 +16,10 @@ buildExpired = false
   category = "categories"
   tag = "tags"
 
-# Configure taxonomy permalinks to be under /blog/
+# Configure taxonomy permalinks
 [permalinks]
-  categories = "/blog/categories/:slug/"
-  tags = "/blog/tags/:slug/"
+  categories = "/categories/:slug/"
+  tags = "/tags/:slug/"
 
 # Configure taxonomies to work with sections
 [params.taxonomies]
@@ -57,21 +57,21 @@ buildExpired = false
   [[menu.main]]
     identifier = "thoughts"
     name = "Thoughts"
-    url = "/blog/categories/thoughts/"
+    url = "/categories/thoughts/"
     weight = 10
   [[menu.main]]
     identifier = "ml"
     name = "ML"
-    url = "/blog/categories/ml/"
+    url = "/categories/ml/"
     weight = 20
 
   [[menu.main]]
     identifier = "about"
     name = "About"
-    url = "/blog/about/"
+    url = "/about/"
     weight = 40
   [[menu.main]]
     identifier = "tags"
     name = "Tags"
-    url = "/blog/tags/"
+    url = "/tags/"
     weight = 50
