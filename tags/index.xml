@@ -10,79 +10,79 @@
     <atom:link href="https://junuxyz.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Short</title>
-      <link>https://junuxyz.github.io/blog/tags/short/</link>
+      <link>https://junuxyz.github.io/tags/short/</link>
       <pubDate>Wed, 03 Sep 2025 11:13:40 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/short/</guid>
+      <guid>https://junuxyz.github.io/tags/short/</guid>
       <description></description>
     </item>
     <item>
       <title>Paper Review</title>
-      <link>https://junuxyz.github.io/blog/tags/paper-review/</link>
+      <link>https://junuxyz.github.io/tags/paper-review/</link>
       <pubDate>Tue, 26 Aug 2025 13:04:39 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/paper-review/</guid>
+      <guid>https://junuxyz.github.io/tags/paper-review/</guid>
       <description></description>
     </item>
     <item>
       <title>Robot Learning</title>
-      <link>https://junuxyz.github.io/blog/tags/robot-learning/</link>
+      <link>https://junuxyz.github.io/tags/robot-learning/</link>
       <pubDate>Tue, 26 Aug 2025 13:04:39 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/robot-learning/</guid>
+      <guid>https://junuxyz.github.io/tags/robot-learning/</guid>
       <description></description>
     </item>
     <item>
       <title>Video Learning</title>
-      <link>https://junuxyz.github.io/blog/tags/video-learning/</link>
+      <link>https://junuxyz.github.io/tags/video-learning/</link>
       <pubDate>Tue, 26 Aug 2025 13:04:39 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/video-learning/</guid>
+      <guid>https://junuxyz.github.io/tags/video-learning/</guid>
       <description></description>
     </item>
     <item>
       <title>Labs</title>
-      <link>https://junuxyz.github.io/blog/tags/labs/</link>
+      <link>https://junuxyz.github.io/tags/labs/</link>
       <pubDate>Wed, 20 Aug 2025 15:57:15 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/labs/</guid>
+      <guid>https://junuxyz.github.io/tags/labs/</guid>
       <description></description>
     </item>
     <item>
       <title>MLOps</title>
-      <link>https://junuxyz.github.io/blog/tags/mlops/</link>
+      <link>https://junuxyz.github.io/tags/mlops/</link>
       <pubDate>Wed, 20 Aug 2025 15:57:15 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/mlops/</guid>
+      <guid>https://junuxyz.github.io/tags/mlops/</guid>
       <description></description>
     </item>
     <item>
       <title>AI</title>
-      <link>https://junuxyz.github.io/blog/tags/ai/</link>
+      <link>https://junuxyz.github.io/tags/ai/</link>
       <pubDate>Tue, 29 Jul 2025 13:12:50 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/ai/</guid>
+      <guid>https://junuxyz.github.io/tags/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
-      <link>https://junuxyz.github.io/blog/tags/python/</link>
+      <link>https://junuxyz.github.io/tags/python/</link>
       <pubDate>Tue, 22 Jul 2025 18:50:06 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/python/</guid>
+      <guid>https://junuxyz.github.io/tags/python/</guid>
       <description></description>
     </item>
     <item>
       <title>Pytorch</title>
-      <link>https://junuxyz.github.io/blog/tags/pytorch/</link>
+      <link>https://junuxyz.github.io/tags/pytorch/</link>
       <pubDate>Sun, 20 Jul 2025 16:26:31 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/pytorch/</guid>
+      <guid>https://junuxyz.github.io/tags/pytorch/</guid>
       <description></description>
     </item>
     <item>
       <title>Triton</title>
-      <link>https://junuxyz.github.io/blog/tags/triton/</link>
+      <link>https://junuxyz.github.io/tags/triton/</link>
       <pubDate>Sun, 20 Jul 2025 16:26:31 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/triton/</guid>
+      <guid>https://junuxyz.github.io/tags/triton/</guid>
       <description></description>
     </item>
     <item>
       <title>Vscode</title>
-      <link>https://junuxyz.github.io/blog/tags/vscode/</link>
+      <link>https://junuxyz.github.io/tags/vscode/</link>
       <pubDate>Wed, 16 Jul 2025 21:45:17 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/vscode/</guid>
+      <guid>https://junuxyz.github.io/tags/vscode/</guid>
       <description></description>
     </item>
   </channel>

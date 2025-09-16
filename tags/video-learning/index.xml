@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Video Learning on jlog</title>
+    <link>https://junuxyz.github.io/tags/video-learning/</link>
+    <description>Recent content in Video Learning on jlog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Aug 2025 13:04:39 +0900</lastBuildDate>
+    <atom:link href="https://junuxyz.github.io/tags/video-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[Paper Review] UniSkill: Imitating Human Videos via Cross-Embodiment Skill Representation</title>
+      <link>https://junuxyz.github.io/blog/posts/uniskill/</link>
+      <pubDate>Tue, 26 Aug 2025 13:04:39 +0900</pubDate>
+      <guid>https://junuxyz.github.io/blog/posts/uniskill/</guid>
+      <description>&lt;img src=&#34;https://junuxyz.github.io/images/unkskill.png&#34; alt=&#34;Image&#34;&gt;&lt;h1 id=&#34;abstract&#34;&gt;Abstract&lt;/h1&gt;&#xA;&lt;p&gt;Imitating experts is challenging due to visual, physical differences between human and robot.&lt;/p&gt;&#xA;&lt;p&gt;Previous methods used cross-embodiment datasets with shared scenes and tasks but these data are limited which makes it hard to scale.&lt;/p&gt;&#xA;&lt;p&gt;This paper presents a new framework called &lt;strong&gt;UniSkill&lt;/strong&gt; that learns embodiment-agnostic skill representation from large video dataset.&lt;/p&gt;&#xA;&lt;h1 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h1&gt;&#xA;&lt;p&gt;UniSkill uses image-editing pipeline for the neural network to focus on capturing the dynamics changes (over static content) between temproally distant video frames.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
