@@ -1,0 +1,23 @@
+{{ define "main" }}
+<div class="container">
+    <header class="page-header">
+        <h1>{{ .Title }}</h1>
+        <p class="page-description">All tags used on this blog</p>
+    </header>
+    
+    {{ if .Data.Terms }}
+    <div class="terms-list">
+        {{ range $key, $value := .Data.Terms.ByCount }}
+        <div class="term-item">
+            <h3 class="term-name">
+                <a href="{{ .Page.Permalink }}">{{ .Page.Title }}</a>
+            </h3>
+            <p class="term-count">{{ .Count }} {{ if eq .Count 1 }}post{{ else }}posts{{ end }}</p>
+        </div>
+        {{ end }}
+    </div>
+    {{ else }}
+    <p class="no-terms">No tags found.</p>
+    {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,15 @@
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; {{ now.Year }} {{ .Site.Title }}. Built with <a href="https://gohugo.io/">Hugo</a>.</p>
+        
+        {{ if .Site.Params.socialIcons }}
+        <div class="social-icons">
+            {{ range .Site.Params.socialIcons }}
+            <a href="{{ .url }}" class="social-icon" aria-label="{{ .name }}" target="_blank" rel="noopener">
+                {{ .name }}
+            </a>
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
+</footer> 

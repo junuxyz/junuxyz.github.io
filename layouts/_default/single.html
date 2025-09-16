@@ -1,0 +1,51 @@
+{{ define "main" }}
+<div class="container">
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title">{{ .Title }}</h1>
+            <div class="post-meta">
+                <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                    {{ .Date.Format "January 2, 2006" }}
+                </time>
+                {{ if .Params.author }}
+                <span class="author">by {{ .Params.author }}</span>
+                {{ end }}
+                {{ if .Params.tags }}
+                <div class="post-tags">
+                    {{ range .Params.tags }}
+                    {{ $tagURL := printf "/blog/tags/%s/" (. | urlize) }}
+                    <a href="{{ $tagURL | relURL }}" class="tag">#{{ . }}</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </div>
+        </header>
+        
+        <div class="post-content">
+            {{ .Content }}
+        </div>
+        
+        {{ if or .NextInSection .PrevInSection }}
+        <nav class="post-nav">
+            {{ if .PrevInSection }}
+            <div class="nav-prev">
+                <a href="{{ .PrevInSection.Permalink }}" class="nav-link">
+                    <span class="nav-label">previous: </span>
+                    <span class="nav-title">{{ .PrevInSection.Title }}</span>
+                </a>
+            </div>
+            {{ end }}
+            
+            {{ if .NextInSection }}
+            <div class="nav-next">
+                <a href="{{ .NextInSection.Permalink }}" class="nav-link">
+                    <span class="nav-label">next: </span>
+                    <span class="nav-title">{{ .NextInSection.Title }}</span>
+                </a>
+            </div>
+            {{ end }}
+        </nav>
+        {{ end }}
+    </article>
+</div>
+{{ end }} 

@@ -1,0 +1,26 @@
+{{ define "main" }}
+<div class="container">
+    {{ if .IsHome }}
+    {{ else }}
+    <header class="page-header">
+        <h1>{{ .Title }}</h1>
+        {{ if .Description }}
+        <p class="page-description">{{ .Description }}</p>
+        {{ end }}
+    </header>
+    {{ end }}
+    
+    {{ if .Pages }}
+    <div class="posts-minimal">
+        {{ range .Pages }}
+        <div class="post-link">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+            <span class="post-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+        </div>
+        {{ end }}
+    </div>
+    {{ else }}
+    <p class="no-posts">No posts found.</p>
+    {{ end }}
+</div>
+{{ end }}

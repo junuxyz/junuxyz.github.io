@@ -1,6 +1,6 @@
 baseURL = "https://junuxyz.github.io/"
 languageCode = "en-us"
-title = "junuxyz"
+title = "jlog"
 theme = "custom"
 
 [pagination]
@@ -13,6 +13,16 @@ buildExpired = false
 
 # Enable taxonomies
 [taxonomies]
+  category = "categories"
+  tag = "tags"
+
+# Configure taxonomy permalinks to be under /blog/
+[permalinks]
+  categories = "/blog/categories/:slug/"
+  tags = "/blog/tags/:slug/"
+
+# Configure taxonomies to work with sections
+[params.taxonomies]
   category = "categories"
   tag = "tags"
 
@@ -47,18 +57,18 @@ buildExpired = false
   [[menu.main]]
     identifier = "thoughts"
     name = "Thoughts"
-    url = "/categories/thoughts/"
+    url = "/blog/categories/thoughts/"
     weight = 10
   [[menu.main]]
     identifier = "ml"
     name = "ML"
-    url = "/categories/ml/"
+    url = "/blog/categories/ml/"
     weight = 20
 
   [[menu.main]]
     identifier = "about"
     name = "About"
-    url = "/about/"
+    url = "/blog/about/"
     weight = 40
   [[menu.main]]
     identifier = "tags"
