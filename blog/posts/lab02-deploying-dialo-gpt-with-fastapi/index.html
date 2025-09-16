@@ -1,0 +1,333 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Lab02: Deploying DialoGPT-Medium with FastAPI & Docker - jlog</title><meta name=description content="Personal blog and thoughts"><meta name=author content="Junu"><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/syntax.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><link rel=icon type=image/x-icon href=/favicon.ico></head><body class=blog-section><header class=header><div class=header-content><div class=logo><a href=/blog/>jlog</a></div><div class=header-right><nav class=nav><a href=/blog/categories/thoughts/ class=nav-item>Thoughts</a>
+<a href=/blog/categories/ml/ class=nav-item>ML</a>
+<a href=/blog/about/ class=nav-item>About</a>
+<a href=/blog/tags/ class=nav-item>Tags</a></nav></div></div></header><main class=main><div class=container><article class=post><header class=post-header><h1 class=post-title>Lab02: Deploying DialoGPT-Medium with FastAPI & Docker</h1><div class=post-meta><time datetime=2025-08-20T15:57:15+09:00>August 20, 2025</time><div class=post-tags><a href=/blog/tags/mlops/ class=tag>#MLOps</a>
+<a href=/blog/tags/labs/ class=tag>#labs</a></div></div></header><div class=post-content><h2 id=introduction>Introduction</h2><p>In Lab02, We are going to look at how Jupyter/Colab Notebook models, codes are actually deployed as a service.</p><img src=/images/simple-chat.png alt=Image><p>This is a simple chatbot called <em>simple chat</em> which is containerized in Docker and run on FastAPI.</p><p>We will build and deploy this chatbot using DialoGPT as the model, use FastAPI to create API endpoints, and deploy it with Docker.</p><p>The goal of this lab is to experience the end-to-end of deploying and serving a LLM model from scratch, with minimal configuration.</p><hr><h2 id=about-the-model>About the model</h2><p><strong>DialoGPT</strong> is a large-scale neural conversational response generation model developed by Microsoft, designed specifically for building open-domain chatbots that can generate human-like responses in dialogue settings.</p><p>I chose DialoGPT just for the sake of its simplicity so that I can focus more on the deployment part.</p><p>Check <a href=https://huggingface.co/docs/transformers/en/model_doc/dialogpt>here</a> for more information about DialoGPT if you are interested.</p><h2 id=steps>Steps</h2><h3 id=0-setting-environment>0. Setting Environment</h3><p>Since every configuration is in <code>lab_02/pyproject.toml</code>, at <code>lab_02/</code>, type these commands on CLI:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>uv sync
+</span></span><span class=line><span class=cl><span class=nb>source</span> .venv/bin/activate
+</span></span></code></pre></div><h3 id=1-importing-a-model>1. Importing a Model</h3><p>First, we import the LLM we are going to use.
+Most of the popular open weight models can be found in Hugging Face.</p><p>If we install <code>huggingface-hub</code>, we can easily import the model (since <code>huggingface-hub</code> is included in the environment, you don&rsquo;t need to install it manually):</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>model_name</span> <span class=o>=</span> <span class=s2>&#34;microsoft/DialoGPT-medium&#34;</span>
+</span></span></code></pre></div><p>There are some NLP-specific concepts and processes in <a href=https://github.com/junuxyz/labs/blob/main/lab_02/model.py>model.py</a> but since this isn&rsquo;t related to our goal, we will skip this part for now.</p><p>We can test if the model imported works well by typing</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>python -m model
+</span></span></code></pre></div><p>It should show up like this:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>❯ python -m model
+</span></span><span class=line><span class=cl>Using device: cuda
+</span></span><span class=line><span class=cl>DialoGPT Chat Bot - Type <span class=s1>&#39;quit&#39;</span> to <span class=nb>exit</span>
+</span></span><span class=line><span class=cl>You: 
+</span></span></code></pre></div><p>Try typing some words or a sentence to check if the model actually works.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>❯ python -m model
+</span></span><span class=line><span class=cl>Using device: cuda
+</span></span><span class=line><span class=cl>DialoGPT Chat Bot - Type <span class=s1>&#39;quit&#39;</span> to <span class=nb>exit</span>
+</span></span><span class=line><span class=cl>You: hi
+</span></span><span class=line><span class=cl>Bot: hi
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>You: how are you?
+</span></span><span class=line><span class=cl>Bot: I<span class=err>&#39;</span>m good, how are you?
+</span></span></code></pre></div><h3 id=2-fastapi-integration>2. FastAPI Integration</h3><p>Now we will use FastAPI to serve the model through API endpoint. This makes the model run on server (just like we use ChatGPT models via API keys)</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>(</span><span class=n>title</span><span class=o>=</span><span class=s2>&#34;Lab02: simple chat&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><p>This creates a FastAPI app.</p><p>We will first make Pydantic classes which defines the types of parameters for inputs and outputs of the API routes.
+Since we are making a very simple chat application, we are only going to use two classes, <code>ChatRequest</code> and <code>ChatResponse</code>.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pydantic</span> <span class=kn>import</span> <span class=n>BaseModel</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>(</span><span class=n>title</span><span class=o>=</span><span class=s2>&#34;Lab02: simple chat&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>ChatRequest</span><span class=p>(</span><span class=n>BaseModel</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>message</span><span class=p>:</span> <span class=nb>str</span>
+</span></span><span class=line><span class=cl>    <span class=n>max_length</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>100</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>ChatResponse</span><span class=p>(</span><span class=n>BaseModel</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>response</span><span class=p>:</span> <span class=nb>str</span>
+</span></span></code></pre></div><p>The data models we define for our API requests and responses inherit from Pydantic&rsquo;s <code>BaseModel</code> class.</p><p><code>ChatRequest</code> has <code>message</code> and <code>max_length</code> of message. <code>message</code> here means the user&rsquo;s message. The reason we have max_length parameter is because DialoGPT-medium is not good at processing long text, but for short conversation, so we set it to 100.</p><p><code>ChatResponse</code> has <code>response</code>, which of course, is the response from the chatbot.</p><p>Now we can add routers that detects requests(<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>) to the routers.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=nd>@app.get</span><span class=p>(</span><span class=s2>&#34;/&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>async</span> <span class=k>def</span> <span class=nf>root</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>{</span><span class=s2>&#34;message&#34;</span><span class=p>:</span> <span class=s2>&#34;simple chat is running.&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nd>@app.get</span><span class=p>(</span><span class=s2>&#34;/health&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>async</span> <span class=k>def</span> <span class=nf>health_check</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>{</span><span class=s2>&#34;status&#34;</span><span class=p>:</span> <span class=s2>&#34;healthy&#34;</span><span class=p>}</span>
+</span></span></code></pre></div><p><code>"/"</code> and <code>"/health"</code> are the most basic routers used.
+<code>"/"</code> is used when there are no routers and just the port number given (e.g. <code>localhost:8000/</code>), so it is usually used as default state.</p><p><code>"/health"</code> is used for health check; if the service is running and healthy. If it is running, <code>{"status": "healthy"}</code> will likely show up.</p><p>Now we need to add the model we imported in step 1.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>model</span> <span class=kn>import</span> <span class=n>generate_response</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pydantic</span> <span class=kn>import</span> <span class=n>BaseModel</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ...</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nd>@app.post</span><span class=p>(</span><span class=s2>&#34;/chat&#34;</span><span class=p>,</span> <span class=n>response_model</span><span class=o>=</span><span class=n>ChatResponse</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>async</span> <span class=k>def</span> <span class=nf>chat</span><span class=p>(</span><span class=n>request</span><span class=p>:</span> <span class=n>ChatRequest</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>model_response</span> <span class=o>=</span> <span class=n>generate_response</span><span class=p>(</span><span class=n>request</span><span class=o>.</span><span class=n>message</span><span class=p>,</span> <span class=n>request</span><span class=o>.</span><span class=n>max_length</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ChatResponse</span><span class=p>(</span><span class=n>response</span><span class=o>=</span><span class=n>model_response</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ChatResponse</span><span class=p>(</span><span class=n>response</span><span class=o>=</span><span class=sa>f</span><span class=s2>&#34;Error: </span><span class=si>{</span><span class=nb>str</span><span class=p>(</span><span class=n>e</span><span class=p>)</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><p>response_model parameter in <code>@app</code> restricts the Schema of the response format.
+The code above just simply takes request and use <code>generate_response</code> from <code>model.py</code> and output the response in <code>ChatResponse</code> format.</p><p>We can test if FastAPI works well using uvicorn:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>uvicorn</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>model</span> <span class=kn>import</span> <span class=n>generate_response</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pydantic</span> <span class=kn>import</span> <span class=n>BaseModel</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>(</span><span class=n>title</span><span class=o>=</span><span class=s2>&#34;simple chat&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>ChatRequest</span><span class=p>(</span><span class=n>BaseModel</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>message</span><span class=p>:</span> <span class=nb>str</span>
+</span></span><span class=line><span class=cl>    <span class=n>max_length</span><span class=p>:</span> <span class=nb>int</span> <span class=o>=</span> <span class=mi>100</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>ChatResponse</span><span class=p>(</span><span class=n>BaseModel</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>response</span><span class=p>:</span> <span class=nb>str</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nd>@app.get</span><span class=p>(</span><span class=s2>&#34;/&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>async</span> <span class=k>def</span> <span class=nf>root</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>{</span><span class=s2>&#34;message&#34;</span><span class=p>:</span> <span class=s2>&#34;simple chat is running.&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nd>@app.post</span><span class=p>(</span><span class=s2>&#34;/chat&#34;</span><span class=p>,</span> <span class=n>response_model</span><span class=o>=</span><span class=n>ChatResponse</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>async</span> <span class=k>def</span> <span class=nf>chat</span><span class=p>(</span><span class=n>request</span><span class=p>:</span> <span class=n>ChatRequest</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>model_response</span> <span class=o>=</span> <span class=n>generate_response</span><span class=p>(</span><span class=n>request</span><span class=o>.</span><span class=n>message</span><span class=p>,</span> <span class=n>request</span><span class=o>.</span><span class=n>max_length</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ChatResponse</span><span class=p>(</span><span class=n>response</span><span class=o>=</span><span class=n>model_response</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ChatResponse</span><span class=p>(</span><span class=n>response</span><span class=o>=</span><span class=sa>f</span><span class=s2>&#34;Error: </span><span class=si>{</span><span class=nb>str</span><span class=p>(</span><span class=n>e</span><span class=p>)</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nd>@app.get</span><span class=p>(</span><span class=s2>&#34;/health&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>async</span> <span class=k>def</span> <span class=nf>health_check</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>{</span><span class=s2>&#34;status&#34;</span><span class=p>:</span> <span class=s2>&#34;healthy&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>uvicorn</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>app</span><span class=p>,</span> <span class=n>host</span><span class=o>=</span><span class=s2>&#34;0.0.0.0&#34;</span><span class=p>,</span> <span class=n>port</span><span class=o>=</span><span class=mi>8000</span><span class=p>)</span>
+</span></span></code></pre></div><p>if we run <code>python main.py</code>, it will deploy the FastAPI in port defined(8000) in this case.</p><p>After running <code>python main.py</code>, go into <a href=localhost:8000/>localhost:8000/</a> and check if you see <code>{"message": "simple chat is running."}</code> on the screen.</p><p>Since <code>"/chat"</code> is a POST method, we need to use <code>curl</code> or service like PostMan in order to check if it works correctly.</p><h3 id=3-frontend>3. Frontend</h3><p>Now we need to make a frontend that presents the chat interface with the user and the chat bot.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=cp>&lt;!DOCTYPE html&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;UTF-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>meta</span> <span class=na>name</span><span class=o>=</span><span class=s>&#34;viewport&#34;</span> <span class=na>content</span><span class=o>=</span><span class=s>&#34;width=device-width, initial-scale=1.0&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>chat<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=o>...</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;terminal&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;msg&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>span</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;current-line&#34;</span><span class=p>&gt;</span>&gt; <span class=p>&lt;</span><span class=nt>span</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;current-input&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>span</span><span class=p>&gt;&lt;</span><span class=nt>span</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;cursor&#34;</span><span class=p>&gt;</span>█<span class=p>&lt;/</span><span class=nt>span</span><span class=p>&gt;&lt;/</span><span class=nt>span</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=kd>let</span> <span class=nx>currentInput</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>function</span> <span class=nx>add</span><span class=p>(</span><span class=nx>text</span><span class=p>,</span> <span class=nx>user</span> <span class=o>=</span> <span class=kc>false</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>             * Adds a message to the terminal display.
+</span></span></span><span class=line><span class=cl><span class=cm>             * Removes the current input line, appends the message, and creates a new input line.
+</span></span></span><span class=line><span class=cl><span class=cm>             *
+</span></span></span><span class=line><span class=cl><span class=cm>             * @param {string} text - The message to display.
+</span></span></span><span class=line><span class=cl><span class=cm>             * @param {boolean} [user=false] - If true, styles the message as a user message; otherwise, as a bot message.
+</span></span></span><span class=line><span class=cl><span class=cm>             */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>terminal</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;terminal&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>div</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;div&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nx>div</span><span class=p>.</span><span class=nx>className</span> <span class=o>=</span> <span class=sb>`msg </span><span class=si>${</span><span class=nx>user</span> <span class=o>?</span> <span class=s1>&#39;user&#39;</span> <span class=o>:</span> <span class=s1>&#39;bot&#39;</span><span class=si>}</span><span class=sb>`</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nx>div</span><span class=p>.</span><span class=nx>textContent</span> <span class=o>=</span> <span class=nx>text</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1>// remove the current input line and append message
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=kr>const</span> <span class=nx>currentLine</span> <span class=o>=</span> <span class=nx>terminal</span><span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=s1>&#39;.current-line&#39;</span><span class=p>).</span><span class=nx>parentElement</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nx>currentLine</span><span class=p>.</span><span class=nx>remove</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=nx>terminal</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>div</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>newLine</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;div&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nx>newLine</span><span class=p>.</span><span class=nx>className</span> <span class=o>=</span> <span class=s1>&#39;msg&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nx>newLine</span><span class=p>.</span><span class=nx>innerHTML</span> <span class=o>=</span> <span class=s1>&#39;&lt;span class=&#34;current-line&#34;&gt;&gt; &lt;span id=&#34;current-input&#34;&gt; \
+</span></span></span><span class=line><span class=cl><span class=s1>                                 &lt;/span&gt;&lt;span class=&#34;cursor&#34;&gt;█&lt;/span&gt;&lt;/span&gt;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nx>terminal</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>newLine</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=nx>terminal</span><span class=p>.</span><span class=nx>scrollTop</span> <span class=o>=</span> <span class=nx>terminal</span><span class=p>.</span><span class=nx>scrollHeight</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>function</span> <span class=nx>loading</span><span class=p>(</span><span class=nx>show</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>             * Shows a loading UI if parameter show is true.
+</span></span></span><span class=line><span class=cl><span class=cm>             *
+</span></span></span><span class=line><span class=cl><span class=cm>             * @param {boolean} show - If true, shows a loading UI.
+</span></span></span><span class=line><span class=cl><span class=cm>             */</span>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>terminal</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;terminal&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>el</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;load&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nx>show</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=kr>const</span> <span class=nx>currentLine</span> <span class=o>=</span> <span class=nx>terminal</span><span class=p>.</span><span class=nx>querySelector</span><span class=p>(</span><span class=s1>&#39;.current-line&#39;</span><span class=p>).</span><span class=nx>parentElement</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=nx>currentLine</span><span class=p>.</span><span class=nx>remove</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=kr>const</span> <span class=nx>div</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;div&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>div</span><span class=p>.</span><span class=nx>id</span> <span class=o>=</span> <span class=s1>&#39;load&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=nx>div</span><span class=p>.</span><span class=nx>className</span> <span class=o>=</span> <span class=s1>&#39;loading&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=nx>div</span><span class=p>.</span><span class=nx>textContent</span> <span class=o>=</span> <span class=s1>&#39;...&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=nx>terminal</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>div</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>terminal</span><span class=p>.</span><span class=nx>scrollTop</span> <span class=o>=</span> <span class=nx>terminal</span><span class=p>.</span><span class=nx>scrollHeight</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=nx>el</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>el</span><span class=p>.</span><span class=nx>remove</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=kr>const</span> <span class=nx>newLine</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>createElement</span><span class=p>(</span><span class=s1>&#39;div&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>newLine</span><span class=p>.</span><span class=nx>className</span> <span class=o>=</span> <span class=s1>&#39;msg&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=nx>newLine</span><span class=p>.</span><span class=nx>innerHTML</span> <span class=o>=</span> <span class=s1>&#39;&lt;span class=&#34;current-line&#34;&gt;&gt; &lt;span id=&#34;current-input&#34;&gt; \
+</span></span></span><span class=line><span class=cl><span class=s1>                                     &lt;/span&gt;&lt;span class=&#34;cursor&#34;&gt;█&lt;/span&gt;&lt;/span&gt;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=c1>// create newLine again
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=nx>terminal</span><span class=p>.</span><span class=nx>appendChild</span><span class=p>(</span><span class=nx>newLine</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>terminal</span><span class=p>.</span><span class=nx>scrollTop</span> <span class=o>=</span> <span class=nx>terminal</span><span class=p>.</span><span class=nx>scrollHeight</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kr>async</span> <span class=kd>function</span> <span class=nx>send</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>             * Sends the message input to the server
+</span></span></span><span class=line><span class=cl><span class=cm>             */</span>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>msg</span> <span class=o>=</span> <span class=nx>currentInput</span><span class=p>.</span><span class=nx>trim</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=o>!</span><span class=nx>msg</span><span class=p>)</span> <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nx>msg</span> <span class=o>==</span> <span class=s2>&#34;clear()&#34;</span> <span class=o>||</span> <span class=nx>msg</span> <span class=o>==</span> <span class=s2>&#34;clear&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=c1>// Clear all the content in terminal and start fresh
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=kr>const</span> <span class=nx>terminal</span> <span class=o>=</span> <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;terminal&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>terminal</span><span class=p>.</span><span class=nx>innerHTML</span> <span class=o>=</span> <span class=sb>`
+</span></span></span><span class=line><span class=cl><span class=sb>                    &lt;div class=&#34;msg&#34;&gt;
+</span></span></span><span class=line><span class=cl><span class=sb>                        &lt;span class=&#34;current-line&#34;&gt;&gt; &lt;span id=&#34;current-input&#34;&gt;&lt;/span&gt; \
+</span></span></span><span class=line><span class=cl><span class=sb>                        &lt;span class=&#34;cursor&#34;&gt;█&lt;/span&gt;&lt;/span&gt;
+</span></span></span><span class=line><span class=cl><span class=sb>                    &lt;/div&gt;
+</span></span></span><span class=line><span class=cl><span class=sb>                `</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=nx>currentInput</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=nx>add</span><span class=p>(</span><span class=nx>msg</span><span class=p>,</span> <span class=kc>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nx>currentInput</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;current-input&#39;</span><span class=p>).</span><span class=nx>textContent</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=nx>loading</span><span class=p>(</span><span class=kc>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=kr>const</span> <span class=nx>res</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/api/chat&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>headers</span><span class=o>:</span> <span class=p>{</span> <span class=s1>&#39;Content-Type&#39;</span><span class=o>:</span> <span class=s1>&#39;application/json&#39;</span> <span class=p>},</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>body</span><span class=o>:</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>({</span> <span class=nx>message</span><span class=o>:</span> <span class=nx>msg</span><span class=p>,</span> <span class=nx>max_length</span><span class=o>:</span> <span class=mi>100</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl>                <span class=p>});</span>
+</span></span><span class=line><span class=cl>                <span class=kr>const</span> <span class=nx>data</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>res</span><span class=p>.</span><span class=nx>json</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=nx>loading</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>add</span><span class=p>(</span><span class=nx>res</span><span class=p>.</span><span class=nx>ok</span> <span class=o>?</span> <span class=nx>data</span><span class=p>.</span><span class=nx>response</span> <span class=o>:</span> <span class=s1>&#39;error&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span> <span class=k>catch</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>loading</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>add</span><span class=p>(</span><span class=s1>&#39;failed&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nb>document</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;keydown&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nx>e</span><span class=p>.</span><span class=nx>key</span> <span class=o>===</span> <span class=s1>&#39;Enter&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>e</span><span class=p>.</span><span class=nx>preventDefault</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=nx>send</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=nx>e</span><span class=p>.</span><span class=nx>key</span> <span class=o>===</span> <span class=s1>&#39;Backspace&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>e</span><span class=p>.</span><span class=nx>preventDefault</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=nx>currentInput</span> <span class=o>=</span> <span class=nx>currentInput</span><span class=p>.</span><span class=nx>slice</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;current-input&#39;</span><span class=p>).</span><span class=nx>textContent</span> <span class=o>=</span> <span class=nx>currentInput</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span> <span class=k>else</span> <span class=k>if</span> <span class=p>(</span><span class=nx>e</span><span class=p>.</span><span class=nx>key</span><span class=p>.</span><span class=nx>length</span> <span class=o>===</span> <span class=mi>1</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>e</span><span class=p>.</span><span class=nx>preventDefault</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=nx>currentInput</span> <span class=o>+=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>key</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;current-input&#39;</span><span class=p>).</span><span class=nx>textContent</span> <span class=o>=</span> <span class=nx>currentInput</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nb>document</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;click&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nb>document</span><span class=p>.</span><span class=nx>body</span><span class=p>.</span><span class=nx>focus</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=nb>document</span><span class=p>.</span><span class=nx>body</span><span class=p>.</span><span class=nx>focus</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></div><p>This is a simple static HTML file that has terminal-like design.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=kr>const</span> <span class=nx>res</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/api/chat&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>			<span class=nx>headers</span><span class=o>:</span> <span class=p>{</span> <span class=s1>&#39;Content-Type&#39;</span><span class=o>:</span> <span class=s1>&#39;application/json&#39;</span> <span class=p>},</span>
+</span></span><span class=line><span class=cl>			<span class=nx>body</span><span class=o>:</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>({</span> <span class=nx>message</span><span class=o>:</span> <span class=nx>msg</span><span class=p>,</span> <span class=nx>max_length</span><span class=o>:</span> <span class=mi>100</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>});</span>
+</span></span><span class=line><span class=cl>		<span class=kr>const</span> <span class=nx>data</span> <span class=o>=</span> <span class=kr>await</span> <span class=nx>res</span><span class=p>.</span><span class=nx>json</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>		<span class=nx>loading</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=nx>add</span><span class=p>(</span><span class=nx>res</span><span class=p>.</span><span class=nx>ok</span> <span class=o>?</span> <span class=nx>data</span><span class=p>.</span><span class=nx>response</span> <span class=o>:</span> <span class=s1>&#39;error&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span> <span class=k>catch</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>loading</span><span class=p>(</span><span class=kc>false</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=nx>add</span><span class=p>(</span><span class=s1>&#39;failed&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span></code></pre></div><p>Via the <code>send</code> function, it will POST the message through <code>/api/chat</code>. This is a relative route, which means it sends based on the current domain/port the frontend file is deployed (<code>{current_domain}/{current_port}/api/chat</code>).</p><p>A common and effective pattern for connecting a static frontend to a backend API is to use a reverse proxy server.</p><p>When you serve static files and run a backend API from the same origin, you often encounter issues like Cross-Origin Resource Sharing (CORS) errors, because both use different domain/port when deployed.</p><p>A proxy server, like Nginx which we will use in this lab, helps solve this by acting as an intermediary. It can handle requests for static files directly and forward API requests to the appropriate backend server. While CORS is the major reason why we use Proxy servers, using proxy server also gives advantage in performance, efficiency, and security.</p><p>To use Nginx, we simply add a file <code>nginx.conf</code> and configure the Nginx setting.</p><pre tabindex=0><code class=language-conf data-lang=conf>server {
+    listen 80;
+    server_name localhost;
+    
+    # static file setting
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # API Proxy
+    location /api/ {
+        proxy_pass http://backend:8000/;
+    }
+
+    # health check
+    location /health {
+        proxy_pass http://backend:8000/health;
+    }
+}
+</code></pre><p>Forget about the extra performance/reliability configurations. We will only check the critical parts.</p><ul><li><code>listen</code> and <code>server_name</code> lets the nginx proxy server to take responsibility on <code>{server_name}:{listen}</code> (eg. <code>localhost:80</code> in this case).</li><li><code>index</code> is a special key that serve as the default page</li><li><code>try_files ... /index.html</code> ensures that no matter what valid client-side route a user tries to access directly or refresh on, Nginx will <em>always</em> serve the main <code>index.html</code>, allowing client-side router to handle the rest.</li><li><code>location /api/</code> means if the request starts with <code>/api/</code> (like <code>/api/chat</code>), Nginx will use the <code>location /api/</code> block.<ul><li>If the location starts with <code>/api</code>, it will proxy pass to <code>backend:8000</code>. This is available because of docker-compose which I will explain later.</li></ul></li><li>If the request is exactly <code>/health</code> (notice it doesn&rsquo;t have a slash(<code>/</code>) after &lsquo;health&rsquo;), Nginx will use the <code>location /health</code> block.</li><li>If neither of those matches, then Nginx falls back to the most general <code>location /</code> block. <code>/</code> acts as a catch-all for anything that hasn&rsquo;t been specifically handled by another <code>location</code> block.</li></ul><h3 id=4-dockerfile-and-docker-compose>4. Dockerfile and docker-compose</h3><p>Now we finally deploy backend and frontend, using Dockerfile and docker-compose.</p><p>Since this is a monorepo that contains both frontend and backend, we will write two Dockerfiles(<code>Dockerfile.frontend</code>, <code>Dockerfile.backend</code>) and connect them with docker-compose.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-Dockerfile data-lang=Dockerfile><span class=line><span class=cl><span class=c># base: nginx</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># alpine is Alpine Linux, a lightweight Linux distribution</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=w> </span><span class=s>nginx:alpine</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Copies local index.html file into the default directory</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Nginx serves static files from inside the container.</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> index.html /usr/share/nginx/html/<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Copies custom Nginx configuration file into the container</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> nginx.conf /etc/nginx/conf.d/default.conf<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=w> </span><span class=s>80</span><span class=err>
+</span></span></span></code></pre></div><p><code>Dockerfile.frontend</code> uses a light version of Nginx called <code>nginx:alpine</code> as the base environment and uses <code>index.html</code> (frontend HTML file) and <code>nginx.conf</code> (our nginx configuration). We expose it in port 80. Note that the port 80 is NOT the external port number but the Docker&rsquo;s internal port number.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-Dockerfile data-lang=Dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=w> </span><span class=s>python:3.12-slim</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=w> </span><span class=s>/app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Install uv</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> pip install uv<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Copy only the dependency file first to leverage Docker cache</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> pyproject.toml ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Install dependencies using uv</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> uv sync --system<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Copy the rest of the application code</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> . .<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># EXPOSE port</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=w> </span><span class=s>8000</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># Execute server using the installed uvicorn</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;uvicorn&#34;</span><span class=p>,</span> <span class=s2>&#34;main:app&#34;</span><span class=p>,</span> <span class=s2>&#34;--host&#34;</span><span class=p>,</span> <span class=s2>&#34;0.0.0.0&#34;</span><span class=p>,</span> <span class=s2>&#34;--port&#34;</span><span class=p>,</span> <span class=s2>&#34;8000&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></div><p><code>Dockerfile.backend</code> uses a slim version of Python 3.12, installs dependencies and expose port 8000. Finally it will run uvicorn to deploy the FastAPI app in <code>main.py</code>.</p><p>These Dockerfiles make sure the configuration and environments are all identical in any local environment.</p><p>We&rsquo;ll also use <code>docker-compose</code> to manage our two Docker containers. <code>docker-compose</code> automatically creates a shared network for the services, enabling them to easily discover and communicate with one another by their service names.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>services</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>backend</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>build</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>context</span><span class=p>:</span><span class=w> </span><span class=l>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>dockerfile</span><span class=p>:</span><span class=w> </span><span class=l>Dockerfile.backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>chat-backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;8000:8000&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>chat-network</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>frontend</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>build</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>context</span><span class=p>:</span><span class=w> </span><span class=l>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>dockerfile</span><span class=p>:</span><span class=w> </span><span class=l>Dockerfile.frontend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>chat-frontend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;3000:80&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>depends_on</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>chat-network</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>networks</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>chat-network</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>driver</span><span class=p>:</span><span class=w> </span><span class=l>bridge</span><span class=w>
+</span></span></span></code></pre></div><p>When we use <code>docker-compose</code> in command line, it detects each container&rsquo;s name as <code>backend</code> and <code>frontend</code>.
+When we use <code>docker</code> in command line, it detects each container&rsquo;s name as <code>chat-backend</code> and <code>chat-frontend</code>.</p><p>Both containers use the same network called <code>chat-network</code>, which enables containers to discover each other easily, enhance security, and avoids port conflicts.</p><p>For example, in <code>nginx.conf</code>, we used <code>proxy_pass http://backend:8000/;</code> instead of <code>proxy_pass http://localhost:8000</code>.</p><p>Now it&rsquo;s very easy to deploy both services by simply typing</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker-compose up --build -d
+</span></span></code></pre></div><ul><li><code>--build</code>: building the image before deploying the Docker containers</li><li><code>-d</code>: command runs on background</li></ul><p>Check <a href=https://github.com/junuxyz/labs/blob/main/lab_02/README.md><code>README.md</code></a> for alternative scripts to run.</p></div><nav class=post-nav><div class=nav-prev><a href=https://junuxyz.github.io/blog/posts/mental-model-of-engineering/ class=nav-link><span class=nav-label>previous: </span><span class=nav-title>Mental Model of Engineering</span></a></div><div class=nav-next><a href=https://junuxyz.github.io/blog/posts/uniskill/ class=nav-link><span class=nav-label>next: </span><span class=nav-title>[Paper Review] UniSkill: Imitating Human Videos via Cross-Embodiment Skill Representation</span></a></div></nav></article></div></main><footer class=footer><div class=footer-content><p>&copy; 2025 jlog. Built with <a href=https://gohugo.io/>Hugo</a>.</p></div></footer><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js integrity=sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],throwOnError:!1})})</script></body></html>

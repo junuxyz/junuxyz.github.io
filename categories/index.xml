@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on junuxyz</title>
+    <title>Categories on jlog</title>
     <link>https://junuxyz.github.io/categories/</link>
-    <description>Recent content in Categories on junuxyz</description>
+    <description>Recent content in Categories on jlog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 03 Sep 2025 11:13:40 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Thoughts</title>
-      <link>https://junuxyz.github.io/categories/thoughts/</link>
+      <link>https://junuxyz.github.io/blog/categories/thoughts/</link>
       <pubDate>Wed, 03 Sep 2025 11:13:40 +0900</pubDate>
-      <guid>https://junuxyz.github.io/categories/thoughts/</guid>
+      <guid>https://junuxyz.github.io/blog/categories/thoughts/</guid>
       <description></description>
     </item>
     <item>
       <title>ML</title>
-      <link>https://junuxyz.github.io/categories/ml/</link>
+      <link>https://junuxyz.github.io/blog/categories/ml/</link>
       <pubDate>Tue, 26 Aug 2025 13:04:39 +0900</pubDate>
-      <guid>https://junuxyz.github.io/categories/ml/</guid>
+      <guid>https://junuxyz.github.io/blog/categories/ml/</guid>
       <description></description>
     </item>
   </channel>

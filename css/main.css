@@ -15,7 +15,7 @@
     --spacing: 1rem;
 }
 
-/* Reset and base */
+/* Reset and base - global */
 * {
     margin: 0;
     padding: 0;
@@ -24,35 +24,39 @@
 
 body {
     font-family: var(--font-family);
-    line-height: var(--line-height);
     color: var(--text);
     background: var(--bg);
+}
+
+/* Blog section specific styles */
+.blog-section {
+    line-height: var(--line-height);
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 2rem var(--spacing);
 }
 
-/* Typography */
-h1, h2, h3 {
+/* Typography - scoped to blog */
+.blog-section h1, .blog-section h2, .blog-section h3 {
     line-height: 1.2;
     margin-bottom: 0.5rem;
 }
 
-h1 { font-size: 2rem; font-weight: 700; }
-h2 { font-size: 1.5rem; font-weight: 600; margin-top: 2rem; }
-h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; }
+.blog-section h1 { font-size: 2rem; font-weight: 700; }
+.blog-section h2 { font-size: 1.5rem; font-weight: 600; margin-top: 2rem; }
+.blog-section h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; }
 
-p {
+.blog-section p {
     margin-bottom: 1rem;
 }
 
-/* Links */
-a {
+/* Links - scoped to blog */
+.blog-section a {
     color: var(--accent);
     text-decoration: none;
 }
 
-a:hover {
+.blog-section a:hover {
     text-decoration: underline;
 }
 
