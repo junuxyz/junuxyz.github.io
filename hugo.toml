@@ -73,5 +73,5 @@ buildExpired = false
   [[menu.main]]
     identifier = "tags"
     name = "Tags"
-    url = "/tags/"
+    url = "/blog/tags/"
     weight = 50
