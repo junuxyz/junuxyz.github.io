@@ -50,68 +50,12 @@
             }
           },
           {
-            "id": "58aa3daebd6c12aa",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/posts/lab01-adding-vector.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "lab01-adding-vector"
-            }
-          },
-          {
             "id": "23e88722f9c77c20",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/limitations-of-current-rl.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "limitations-of-current-rl"
-            }
-          },
-          {
-            "id": "fd0d58293e468db1",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/posts/uniskill.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "uniskill"
-            }
-          },
-          {
-            "id": "1e388133a49a2b6e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/posts/why-ai.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "why-ai"
-            }
-          },
-          {
-            "id": "cf176cef8f7fe1e1",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/posts/shaped-transformer.md",
+                "file": "content/blog/posts/shaped-transformer.md",
                 "mode": "source",
                 "source": false
               },
@@ -120,7 +64,7 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -177,8 +121,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672,
-    "collapsed": true
+    "width": 206.50469207763672
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -271,45 +214,53 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "cf176cef8f7fe1e1",
+  "active": "23e88722f9c77c20",
   "lastOpenFiles": [
+    "conflict-files-obsidian-git.md",
+    "content/posts/why-ai.md",
+    "content/posts/shaped-transformer.md",
+    "themes/cv/static/css/main.css",
+    "themes/cv/static/css/syntax.css",
+    "themes/cv/layouts/_default/terms.html",
+    "themes/cv/layouts/_default/single.html",
+    "themes/cv/layouts/_default/list.html",
+    "themes/cv/layouts/partials/header.html",
+    "themes/cv/layouts/partials/footer.html",
+    "themes/cv/static/css",
+    "themes/cv/layouts/_default",
+    "themes/cv/layouts/partials",
+    "content/blog/posts/what-to-pursue.md",
+    "content/blog/posts/why-ai.md",
+    "content/blog/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
+    "content/blog/posts/try-to-do-harder-things.md",
+    "content/blog/posts/vscode-cpp-configuration.md",
+    "content/blog/posts/uniskill.md",
+    "content/blog/posts/uv.md",
+    "content/blog/posts/the-engineering-era-of-ai.md",
+    "content/blog/posts/the-io-and-pipelining-era-of-ml.md",
+    "content/blog/posts/neet-code.md",
+    "content/blog/posts/shaped-transformer.md",
+    "content/blog/posts/mixture-of-architectures.md",
+    "content/blog/posts/mental-model-of-engineering.md",
+    "content/blog/posts/limitations-of-current-rl.md",
+    "content/blog/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
+    "content/blog/posts/lab01-adding-vector.md",
+    "content/blog/posts/lab01-1-adding-vector-in-cuda.md",
+    "content/blog/posts/information-and-computation.md",
+    "content/blog/posts/in-depth-review-of-attention-is-all-you-need.md",
+    "content/blog/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
+    "content/blog/posts/ideas-im-interested-in-ai.md",
+    "content/blog/posts/how-to-not-regret.md",
+    "content/blog/posts/fluent-python-cheat-sheet.md",
     "static/images/Pasted image 20250919134127.png",
     "static/images/Pasted image 20250919134106.png",
     "static/images/Pasted image 20250919134053.png",
     "static/images/Pasted image 20250919133611.png",
     "static/images/Pasted image 20250919133513.png",
     "static/images/Pasted image 20250919130339.png",
-    "content/posts/shaped-transformer.md",
-    "content/posts/lab01-adding-vector.md",
-    "content/posts/uniskill.md",
-    "content/posts/why-ai.md",
-    "content/posts/what-to-pursue.md",
-    "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
-    "content/posts/vscode-cpp-configuration.md",
-    "content/posts/uv.md",
-    "content/posts/try-to-do-harder-things.md",
-    "content/posts/the-io-and-pipelining-era-of-ml.md",
-    "content/posts/the-engineering-era-of-ai.md",
-    "content/posts/neet-code.md",
-    "content/posts/mixture-of-architectures.md",
-    "content/posts/mental-model-of-engineering.md",
-    "content/posts/limitations-of-current-rl.md",
-    "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
-    "content/posts/lab01-1-adding-vector-in-cuda.md",
-    "content/posts/ideas-im-interested-in-ai.md",
-    "content/posts/essence-of-gd.md",
-    "content/posts/dreamsmooth.md",
     "static/images/cosine_function.png",
     "static/images/unkskill.png",
-    "content/posts/fluent-python-cheat-sheet.md",
-    "content/posts/docker-80-20.md",
-    "content/posts/different-ais.md",
     "static/images/moa-1.png",
-    "content/posts/information-and-computation.md",
-    "content/posts/a-shallow-dive-into-vscode-debugger.md",
-    "static/images/GCP-image.png",
-    "static/images/simple-chat.png",
-    "themes/custom/layouts/index.html",
-    "themes/custom/static/css/syntax.css"
+    "static/images/GCP-image.png"
   ]
 }
