@@ -1,0 +1,23 @@
+{{ define "main" }}
+<div class="container">
+    <header class="page-header">
+        <h1>{{ .Title }}</h1>
+        <p class="page-description">{{ .Description }}</p>
+    </header>
+    
+    {{ $posts := where .Site.RegularPages "Section" "blog" }}
+    {{ $posts = where $posts "Type" "ne" "page" }}
+    {{ if $posts }}
+    <div class="posts-minimal">
+        {{ range $posts.ByDate.Reverse }}
+        <div class="post-link">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+            <span class="post-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+        </div>
+        {{ end }}
+    </div>
+    {{ else }}
+    <p class="no-posts">No posts found.</p>
+    {{ end }}
+</div>
+{{ end }}
