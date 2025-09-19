@@ -106,31 +106,21 @@
             }
           },
           {
-            "id": "f5291969607bde98",
+            "id": "cf176cef8f7fe1e1",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "static/images/unkskill.png"
+                "file": "content/posts/shaped-transformer.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "unkskill"
-            }
-          },
-          {
-            "id": "209aa6ef5971825c",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "static/images/moa-1.png"
-              },
-              "icon": "lucide-image",
-              "title": "moa-1"
+              "icon": "lucide-file",
+              "title": "shaped-transformer"
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -187,7 +177,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672
+    "width": 206.50469207763672,
+    "collapsed": true
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -280,8 +271,18 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "1e388133a49a2b6e",
+  "active": "cf176cef8f7fe1e1",
   "lastOpenFiles": [
+    "static/images/Pasted image 20250919134127.png",
+    "static/images/Pasted image 20250919134106.png",
+    "static/images/Pasted image 20250919134053.png",
+    "static/images/Pasted image 20250919133611.png",
+    "static/images/Pasted image 20250919133513.png",
+    "static/images/Pasted image 20250919130339.png",
+    "content/posts/shaped-transformer.md",
+    "content/posts/lab01-adding-vector.md",
+    "content/posts/uniskill.md",
+    "content/posts/why-ai.md",
     "content/posts/what-to-pursue.md",
     "content/posts/what-i-like-what-i-dislike-what-i-want-to-be.md",
     "content/posts/vscode-cpp-configuration.md",
@@ -294,12 +295,10 @@
     "content/posts/mental-model-of-engineering.md",
     "content/posts/limitations-of-current-rl.md",
     "content/posts/lab02-deploying-dialo-gpt-with-fastapi.md",
-    "content/posts/lab01-adding-vector.md",
     "content/posts/lab01-1-adding-vector-in-cuda.md",
     "content/posts/ideas-im-interested-in-ai.md",
     "content/posts/essence-of-gd.md",
     "content/posts/dreamsmooth.md",
-    "content/posts/uniskill.md",
     "static/images/cosine_function.png",
     "static/images/unkskill.png",
     "content/posts/fluent-python-cheat-sheet.md",
@@ -308,17 +307,9 @@
     "static/images/moa-1.png",
     "content/posts/information-and-computation.md",
     "content/posts/a-shallow-dive-into-vscode-debugger.md",
-    "content/posts/why-ai.md",
-    "content/about.md",
     "static/images/GCP-image.png",
     "static/images/simple-chat.png",
-    "content/posts/in-depth-review-of-attention-is-all-you-need.md",
     "themes/custom/layouts/index.html",
-    "static/images/shallow-dive-into-vscode-debugger-log-message-2.png",
-    "static/images/cuda-gpu-layers.png",
-    "static/images/cuda-gpu-architecture.png",
-    "static/images/lab01-performance-comparance.png",
-    "themes/custom/static/css/syntax.css",
-    "static/images/breakpoints.png"
+    "themes/custom/static/css/syntax.css"
   ]
 }
