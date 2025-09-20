@@ -11,7 +11,7 @@
     <div class="posts-minimal">
         {{ range $posts.ByDate.Reverse }}
         <div class="post-link">
-            <a href="{{ .Permalink }}">{{ .Title }}</a>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             <span class="post-date">{{ .Date.Format "Jan 2, 2006" }}</span>
         </div>
         {{ end }}
@@ -21,3 +21,4 @@
     {{ end }}
 </div>
 {{ end }}
+

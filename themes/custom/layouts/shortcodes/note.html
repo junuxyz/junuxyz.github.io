@@ -1,0 +1,37 @@
+<div class="note-block {{ with .Get "type" }}note-{{ . }}{{ else }}note-info{{ end }}">
+  <div class="note-icon">
+    {{ if eq (.Get "type") "warning" }}
+      ⚠️
+    {{ else if eq (.Get "type") "error" }}
+      ❌
+    {{ else if eq (.Get "type") "success" }}
+      ✅
+    {{ else if eq (.Get "type") "tip" }}
+      💡
+    {{ else }}
+      ℹ️
+    {{ end }}
+  </div>
+  <div class="note-content">
+    {{ if .Get "title" }}
+      <div class="note-title">{{ .Get "title" }}</div>
+    {{ else }}
+      <div class="note-title">
+        {{ if eq (.Get "type") "warning" }}
+          Warning
+        {{ else if eq (.Get "type") "error" }}
+          Error
+        {{ else if eq (.Get "type") "success" }}
+          Success
+        {{ else if eq (.Get "type") "tip" }}
+          Tip
+        {{ else }}
+          Note
+        {{ end }}
+      </div>
+    {{ end }}
+    <div class="note-body">
+      {{ .Inner | markdownify }}
+    </div>
+  </div>
+</div>
