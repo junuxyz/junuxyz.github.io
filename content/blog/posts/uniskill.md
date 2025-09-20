@@ -102,7 +102,8 @@ $$ I_{t+k} = FSD(I_t, z_t). $$
 
 How the robot is trained to exectue the skills it learned in the previous step.
 
-This uses the smaller, high-quality, action-labled robot dataset $D_a$
+This uses the smaller, high-quality, action-labled robot dataset $D_a$.
+
 
 $$\phi^* = \text{argmax}_\phi E(o_t, o_{t+h}, a_{t:t+h}) \sim D_a [\log \pi_\phi(a_{t:t+h} | o_t, z_t)].$$
 
@@ -121,6 +122,6 @@ $$\phi^* = \text{argmax}_\phi E(o_t, o_{t+h}, a_{t:t+h}) \sim D_a [\log \pi_\phi
     - $∣o_t,z_t$: These are the inputs to the policy network. The policy is "conditioned on" the current observation ($o_t$) and the universal skill representation ($z_t$). The skill representation $z_t$ is extracted from the robot demonstration data using the pre-trained ISD model.
     - $\log$: The logarithm is typically used in the training objective for stability and because maximizing the log-likelihood is equivalent to maximizing the probability.
 
-so basically the source/distribution is on the left, the policy trying to optimized is on the right.
+So basically the source/distribution is on the left, the policy trying to optimized is on the right.
 
 ## 3.4. Cross-Embodiment Imitation with Universal Skill Representation
