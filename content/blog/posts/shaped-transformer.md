@@ -140,8 +140,8 @@ I love you, too       --5
 ```
 
 
-### Starting Point
-shape: `(nbatches, n_seq, vocab)`
+### Understand The Exact Starting Point
+shape: `(nbatches, n_seq)`
 
 So let's say the batch of sentences are already transformed into sequence of token IDs using the Tokenizer. This will be our starting point.
 
@@ -173,12 +173,15 @@ These tokens converted to token ids will be
 ```
 ![[Pasted image 20250919134053.png]]
 
-$Q$. why is the shape `(nbatches, n_seq, vocab)` if each token ID is just a scalar value(token ID)?
 
-$A$. The paper doesn't describe clearly of the implementation method, but mathematically (ideally) each tokens are onehot encoded ($\text{x}_{\text{emb}} = \text{onehot}(token \ id) \times W_{\text{emb}}$). 
+$Q$. Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?
 
-For example the sentence "I love you"(which is `[40, 3047, 481, 0, 0, 0]` token-wise) will _iedally_ be like:
+$A$. In the original paper, the authors simply state that they use _learned embeddings_ to map token IDs to vectors of dimension $d_{model}$, without mentioning one-hot explicitly. Mathematically, however, you can think of each token as a one-hot vector, so that the embedding operation becomes
 
+$$x_{\text{emb}} = \text{onehot}(token_{id}) \times W_{emb}.$$
+
+This is convenient because it lets us express the embedding as a standard matrix multiplication.
+For example, the sentence `"I love you"` with token IDs `[40, 3047, 481, 0, 0, 0]` would look like:
 ```mathematica
 O[0, 0, :] = [0, 0, 0, ..., 1(at 40), 0, ..., 0]       # "I" (id=40)
 O[0, 1, :] = [0, 0, 0, ..., 1(at 3047), 0, ..., 0]     # "love" (id=3047)
@@ -188,19 +191,22 @@ O[0, 4, :] = [1(at 0), 0, 0, 0, ..., 0]                # [PAD]
 O[0, 5, :] = [1(at 0), 0, 0, 0, ..., 0]                # [PAD]
 ```
 
-However as you can see, this is inefficient to imply when implementing in code, taking too much space. So in practice, instead of one-hot encoding the token id, we directly use token ids from shape `(nbatches, n_seq)` to pick the specific row from `W_emb`. See Token Embedding for more detail!
+
+Of course, this representation is very inefficient in practice (huge memory cost). So in real implementations, we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
+
+**In practice:** think of `vocab` as the _number of unique token IDs (vocabulary size)_, not as an actual one-hot dimension in the input.
 
 ### Token Embedding
 
-**input shape: `(nbatches, n_seq, vocab)`**
+**input shape: `(nbatches, n_seq)`**
 
 Now we embed all token in sequences within a batch.
 
 Embedding matrix `W_emb` shape is `(vocab, d_model)`. In the original paper `d_model` is set to 512.
 
-Input(`(nbatches, n_seq, vocab)`) will use `W_emb` as a lookup table and replace the token id (`vocab`) into `d_model` dimension, which makes the scalar token id into `d_model` dimension vector for each token.
+Input(`(nbatches, n_seq)`) will use `W_emb` as a lookup table and replace the token id into `d_model` dimension, which makes the scalar token id into `d_model` dimension vector for each token.
 
-After embedding we scale the elements in d_model by multiplying it with $\sqrt{d_\text{model}} = \sqrt{512}$. Original paper doesn't explain the reason clearly but based on this, it seems they are multiplying to keep/strengthen the token embedding information even after Positional Embedding is added. Since it's just scalar multiplication, this procedure doesn't change the shape.
+After embedding, we scale the elements in d_model by multiplying it with $\sqrt{d_\text{model}} = \sqrt{512}$. Original paper doesn't explain the reason clearly but based on this, it seems they are multiplying to keep/strengthen the token embedding information even after Positional Embedding is added. Since it's just scalar multiplication, this procedure doesn't change the shape.
 
 output shape: `(nbatches, n_seq, d_model)`
 
@@ -220,6 +226,7 @@ Back to our example, the sentence "I love you"(`40 ,3047, 481, 0, 0, 0`) will ex
 | `with`  |   483    |  `[-0.21, 0.56, 0.02, 0.44, 0.05, -0.08, 0.12, -0.19, ... ]`  |
 |   `,`   |    11    | `[ 0.77, -0.10, -0.13, -0.26, 0.15, 0.06, -0.05, 0.02, ... ]` |
 |  `too`  |   3101   | `[ 0.04, 0.88, -0.29, 0.13, -0.06, 0.21, -0.12, 0.44, ... ]`  |
+![[Pasted image 20250920160649.png]]
 
 After replacing based on the W_emb lookup table, "I love you" would be
 
@@ -236,11 +243,11 @@ Of course other two sentences "I am in love with you" and "I love you, too" also
 
 ### Positional Embedding
 
-We won't go into detail about positional embedding in this post, since itself is a post-worth concept. I recommend this post for better understanding of Positional Embedding. Since our main focus here is to see how the shapes change, I will explain mainly on that point of view.
+We won't go into detail about positional embedding in this post, since itself is a post-worth concept. I recommend [this post](https://kazemnejad.com/blog/transformer_architecture_positional_encoding/) for better understanding of Positional Embedding. Since our main focus here is to see how the shapes change, I will explain mainly on that point of view.
 
 **input shape: `(nbatches, n_seq, d_model)`**
 
-Positional Embedding is adding same sized vector (`d_model`) to each embedded token to preserve the positional information. Unlike other sequence neural networks like LSTM or RNN, Transformer calculates all tokens parallely. Therefore, if it doesn't have positional information added, it wouldn't know the order of the token. While using $\sin$ and $\cos$ functions are not the only way to preserve positional information, it is known to be a helpful way to do that.
+To briefly explain, Positional Embedding is adding same(`d_model`)-sized vector to each embedded token to preserve the positional information. Unlike other sequence neural networks such as LSTM or RNN, Transformer calculates all tokens parallely. Therefore, if it doesn't have positional information added, it wouldn't know the order of the token. While using $\sin$ and $\cos$ functions are not the only way to preserve positional information, it is known to be a helpful way to do that.
 We add the positional information of `d_model` to each embedded tokens and since they have the same shape, the shape does not change.
 
 **output shape: `(nbatches, n_seq, d_model)`**
@@ -271,30 +278,34 @@ As always **remember** this process is done by all sequences in the batch! (whic
 
 ### Encoder
 
-Now we move to the Encoder Layer. Code implementation of Encoder (and Decoder) Layer seems like a matryoshka doll but I will try to explain as clearly as possible.
+Now we move to the Encoder Layer. Code implementation of Encoder (and Decoder) Layer in code seems like a matryoshka doll (module inside a module inside a moduel...) but I will try to explain the big picture as clearly as possible.
 
-In the big picture Encoder is consisted of $N$ Layers of Encoder Layer. (note that $N$ here and `nbatches` are totally different, independent concepts!) In the original paper $N=6$ which means we go over the Encoder layer 6 times in a single process.
+In the blueprint, **Encoder** is consisted of $N$ Layers of **Encoder Layer**. (Note that Encoder and Encoder Layer are NOT the same! Also note that $N$ here and `nbatches` are totally different, independent concepts!) In the original paper $N=6$ which means we go over the Encoder layer 6 times in a single process.
 
-Each Encoder Layer has two Sublayers: Self-Attention Sublayer first and then Feed Forward Network Sublayer. After each sublayers are passed, they are connected to a residual stream and then layer-wise normalized(LayerNorm).
+Each Encoder Layer has two **Sublayers**: **Self-Attention Sublayer** first and then **Feed Forward Network($FFN$) Sublayer**. After each sublayers are passed, they are connected to a residual stream and then layer-wise normalized(LayerNorm).
 
-Sublayers are the most fundamental building blocks in Encoder-Decoder structure of Transformer Architecture. 
+**Sublayers** are the most fundamental building blocks in Encoder-Decoder structure of Transformer Architecture. 
 
 Now that we went over the modules inside Encoder in a brief top-down approach, we will first go over the shape/dimension changes in Self-Attention Sublayer, then Feed Forward Network Sublayer and will expand further.
 
 
 ### Self-Attention (Multi-Head Attention)
 
+![[shaped-attention-attention.png]]
+
 **input shape: `(nbatches, n_seq, d_model)`**
 
 Recap: each token are `d_model` sized vectors, where token embedded and positional embedded vectors are added.
 
 When the input enter the Encoder Layer, the very first destination is Self-Attention Layer (also known as "Multi-Head" Attention Layer). 
-Though this post is not aiming for high level explanation, to briefly explain, Multi-Head Attention means using multiple Attention heads when calculating Attention Weight. (It's okay if you don't understand what "Multiple Attention Head" or "calculating Attention Weight" means. I will explain them with detailed examples later)
+Though this post is not aiming for high level explanation, to briefly explain, Multi-Head Attention means using multiple Attention heads when calculating Attention Weight. Each heads have their own learned weights($W_Q, W_K, W_V$) to calculate $Q,K,V$ matrices. For example, first head's $Q,K,V$ parameters can be represented as $W_{Q1}, K_{Q1}, V_{Q1}$ and $i$'th head's as $W_{Qi}, W_{Ki}, W_{Vi}$.
+In the paper, there are 8 heads in attention calculation: `h = 8`.
 
-Each head in Multi-Head, has three parameter set which are `W_q`, `W_k`, and `W_v`.
-The inputs will be copied and matrix multiplied with `W_q`, `W_k`, and `W_v` each which respectively produces Q, K, and V matrices.
+Now, let's look at how operation works in each head. Multi-head just means the operation in a single head done parallely on `h` heads independently. As mentioned above, each head in Multi-Head has three parameter set which are `W_q`, `W_k`, and `W_v`.
+The inputs will be copied and matrix multiplied with `W_q`, `W_k`, and `W_v` each which respectively produces $Q, K$, and $V$ matrices.
+(Note: we are not trying to train $Q, K, V$ itself, but $W_Q, W_K$ and $W_V$ are our actual parameters we're targetting).
 
-mathematically,
+Mathematically,
 $$
 \begin{aligned}
 Q &= \text{x} W_Q \\
@@ -302,6 +313,38 @@ K &= \text{x} W_K \\
 V &= \text{x} W_V
 \end{aligned}
 $$
+
+Each shape of Ws in each head are `(d_model, d_k)`. So the total $W_Q, W_K$ and $W_V$ each can be  represented as `(d_model, d_k)`.
+
+$Q$. Why is the shape not `(nbatches, n_seq, d_model, d_k)` but `(d_model, d_k)` instead?
+
+$A$. This is because weights are parameters independent of the number of tokens(`nbatches` or `n_seq`). Batch size and sequence length are just broadcasted flexibly and dynamically depending on the input.
+
+So we matrix multiply `(nbatches, n_seq, d_model)` with `(d_model, h*d_k)` and the shape of all $Q, K,$ and $V$ becomes `(nbatches, n_seq, d_k)`.
+
+We would want to transpose and reshape this into `(nbatches, h, n_seq, d_k)`. This makes parallelization of calculating $QK^T$ for multiple heads easier.
+
+$Q$ shape: `(nbatches, h, n_seq, d_k)`
+$K^T$ shape: `(nbatches, h, d_k, n_seq)`
+
+$QK^T$ is broadcasted into `(nbatches, h, n_seq, n_seq)` and this is the shape of attention map. So we have `h * nbatches` of attention map for each `n_seq`.
+
+Then we calculate the attention weight with $W$:
+$attn\_map = QK^T$ shape: `(nbatches, h, n_seq, n_seq)`
+$W$ shape: `(nbatches, h, n_seq, d_k)`
+
+This becomes `(nbatches, h, n_seq, d_k)` for each head.
+
+After this process, we concatenate all the heads within a batch as `(nbatches, n_seq, h*d_k)`
+Since `h*d_k == d_model`, we can express the output after the self attention layer as `(nbatches, n_seq, d_model)`
+
+
+**Note on design choices:** 
+- In practice, each attention head receives the **same full input** of shape `(nbatches, n_seq, d_model)`. The difference between heads comes entirely from their learned projection weights $(W_Q, W_K, W_V)$. Heads do not split the input; instead, they learn to focus on different subspaces of the same representation.
+- Does `d_k` must need to be `d_model / h`? Also does `d_k` should always match `d_v`? No for both. It's not impossible. However setting `d_k != d_model / h` or `d_k != d_v` will lead to dimension mismatch or parameter disequilibrium, so it's just a practical and rational design choice. We can, however use different `d_k` and `d_v` by matching the output's projection or using feed forward network.
+
+
+output shape: `(nbatches, n_seq, d_model)`
 
 
 

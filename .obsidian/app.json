@@ -2,5 +2,11 @@
   "alwaysUpdateLinks": true,
   "attachmentFolderPath": "static/images",
   "newFileLocation": "folder",
-  "newFileFolderPath": "content/posts"
+  "newFileFolderPath": "content/posts",
+  "pdfExportSettings": {
+    "pageSize": "Letter",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  }
 }

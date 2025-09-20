@@ -216,6 +216,10 @@
   },
   "active": "23e88722f9c77c20",
   "lastOpenFiles": [
+    "static/images/shaped-attention-attention.png",
+    "content/blog/posts/shaped-transformer.md",
+    "static/images/Pasted image 20250920160844.png",
+    "static/images/Pasted image 20250920160649.png",
     "conflict-files-obsidian-git.md",
     "content/posts/why-ai.md",
     "content/posts/shaped-transformer.md",
@@ -239,7 +243,6 @@
     "content/blog/posts/the-engineering-era-of-ai.md",
     "content/blog/posts/the-io-and-pipelining-era-of-ml.md",
     "content/blog/posts/neet-code.md",
-    "content/blog/posts/shaped-transformer.md",
     "content/blog/posts/mixture-of-architectures.md",
     "content/blog/posts/mental-model-of-engineering.md",
     "content/blog/posts/limitations-of-current-rl.md",
@@ -251,16 +254,12 @@
     "content/blog/posts/implementing-introduction-to-linear-algebra-in-python-and-numpy.md",
     "content/blog/posts/ideas-im-interested-in-ai.md",
     "content/blog/posts/how-to-not-regret.md",
-    "content/blog/posts/fluent-python-cheat-sheet.md",
     "static/images/Pasted image 20250919134127.png",
     "static/images/Pasted image 20250919134106.png",
     "static/images/Pasted image 20250919134053.png",
     "static/images/Pasted image 20250919133611.png",
     "static/images/Pasted image 20250919133513.png",
     "static/images/Pasted image 20250919130339.png",
-    "static/images/cosine_function.png",
-    "static/images/unkskill.png",
-    "static/images/moa-1.png",
-    "static/images/GCP-image.png"
+    "static/images/cosine_function.png"
   ]
 }
