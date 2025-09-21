@@ -17,7 +17,9 @@ Before I start, I strongly recommend reading other resources as well. Each has a
 
 Another challenge is that the Transformer is not a single monolithic block—it’s made up of many modularized layers (tokenization, positional encoding, self-attention, cross-attention, etc.). Unless you already have a solid background in deep learning and NLP, it’s hard to fully understand all the pieces in one go. You’ll often need additional resources, and repeated exposure, to get comfortable with it.
 
-While there are many great explanations of the mathematics and abstract concepts, I think the end-to-end **shape changes** are often missing. This blog post specifically aims to enhance the reader’s intuition about what the input actually looks like in real code, how it gets transformed step by step, and how it eventually becomes the “next token.” Hopefully this helps you form a more concrete understanding of the architecture and makes the code easier to implement.
+While there are many great explanations of the mathematics and abstract concepts, I think the end-to-end **shape changes** are often missing. This blog post specifically aims to enhance the reader’s intuition about what the input actually looks like in real code, how it gets transformed step by step, and how it eventually becomes the “next token.” 
+
+Hopefully this helps you form a more concrete understanding of the architecture and makes the code easier to implement :)
 
 
 ## 1. Commonly Used Parameters
@@ -164,19 +166,13 @@ We use padding token(`PAD`) to keep the length of all `n_seq` same (which is cru
 
 These tokens converted to token ids will be
 
-```mathematica
-[
- [40, 3047, 481, 0, 0, 0],
- [40, 939, 306, 3047, 483, 481],
- [40, 3047, 481, 11, 3101, 0]
-]
-```
 ![[Pasted image 20250919134053.png]]
 
-
+{{ <note> }}
 $Q$. Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?
 
 $A$. In the original paper, the authors simply state that they use _learned embeddings_ to map token IDs to vectors of dimension $d_{model}$, without mentioning one-hot explicitly. Mathematically, however, you can think of each token as a one-hot vector, so that the embedding operation becomes
+
 
 $$x_{\text{emb}} = \text{onehot}(token_{id}) \times W_{emb}.$$
 
@@ -195,6 +191,8 @@ O[0, 5, :] = [1(at 0), 0, 0, 0, ..., 0]                # [PAD]
 Of course, this representation is very inefficient in practice (huge memory cost). So in real implementations, we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
 
 **In practice:** think of `vocab` as the _number of unique token IDs (vocabulary size)_, not as an actual one-hot dimension in the input.
+{{ </note> }}
+
 
 ### Token Embedding
 
@@ -226,6 +224,7 @@ Back to our example, the sentence "I love you"(`40 ,3047, 481, 0, 0, 0`) will ex
 | `with`  |   483    |  `[-0.21, 0.56, 0.02, 0.44, 0.05, -0.08, 0.12, -0.19, ... ]`  |
 |   `,`   |    11    | `[ 0.77, -0.10, -0.13, -0.26, 0.15, 0.06, -0.05, 0.02, ... ]` |
 |  `too`  |   3101   | `[ 0.04, 0.88, -0.29, 0.13, -0.06, 0.21, -0.12, 0.44, ... ]`  |
+
 ![[Pasted image 20250920160649.png]]
 
 After replacing based on the W_emb lookup table, "I love you" would be
@@ -239,7 +238,7 @@ E[0, 4, :] = [ 0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00, ... ]   # 
 E[0, 5, :] = [ 0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00, ... ]   # [PAD]  (id=0)
 ```
 
-Of course other two sentences "I am in love with you" and "I love you, too" also will go through the same process.
+Of course other two sentences in the batch, "I am in love with you" and "I love you, too" also will go through the same process.
 
 ### Positional Embedding
 
@@ -284,22 +283,51 @@ In the blueprint, **Encoder** is consisted of $N$ Layers of **Encoder Layer**. (
 
 Each Encoder Layer has two **Sublayers**: **Self-Attention Sublayer** first and then **Feed Forward Network($FFN$) Sublayer**. After each sublayers are passed, they are connected to a residual stream and then layer-wise normalized(LayerNorm).
 
-**Sublayers** are the most fundamental building blocks in Encoder-Decoder structure of Transformer Architecture. 
+**Sublayers** are the most fundamental building blocks in Encoder-Decoder structure of Transformer Architecture. The two types of sublayers are already mentioned above.
 
 Now that we went over the modules inside Encoder in a brief top-down approach, we will first go over the shape/dimension changes in Self-Attention Sublayer, then Feed Forward Network Sublayer and will expand further.
 
 
 ### Self-Attention (Multi-Head Attention)
 
+Now this module is one of the most complicated part in Transformer so we will look in detail, step by step. The goal is to get a clear sense of how shape changes during each process. We are going to divide the Self-Attention process into 8 minor steps. Try to follow through!
+
+
 ![[shaped-attention-attention.png]]
+
+Recap: Each token are `d_model` sized vectors, where token embedded and positional embedded vectors are added.
 
 **input shape: `(nbatches, n_seq, d_model)`**
 
-Recap: each token are `d_model` sized vectors, where token embedded and positional embedded vectors are added.
+When the input enters an Encoder Layer, its first destination is the Self-Attention sublayer. To understand what happens here, we need to talk about **Multi-Head Attention**.
 
-When the input enter the Encoder Layer, the very first destination is Self-Attention Layer (also known as "Multi-Head" Attention Layer). 
-Though this post is not aiming for high level explanation, to briefly explain, Multi-Head Attention means using multiple Attention heads when calculating Attention Weight. Each heads have their own learned weights($W_Q, W_K, W_V$) to calculate $Q,K,V$ matrices. For example, first head's $Q,K,V$ parameters can be represented as $W_{Q1}, K_{Q1}, V_{Q1}$ and $i$'th head's as $W_{Qi}, W_{Ki}, W_{Vi}$.
-In the paper, there are 8 heads in attention calculation: `h = 8`.
+Though this post isn't a deep theoretical dive, the core idea is simple: instead of calculating attention just once, we use multiple "attention heads." Think of it like having several experts look at the same sentence; each expert (or head) can focus on different relationships between words. Each head has its own set of learned weights (`W_Q`, `W_K`, `W_V`) to find these different relationships. In the original paper, they use 8 heads (`h=8`).
+
+Let's break down how the tensor shapes transform in this process step-by-step.
+
+{{<note>}}
+From now, we will call the input as `x`.
+{{</note>}}
+
+
+1. **Project to $Q, K, V$** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, d_model)`
+	We first need to get the $Q, K, V$ matrices. This is done by multiplying our input `x` with three learned weight matrices: `W_q`, `W_k`, and `W_v`. Each of the weight matrices have size of shape `(d_model, d_model)`.
+	Each $Q, K, V$ becomes shape `(nbatches, n_seq, d_model)`
+	`Q = x @ W_q = (nbatches, n_seq, d_model)`
+	`K = x @ W_k = (nbatches, n_seq, d_model)`
+	`V = x @ W_v = (nbatches, n_seq, d_model)`
+	{{<note> type="tip"}}
+	**A Note on Parameters:** It's important to remember that we aren't training `Q`, `K`, and `V` directly. The matrices we are actually training are the weights: `W_Q`, `W_K`, and `W_V`. These are the actual parameters of the model.
+	{{</note>}}
+
+2. **Splitting into Heads** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
+	After projection, we split `d_model` into `h` seperate heads. Since in the paper, d_k is defined as `d_k = d_model / h`, we can divide the last dimensions into `h` and `d_k` and view the shape as `(nbatches, n_seq, h, d_k)`.
+
+3. **Transpose for Attention Calculation**
+	To perform the attention calculation ($QK^T$) across all heads at once
+
+
+Though this post is not aiming for high level explanation, to briefly explain, Multi-Head Attention means using multiple Attention heads when calculating Attention Weight. Each heads have their own learned weights($W_Q, W_K, W_V$) to calculate $Q,K,V$ matrices. For example, first head's $Q,K,V$ parameters can be represented as $W_{Q1}, K_{Q1}, V_{Q1}$ and $i$'th head's as $W_{Qi}, W_{Ki}, W_{Vi}$. In the paper, there are 8 heads in attention calculation: `h = 8`.
 
 Now, let's look at how operation works in each head. Multi-head just means the operation in a single head done parallely on `h` heads independently. As mentioned above, each head in Multi-Head has three parameter set which are `W_q`, `W_k`, and `W_v`.
 The inputs will be copied and matrix multiplied with `W_q`, `W_k`, and `W_v` each which respectively produces $Q, K$, and $V$ matrices.
