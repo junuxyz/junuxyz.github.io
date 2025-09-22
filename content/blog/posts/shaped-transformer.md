@@ -41,9 +41,10 @@ but they omit there is actually every layers are processed in batches.
 
 The reality is, $N$ sentences are put into batch and passed as input. But this doesn’t introduce anything new to the original architecture (all sentences in batch are just parallely processed) but it’s still worth noting that `nbatches` mean that because it’s the default parameter in all shapes in the Transformer.
 
+For example let’s say $N=3$. That means we have 3 sentences per batch.
 ### $S$ or `n_seq`
 
-`n_seq` means the number of tokens in one sentence. Since Transformer utilizes parallel processing, we need to pre-define the length of it. Usually we define it based on the longest sentence. For example let’s say $N=3$. Then we have 3 sentences per batch.
+`n_seq` means the number of tokens in one sentence. Since Transformer utilizes parallel processing, we need to pre-define the length of it. Usually we define it based on the longest sentence.
 
 ```
 I love you            --3
@@ -347,54 +348,43 @@ Attention weight shape: `(nbatches, h, n_seq, n_seq)`
 `V` shape: `(nbatches, h, n_seq, d_v)` (where `d_v = d_k` in the original paper)
 Output = `weights @ V` and its shape becomes `(nbatches, h, n_seq, d_v)`
 
+**7. Concatenate Heads**
+The parallel processing for each head is done. Now we want to merge our `h` heads back into a single tensor. We reverse the transpose from step 3.
+so the shape changes from `(nbatches, h, n_seq, d_v)` to `(nbatches, n_seq, h, d_v)`.
 
-Though this post is not aiming for high level explanation, to briefly explain, Multi-Head Attention means using multiple Attention heads when calculating Attention Weight. Each heads have their own learned weights($W_Q, W_K, W_V$) to calculate $Q,K,V$ matrices. For example, first head's $Q,K,V$ parameters can be represented as $W_{Q1}, K_{Q1}, V_{Q1}$ and $i$'th head's as $W_{Qi}, W_{Ki}, W_{Vi}$. In the paper, there are 8 heads in attention calculation: `h = 8`.
+**8. Reshape to Final Output** 
+Finally, we flatten the `h` and `d_v` dimensions back into the original `d_model` dimension. This is the `reshape()` or `view()` call(in code) that concludes the process.
+Shape changes from `(nbatches, n_seq, h, d_v)` to `(nbatches, n_seq, h * d_v)`.
+Since `h * d_v = d_model`, our final output shape is `(nbatches, n_seq, d_model)`, which is exactly what we started with! This allows us to pass it to the next layer in the network.
 
-Now, let's look at how operation works in each head. Multi-head just means the operation in a single head done parallely on `h` heads independently. As mentioned above, each head in Multi-Head has three parameter set which are `W_q`, `W_k`, and `W_v`.
-The inputs will be copied and matrix multiplied with `W_q`, `W_k`, and `W_v` each which respectively produces $Q, K$, and $V$ matrices.
-(Note: we are not trying to train $Q, K, V$ itself, but $W_Q, W_K$ and $W_V$ are our actual parameters we're targetting).
+This output is then passed through a final linear layer, `W_O`, which also doesn't change the shape.
 
-Mathematically,
-$$
-\begin{aligned}
-Q &= \text{x} W_Q \\
-K &= \text{x} W_K \\
-V &= \text{x} W_V
-\end{aligned}
-$$
+final output shape: `(nbatches, n_seq, d_model)`
 
-Each shape of Ws in each head are `(d_model, d_k)`. So the total $W_Q, W_K$ and $W_V$ each can be  represented as `(d_model, d_k)`.
+{{< note >}} 
+- In practice, each attention head receives the **same full input** of shape `(nbatches, n_seq, d_model)`. The difference between heads comes entirely from their learned projection weights $(W_Q, W_K, W_V)$. Heads do not split the input; instead, they naturally learn to focus on different subspaces of the same representation.
 
-$Q$. Why is the shape not `(nbatches, n_seq, d_model, d_k)` but `(d_model, d_k)` instead?
+Below are two common parts most people are wrong about, or didn't think of.
 
-$A$. This is because weights are parameters independent of the number of tokens(`nbatches` or `n_seq`). Batch size and sequence length are just broadcasted flexibly and dynamically depending on the input.
+- Does `d_k` have to be `d_model / h`?
+	No, but it's a very practical choice to make.
+	The main reason is to ensure the output of the attention block matches the shape as the input. This is crucial for the residual connection(`x = x + MHA(x)`). 
+	When `d_k = d_model / h`, After we concatenate the heads, the final dimension is `h * d_k = h * (d_model / h) = d_model`. The output shape `(..., d_model)` perfectly matches the input shape, so the residual connection works seamlessly. When `d_k` is different from `d_model / h`, The concatenated dimension becomes `h * d_k`, which is not equal to `d_model`. This creates a shape mismatch. To fix this, the final linear layer (`W_O`) must act as a projection, mapping the shape from `h * d_k` back to `d_model`. So it's just a practical and rational design choice to keep the dimension consistent.
+- Does `d_k` have to match `d_v`?
+	**No**, not at all.
+	While the query and key dimensions (`d_q` and `d_k`) must be identical for the dot product to work, the value dimension (`d_v`) can be any size you want.
+	The output dimension after applying attention and concatenating the heads is always `h * d_v`. The final linear layer, `W_O`, is responsible for projecting this `h * d_v` dimension back to `d_model` to ensure the residual connection works.
+	In fact, the `W_O` layer makes the choice of `d_v` very flexible. Its job is to take whatever the heads output (`h * d_v`) and reshape it into the `d_model` dimension that the rest of the network expects. Setting `d_k = d_v` is just a common simplification.
 
-So we matrix multiply `(nbatches, n_seq, d_model)` with `(d_model, h*d_k)` and the shape of all $Q, K,$ and $V$ becomes `(nbatches, n_seq, d_k)`.
+To summarize both questions above, if we just make sure `d_k = d_q` (for attention calculation) and shape of `W_O` as `(h * d_v, d_model)`, `d_k` and `d_v` can be whatever integer it can be. However by matching `d_k` and `d_v` based on `d_model` makes residual connection seamless and computationally efficient.
+{{< /note >}}
 
-We would want to transpose and reshape this into `(nbatches, h, n_seq, d_k)`. This makes parallelization of calculating $QK^T$ for multiple heads easier.
+Back to our example, "I love you" sentence
 
-$Q$ shape: `(nbatches, h, n_seq, d_k)`
-$K^T$ shape: `(nbatches, h, d_k, n_seq)`
+### Feed Forward Network ($FFN$)
 
-$QK^T$ is broadcasted into `(nbatches, h, n_seq, n_seq)` and this is the shape of attention map. So we have `h * nbatches` of attention map for each `n_seq`.
-
-Then we calculate the attention weight with $W$:
-$attn\_map = QK^T$ shape: `(nbatches, h, n_seq, n_seq)`
-$W$ shape: `(nbatches, h, n_seq, d_k)`
-
-This becomes `(nbatches, h, n_seq, d_k)` for each head.
-
-After this process, we concatenate all the heads within a batch as `(nbatches, n_seq, h*d_k)`
-Since `h*d_k == d_model`, we can express the output after the self attention layer as `(nbatches, n_seq, d_model)`
-
-
-**Note on design choices:** 
-- In practice, each attention head receives the **same full input** of shape `(nbatches, n_seq, d_model)`. The difference between heads comes entirely from their learned projection weights $(W_Q, W_K, W_V)$. Heads do not split the input; instead, they learn to focus on different subspaces of the same representation.
-- Does `d_k` must need to be `d_model / h`? Also does `d_k` should always match `d_v`? No for both. It's not impossible. However setting `d_k != d_model / h` or `d_k != d_v` will lead to dimension mismatch or parameter disequilibrium, so it's just a practical and rational design choice. We can, however use different `d_k` and `d_v` by matching the output's projection or using feed forward network.
-
-
-output shape: `(nbatches, n_seq, d_model)`
-
+input shape: `(nbatches, n_seq, `
+We use $FFN$ to add non-linearity to learn and represent in higher dimension. 
 
 
 ## 3. How Shape changes in code
