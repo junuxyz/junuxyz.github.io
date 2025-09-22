@@ -149,9 +149,9 @@ So let's say the batch of sentences are already transformed into sequence of tok
 
 For example, based on [GPT-4o & GPT-4o mini tokenizer](https://platform.openai.com/tokenizer) provided by OpenAI
 
-{{<note>}}
+{{< note >}}
 Note: the only reason we use the GPT-4o tokenizer here is since it's the most convenient tokenizer available on the web. However all the rest of the concepts and parameters (e.g. size of $vocab$) will be based on the original paper
-{{</note>}}
+{{< /note >}}
 
 ```Plain Text
 I love you            --3
@@ -171,30 +171,35 @@ These tokens converted to token ids will be
 
 ![[shaped-trasnformer-example-3.png]]
 
-{{ <note> }}
+{{< note >}}
 $Q$. Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?
 
-$A$. In the original paper, the authors simply state that they use _learned embeddings_ to map token IDs to vectors of dimension $d_{model}$, without mentioning one-hot explicitly. Mathematically, however, you can think of each token as a one-hot vector, so that the embedding operation becomes
+$A$. In the original paper, the authors simply state that they use _learned embeddings_ to map token IDs to vectors of dimension $d_{model}$, without mentioning one-hot explicitly. 
+
+Mathematically, however, you can think of each token as a one-hot vector, so that the embedding operation becomes
 
 
 $$x_{\text{emb}} = \text{onehot}(token_{id}) \times W_{emb}.$$
 
 This is convenient because it lets us express the embedding as a standard matrix multiplication.
+
 For example, the sentence `"I love you"` with token IDs `[40, 3047, 481, 0, 0, 0]` would look like:
 ```mathematica
-O[0, 0, :] = [0, 0, 0, ..., 1(at 40), 0, ..., 0]       # "I" (id=40)
-O[0, 1, :] = [0, 0, 0, ..., 1(at 3047), 0, ..., 0]     # "love" (id=3047)
-O[0, 2, :] = [0, 0, 0, ..., 1(at 481), 0, ..., 0]      # "you" (id=481)
-O[0, 3, :] = [1(at 0), 0, 0, 0, ..., 0]                # [PAD] (id=0)
-O[0, 4, :] = [1(at 0), 0, 0, 0, ..., 0]                # [PAD]
-O[0, 5, :] = [1(at 0), 0, 0, 0, ..., 0]                # [PAD]
+O[0, 0, :] = [0, 0, ..., 1(at 40), ..., 0]    # "I"
+O[0, 1, :] = [0, 0, ..., 1(at 3047), ..., 0]  # "love"
+O[0, 2, :] = [0, 0, ..., 1(at 481), ..., 0]   # "you"
+O[0, 3, :] = [1(at 0), 0, 0, ..., 0]          # [PAD]
+O[0, 4, :] = [1(at 0), 0, 0, ..., 0]          # [PAD]
+O[0, 5, :] = [1(at 0), 0, 0, ..., 0]          # [PAD]
 ```
 
 
-Of course, this representation is very inefficient in practice (huge memory cost). So in real implementations, we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
+Of course, this representation is very inefficient in practice (huge memory cost). 
+
+So in real implementations, we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
 
 **In practice:** think of `vocab` as the _number of unique token IDs (vocabulary size)_, not as an actual one-hot dimension in the input.
-{{ </note> }}
+{{< /note >}}
 
 
 ### Token Embedding
@@ -308,9 +313,9 @@ Though this post isn't a deep theoretical dive, the core idea is simple: instead
 
 Let's break down how the tensor shapes transform in this process step-by-step.
 
-{{<note>}}
+{{< note >}}
 From now, we will call the input as `x`.
-{{</note>}}
+{{< /note >}}
 
 
 1. **Project to $Q, K, V$** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, d_model)`
@@ -319,10 +324,10 @@ From now, we will call the input as `x`.
 	`Q = x @ W_q = (nbatches, n_seq, d_model)`
 	`K = x @ W_k = (nbatches, n_seq, d_model)`
 	`V = x @ W_v = (nbatches, n_seq, d_model)`
-
-{{<note type="tip">}}
-	**A Note on Parameters:** It's important to remember that we aren't training `Q`, `K`, and `V` directly. The matrices we are actually training are the weights: `W_Q`, `W_K`, and `W_V`. These are the actual parameters of the model.
-{{</note>}}
+{{< note type="tip" >}}
+**A Note on Parameters:** We aren't training `Q`, `K`, and `V` directly. 
+The actual parameters we train are the weights: `W_Q`, `W_K`, and `W_V`.
+{{< /note >}}
 
 2. **Splitting into Heads** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
 	After projection, we split `d_model` into `h` seperate heads. Since in the paper, d_k is defined as `d_k = d_model / h`, we can divide the last dimensions into `h` and `d_k` and view the shape as `(nbatches, n_seq, h, d_k)`.
