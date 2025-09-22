@@ -1,7 +1,7 @@
 +++
 title = "Shaped Transformer"
 date = 2025-09-15T07:39:43+09:00
-draft = true
+draft = false
 categories = ['ML']
 tags = ['Transformer']
 +++
@@ -9,7 +9,7 @@ tags = ['Transformer']
 ## 0. Understanding Transformer
 
 **How can one learn Transformer?**
-The Transformer Architecture (introduced in the paper _Attention is All You Need_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of what the model is, how it works, and even annotated code implementations. These days, most developers don’t need to implement Transformers from scratch because libraries like HuggingFace provide easy-to-use classes and methods. There are plenty of things to build on top of the architecture! Still, I think it is worth implementing a Transformer from scratch at least once, to really understand and appreciate the techniques that form the base of the ChatGPT era.
+The Transformer Architecture (introduced in the paper _Attention is All You Need_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of what the model is, how it works, and even annotated code implementations. These days, most developers don’t need to implement Transformers from scratch because libraries like HuggingFace provide easy-to-use classes and methods. There are plenty of things to build on top of the architecture! Still, I think it is worth implementing a Transformer from scratch at least once, to really understand and appreciate the techniques that form the base of the ChatGPT era. ^umld4z
 
 
 **How is this different from other content?**
@@ -131,9 +131,9 @@ When we encounter the code implementation of Transformer Architecture, all kinds
 
 Before we start, a simple but effective tip is to remember that most calculations 
 (token embedding, self-attention, feed-forward, etc.) are applied **per token**.
-In practice, the input shape is `(nbatches, n_seq, …)`, which means each batch has `n_seq` tokens. Almost all operations are performed independently on each of these tokens (in parallel), except for the masked ones. So you can think of it as running the same function `nbatches × n_seq` times in parallel.
+In practice, the input shape is `(nbatches, n_seq, …)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel), except for the masked(or, *padded*) ones. So you can think of it as running the same function `nbatches × n_seq` times in parallel.
 
-Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` for clarity but I will explain including it) Also, to give a clear intuition of how everything is working, I will use the three following sentences I used above:
+Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` or `h` for clarity but I will explain including all the parameters) Also, to give a clear intuition of how everything is working, I will use the three following sentences I used above:
 
 ```Plain Text
 I love you            --3
@@ -148,7 +148,10 @@ shape: `(nbatches, n_seq)`
 So let's say the batch of sentences are already transformed into sequence of token IDs using the Tokenizer. This will be our starting point.
 
 For example, based on [GPT-4o & GPT-4o mini tokenizer](https://platform.openai.com/tokenizer) provided by OpenAI
-(Note: the only reason we use the GPT-4o tokenizer here is since it's the most convenient tokenizer available on the web. However all the rest of the concepts and parameters (e.g. size of $vocab$) will be based on the original paper)
+
+{{<note>}}
+Note: the only reason we use the GPT-4o tokenizer here is since it's the most convenient tokenizer available on the web. However all the rest of the concepts and parameters (e.g. size of $vocab$) will be based on the original paper
+{{</note>}}
 
 ```Plain Text
 I love you            --3
