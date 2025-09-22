@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Transformer on jlog</title>
+    <link>https://junuxyz.github.io/blog/tags/transformer/</link>
+    <description>Recent content in Transformer on jlog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 15 Sep 2025 07:39:43 +0900</lastBuildDate>
+    <atom:link href="https://junuxyz.github.io/blog/tags/transformer/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Shaped Transformer</title>
+      <link>https://junuxyz.github.io/blog/posts/shaped-transformer/</link>
+      <pubDate>Mon, 15 Sep 2025 07:39:43 +0900</pubDate>
+      <guid>https://junuxyz.github.io/blog/posts/shaped-transformer/</guid>
+      <description>&lt;h2 id=&#34;0-understanding-transformer&#34;&gt;0. Understanding Transformer&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;How can one learn Transformer?&lt;/strong&gt;&#xA;The Transformer Architecture (introduced in the paper &lt;em&gt;Attention is All You Need&lt;/em&gt;) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of what the model is, how it works, and even annotated code implementations. These days, most developers don’t need to implement Transformers from scratch because libraries like HuggingFace provide easy-to-use classes and methods. There are plenty of things to build on top of the architecture! Still, I think it is worth implementing a Transformer from scratch at least once, to really understand and appreciate the techniques that form the base of the ChatGPT era.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
