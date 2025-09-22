@@ -228,7 +228,7 @@ Back to our example, the sentence "I love you"(`40 ,3047, 481, 0, 0, 0`) will ex
 |   `,`   |    11    | `[ 0.77, -0.10, -0.13, -0.26, 0.15, 0.06, -0.05, 0.02, ... ]` |
 |  `too`  |   3101   | `[ 0.04, 0.88, -0.29, 0.13, -0.06, 0.21, -0.12, 0.44, ... ]`  |
 
-![[Pasted image 20250920160649.png]]
+![[shaped-transformer-example-4.png]]
 
 After replacing based on the W_emb lookup table, "I love you" would be
 
@@ -319,9 +319,10 @@ From now, we will call the input as `x`.
 	`Q = x @ W_q = (nbatches, n_seq, d_model)`
 	`K = x @ W_k = (nbatches, n_seq, d_model)`
 	`V = x @ W_v = (nbatches, n_seq, d_model)`
-	{{<note type="tip">}}
+
+{{<note type="tip">}}
 	**A Note on Parameters:** It's important to remember that we aren't training `Q`, `K`, and `V` directly. The matrices we are actually training are the weights: `W_Q`, `W_K`, and `W_V`. These are the actual parameters of the model.
-	{{</note>}}
+{{</note>}}
 
 2. **Splitting into Heads** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
 	After projection, we split `d_model` into `h` seperate heads. Since in the paper, d_k is defined as `d_k = d_model / h`, we can divide the last dimensions into `h` and `d_k` and view the shape as `(nbatches, n_seq, h, d_k)`.
