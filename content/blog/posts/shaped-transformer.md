@@ -318,22 +318,34 @@ From now, we will call the input as `x`.
 {{< /note >}}
 
 
-1. **Project to $Q, K, V$** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, d_model)`
-	We first need to get the $Q, K, V$ matrices. This is done by multiplying our input `x` with three learned weight matrices: `W_q`, `W_k`, and `W_v`. Each of the weight matrices have size of shape `(d_model, d_model)`.
-	Each $Q, K, V$ becomes shape `(nbatches, n_seq, d_model)`
-	`Q = x @ W_q = (nbatches, n_seq, d_model)`
-	`K = x @ W_k = (nbatches, n_seq, d_model)`
-	`V = x @ W_v = (nbatches, n_seq, d_model)`
+**1. Project to $Q, K, V$** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, d_model)`
+We first need to get the $Q, K, V$ matrices. This is done by multiplying our input `x` with three learned weight matrices: `W_q`, `W_k`, and `W_v`. Each of the weight matrices have size of shape `(d_model, d_model)`.
+
+Each $Q, K, V$ becomes shape `(nbatches, n_seq, d_model)`
+- `Q = x @ W_q = (nbatches, n_seq, d_model)`
+- `K = x @ W_k = (nbatches, n_seq, d_model)`
+- `V = x @ W_v = (nbatches, n_seq, d_model)`
 {{< note type="tip" >}}
 **A Note on Parameters:** We aren't training `Q`, `K`, and `V` directly. 
 The actual parameters we train are the weights: `W_Q`, `W_K`, and `W_V`.
 {{< /note >}}
 
-2. **Splitting into Heads** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
-	After projection, we split `d_model` into `h` seperate heads. Since in the paper, d_k is defined as `d_k = d_model / h`, we can divide the last dimensions into `h` and `d_k` and view the shape as `(nbatches, n_seq, h, d_k)`.
+**2. Splitting into Heads** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
+After projection, we split `d_model` into `h` seperate heads. Since in the paper, d_k is defined as `d_k = d_model / h`, we can divide the last dimensions into `h` and `d_k` and view the shape as `(nbatches, n_seq, h, d_k)`.
 
-3. **Transpose for Attention Calculation**
-	To perform the attention calculation ($QK^T$) across all heads at once
+**3. Transpose for Attention Calculation**
+To perform the attention calculation ($QK^T$) across all heads at once, we need `n_seq` and `d_k` to be the last two dimensions. So we transpose the shape $Q$ into `(nbatches, h, n_seq, d_k)`. Since $K^T$ is transposed version of $K$, its shape is `(nbatches, h, d_k, n_seq)`.
+
+**4. Calculate Attention Scores**
+We calculate $QK^T$ and the output shape becomes `(nbatches, h , n_seq, n_seq)` due to matrix mulitplicatin. 
+
+**5. Apply Softmax** 
+We apply a softmax function to the scores, which turns them into positive values that sum to 1. This converts the scores into attention **weights**. The shape remains `(nbatches, h, n_seq, n_seq)`.
+
+**6. Apply Attention to V** Now we multiply our attention weights by the Value matrix `V`. This enhances the representation of each token by incorporating information from the other tokens it's paying attention to.
+Attention weight shape: `(nbatches, h, n_seq, n_seq)`
+`V` shape: `(nbatches, h, n_seq, d_v)` (where `d_v = d_k` in the original paper)
+Output = `weights @ V` and its shape becomes `(nbatches, h, n_seq, d_v)`
 
 
 Though this post is not aiming for high level explanation, to briefly explain, Multi-Head Attention means using multiple Attention heads when calculating Attention Weight. Each heads have their own learned weights($W_Q, W_K, W_V$) to calculate $Q,K,V$ matrices. For example, first head's $Q,K,V$ parameters can be represented as $W_{Q1}, K_{Q1}, V_{Q1}$ and $i$'th head's as $W_{Qi}, W_{Ki}, W_{Vi}$. In the paper, there are 8 heads in attention calculation: `h = 8`.
