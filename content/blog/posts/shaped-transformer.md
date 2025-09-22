@@ -9,7 +9,7 @@ tags = ['Transformer']
 ## 0. Understanding Transformer
 
 **How can one learn Transformer?**
-The Transformer Architecture (introduced in the paper _Attention is All You Need_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of what the model is, how it works, and even annotated code implementations. These days, most developers don’t need to implement Transformers from scratch because libraries like HuggingFace provide easy-to-use classes and methods. There are plenty of things to build on top of the architecture! Still, I think it is worth implementing a Transformer from scratch at least once, to really understand and appreciate the techniques that form the base of the ChatGPT era. ^umld4z
+The Transformer Architecture (introduced in the paper _Attention is All You Need_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of what the model is, how it works, and even annotated code implementations. These days, most developers don’t need to implement Transformers from scratch because libraries like HuggingFace provide easy-to-use classes and methods. There are plenty of things to build on top of the architecture! Still, I think it is worth implementing a Transformer from scratch at least once, to really understand and appreciate the techniques that form the base of the ChatGPT era.
 
 
 **How is this different from other content?**
@@ -159,17 +159,17 @@ I am in love with you --6
 I love you, too       --5
 ```
 
-![[Pasted image 20250919134127.png]]
+![[shaped-trasnformer-example-1.png]]
 
 
 We use padding token(`PAD`) to keep the length of all `n_seq` same (which is crucial for matrix calculation). If we set `n_seq` to 6, the padding will fill as below:
 
-![[Pasted image 20250919134106.png]]
+![[shaped-trasnformer-example-2.png]]
 
 
 These tokens converted to token ids will be
 
-![[Pasted image 20250919134053.png]]
+![[shaped-trasnformer-example-3.png]]
 
 {{ <note> }}
 $Q$. Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?
@@ -319,7 +319,7 @@ From now, we will call the input as `x`.
 	`Q = x @ W_q = (nbatches, n_seq, d_model)`
 	`K = x @ W_k = (nbatches, n_seq, d_model)`
 	`V = x @ W_v = (nbatches, n_seq, d_model)`
-	{{<note> type="tip"}}
+	{{<note type="tip">}}
 	**A Note on Parameters:** It's important to remember that we aren't training `Q`, `K`, and `V` directly. The matrices we are actually training are the weights: `W_Q`, `W_K`, and `W_V`. These are the actual parameters of the model.
 	{{</note>}}
 
