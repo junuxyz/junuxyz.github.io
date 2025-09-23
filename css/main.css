@@ -437,18 +437,18 @@ img {
 
 .qa-label {
     font-weight: 700;
-    margin-bottom: 0.5rem;
     font-size: 1.1rem;
-    color: var(--accent);
+    color: white;
     display: inline-block;
+    vertical-align: top;
+    margin-right: 0.5rem;
 }
 
 .qa-text {
     color: var(--text);
-    margin-left: 0.5rem;
     display: inline-block;
     vertical-align: top;
-    width: calc(100% - 1rem);
+    width: calc(100% - 2rem);
 }
 
 .qa-text p {
@@ -675,7 +675,7 @@ img {
     }
     
     .qa-text {
-        width: calc(100% - 1rem);
+        width: calc(100% - 1.5rem);
     }
     
     .note-icon {
