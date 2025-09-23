@@ -4,7 +4,7 @@
     --text: #e2e8f0;
     --text-light: #a0aec0;
     --accent: #63b3ed;
-    --border: #2d3748;
+    --border: #1e2a3a;
     
     /* Typography */
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -221,9 +221,9 @@ img {
 }
 
 /* Responsive */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     body {
-        padding: 1rem 1rem;
+        padding: 1rem 0.75rem;
     }
     
     h1 { font-size: 1.75rem; }
@@ -231,5 +231,69 @@ img {
     
     .post-title {
         font-size: 1.125rem;
+    }
+    
+    /* Code blocks mobile optimization */
+    pre {
+        margin: 1rem -0.75rem;
+        padding: 0.75rem;
+        border-radius: 0;
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    code {
+        font-size: 0.8rem;
+        padding: 0.1rem 0.2rem;
+        word-break: break-all;
+    }
+    
+    pre code {
+        font-size: 0.8rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    
+    /* Tables mobile optimization */
+    table {
+        font-size: 0.8rem;
+        margin: 1rem -0.75rem;
+    }
+    
+    th, td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.25rem; }
+    h3 { font-size: 1.125rem; }
+    
+    pre {
+        margin: 1rem -0.5rem;
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    code {
+        font-size: 0.75rem;
+    }
+    
+    pre code {
+        font-size: 0.75rem;
+    }
+    
+    table {
+        margin: 1rem -0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    th, td {
+        padding: 0.4rem;
     }
 }
