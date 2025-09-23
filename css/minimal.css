@@ -58,6 +58,8 @@ body {
     font-size: 1.1rem;
     font-weight: 500;
     transition: all 0.2s ease;
+    min-height: 44px; /* Touch target */
+    min-width: 44px;
 }
 
 .minimal-link:hover {
@@ -65,4 +67,51 @@ body {
     color: var(--bg);
     transform: translateY(-2px);
 }
+
+/* Mobile optimization for minimal page */
+@media (max-width: 768px) {
+    .minimal-container {
+        padding: 1.5rem;
+        max-width: 90%;
+    }
+    
+    .minimal-header h1 {
+        font-size: 2.5rem;
+        line-height: 1.1;
+    }
+    
+    .minimal-description {
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .minimal-link {
+        padding: 1.25rem 2.5rem;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .minimal-container {
+        padding: 1rem;
+    }
+    
+    .minimal-header h1 {
+        font-size: 2rem;
+    }
+    
+    .minimal-description {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .minimal-link {
+        padding: 1rem 2rem;
+        font-size: 0.95rem;
+    }
+}
+
 
