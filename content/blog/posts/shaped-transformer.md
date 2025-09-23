@@ -9,10 +9,12 @@ tags = ['Transformer']
 ## 0. Understanding Transformer
 
 **How can one learn Transformer?**
+
 The Transformer Architecture (introduced in the paper _Attention is All You Need_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of what the model is, how it works, and even annotated code implementations. These days, most developers don’t need to implement Transformers from scratch because libraries like HuggingFace provide easy-to-use classes and methods. There are plenty of things to build on top of the architecture! Still, I think it is worth implementing a Transformer from scratch at least once, to really understand and appreciate the techniques that form the base of the ChatGPT era.
 
 
 **How is this different from other content?**
+
 Before I start, I strongly recommend reading other resources as well. Each has a different abstraction layer (or depth of explanation). The paper itself is fairly straightforward but not chronologically ordered, so it can be hard to follow as a blueprint. _The Illustrated Transformer_ is very beginner-friendly, abstracting away many implementation details and explaining the overall big picture. On the other hand, _The Annotated Transformer_ is very deep, building the entire architecture end to end in PyTorch. But since it follows the paper’s order (which is not consistent) and leaves out some explanations, readers who only have an abstract understanding of the model may feel intimidated or overwhelmed.
 
 Another challenge is that the Transformer is not a single monolithic block—it’s made up of many modularized layers (tokenization, positional encoding, self-attention, cross-attention, etc.). Unless you already have a solid background in deep learning and NLP, it’s hard to fully understand all the pieces in one go. You’ll often need additional resources, and repeated exposure, to get comfortable with it.
@@ -202,7 +204,8 @@ So in real implementations, we directly use the `(nbatches, n_seq)` token ID ten
 
 **input shape: `(nbatches, n_seq)`**
 
-Now we embed all token in sequences within a batch.
+Now the Transformer Architecture starts. 
+First thing we do is we embed all token in sequences within a batch.
 
 Embedding matrix `W_emb` shape is `(vocab, d_model)`. In the original paper `d_model` is set to 512.
 
@@ -338,6 +341,7 @@ Each $Q, K, V$ becomes shape `(nbatches, n_seq, d_model)`
 - `Q = x @ W_q = (nbatches, n_seq, d_model)`
 - `K = x @ W_k = (nbatches, n_seq, d_model)`
 - `V = x @ W_v = (nbatches, n_seq, d_model)`
+
 {{< note type="tip" >}}
 **A Note on Parameters:** We aren't training `Q`, `K`, and `V` directly. 
 The actual parameters we train are the weights: `W_Q`, `W_K`, and `W_V`.
@@ -345,6 +349,27 @@ The actual parameters we train are the weights: `W_Q`, `W_K`, and `W_V`.
 
 **2. Splitting into Heads** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
 After projection, we split `d_model` into `h` seperate heads. Since in the paper, d_k is defined as `d_k = d_model / h`, we can divide the last dimensions into `h` and `d_k` and view the shape as `(nbatches, n_seq, h, d_k)`.
+
+In code, it will be implementing as follow:
+
+```python
+class MultiHeadedAttention(nn.Module):
+	def __init__(self, h, d_model, dropout=0.1):
+	...
+	self.d_k = d_model // h
+	self.h = h
+	self.linears = clones(nn.Linear(d_model, d_model), 4)
+	...
+
+	def forward(self, query, key, value, mask=None):
+	...
+	query, key, value = [lin(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2) for lin, x in zip(self.linears, (query, key, value))]
+```
+
+
+Let's break down the last line.
+
+
 
 **3. Transpose for Attention Calculation**
 To perform the attention calculation ($QK^T$) across all heads at once, we need `n_seq` and `d_k` to be the last two dimensions. So we transpose the shape $Q$ into `(nbatches, h, n_seq, d_k)`. Since $K^T$ is transposed version of $K$, its shape is `(nbatches, h, d_k, n_seq)`.
