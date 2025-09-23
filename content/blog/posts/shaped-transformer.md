@@ -412,3 +412,11 @@ Last part, I will show how the shape changes is implied in actual code (in Annot
 ## Conclusion
 
 We have went through the common notations used in transformer, and used specific example to go through "one training phase" of Transformer Architecture. Finally we saw how shape changes in actual code (why all those `reshape` and `transpose` are used). Hope this post helps you gain insight and intuition of the bigger picture.
+
+{{< qa question="What is the most important concept to understand about transformer shapes?" >}}
+The key concept is how tensors flow through the transformer architecture and how their dimensions change at each step. Understanding that we start with token embeddings of shape `(batch_size, seq_len, d_model)` and how this shape is manipulated through attention mechanisms and feed-forward networks is crucial for implementing and debugging transformer models.
+{{< /qa >}}
+
+{{< qa question="Why do we need to reshape tensors in the multi-head attention mechanism?" >}}
+We reshape tensors to split the `d_model` dimension into multiple attention heads. This allows the model to attend to different types of relationships simultaneously. For example, with 8 heads and `d_model=512`, we reshape from `(batch, seq_len, 512)` to `(batch, seq_len, 8, 64)` so each head can process 64-dimensional representations independently.
+{{< /qa >}}

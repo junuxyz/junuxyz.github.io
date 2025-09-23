@@ -399,6 +399,75 @@ img {
     background: rgba(45, 55, 72, 0.9) !important;
 }
 
+/* Q/A blocks */
+.qa-block {
+    margin: 2rem 0 !important;
+    padding: 1.25rem !important;
+    border-radius: 8px;
+    border: 2px solid var(--border) !important;
+    border-left: 5px solid #a855f7 !important; /* Purple for Q/A blocks */
+    font-size: 0.95rem;
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    position: relative;
+    background: rgba(45, 55, 72, 0.9) !important;
+}
+
+.qa-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.qa-content {
+    width: 100%;
+}
+
+.qa-question-section {
+    margin-bottom: 1rem;
+}
+
+.qa-answer-section {
+    /* No margin needed for last section */
+}
+
+.qa-label {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--accent);
+    display: inline-block;
+}
+
+.qa-text {
+    color: var(--text);
+    margin-left: 0.5rem;
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 1rem);
+}
+
+.qa-text p {
+    margin-bottom: 0.75rem;
+}
+
+.qa-text p:last-child {
+    margin-bottom: 0;
+}
+
+.qa-text ul,
+.qa-text ol {
+    margin: 0.5rem 0 0.5rem 1.5rem;
+}
+
+.qa-text code {
+    background: rgba(255, 255, 255, 0.1);
+}
+
 .note-block::before {
     content: '';
     position: absolute;
@@ -593,6 +662,22 @@ img {
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
     }
     
+    /* Q/A blocks mobile optimization */
+    .qa-block {
+        margin: 1.5rem -0.75rem !important;
+        padding: 1rem !important;
+        border-radius: 0;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .qa-label {
+        font-size: 1rem;
+    }
+    
+    .qa-text {
+        width: calc(100% - 1rem);
+    }
+    
     .note-icon {
         margin-right: 0.5rem;
         font-size: 1rem;
@@ -688,6 +773,12 @@ img {
     
     /* Note blocks */
     .note-block {
+        margin: 1rem -0.5rem !important;
+        padding: 0.875rem !important;
+    }
+    
+    /* Q/A blocks */
+    .qa-block {
         margin: 1rem -0.5rem !important;
         padding: 0.875rem !important;
     }

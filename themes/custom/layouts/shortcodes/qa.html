@@ -1,0 +1,16 @@
+<div class="qa-block">
+  <div class="qa-content">
+    <div class="qa-question-section">
+      <div class="qa-label">$Q$</div>
+      <div class="qa-text">
+        {{ .Get "question" | markdownify }}
+      </div>
+    </div>
+    <div class="qa-answer-section">
+      <div class="qa-label">$A$</div>
+      <div class="qa-text">
+        {{ .Inner | markdownify }}
+      </div>
+    </div>
+  </div>
+</div>
