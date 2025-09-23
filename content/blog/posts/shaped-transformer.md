@@ -126,7 +126,7 @@ After Attention weight is calculated, it is applied to `d_v` to get the value wi
 In the paper, it used `d_v = d_k = d_q` and while `d_k` must be `d_q`, `d_v` does NOT need to be `d_q` at all! Just another design choice made by the authors. I will show the case where `d_v != d_k` later in this post, as well.
 
 
-## 2. How Shape changes, end to end
+## 2. How Shape Changes, end to end (w/ Code Examples)
 
 When we encounter the code implementation of Transformer Architecture, all kinds of `view()`, `transpose()`, `reshape()` methods are frequently used, hindering what are being changed and what it implies. After all, if you understand there is a general order of the code and the shape form all has its meanings, code readability enhances significantly.
 
@@ -134,48 +134,44 @@ Before we start, a simple but effective tip is to remember that most calculation
 (token embedding, self-attention, feed-forward, etc.) are applied **per token**.
 In practice, the input shape is `(nbatches, n_seq, …)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel), except for the masked(or, *padded*) ones. So you can think of it as running the same function `nbatches × n_seq` times in parallel.
 
-Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` or `h` for clarity but I will explain including all the parameters) Also, to give a clear intuition of how everything is working, I will use the three following sentences I used above:
+Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` or `h` for clarity but I will explain including all the parameters). Then we will see how code is actually written to match these shapes. We won't cover all code, just the shape transformation parts, for simplicity. Also, to give you a clear intuition of how everything is working, I will use the three following sentences I used above. Code can be found in ... :
+
+
+### Tokenizing
+
+**shape: `(nbatches, n_seq)`**
+
+This is a step before the transformer architecture even starts. It's a process to convert raw sentences into sequence of tokens. For example, based on [GPT-4o & GPT-4o mini tokenizer](https://platform.openai.com/tokenizer) provided by OpenAI,
 
 ```Plain Text
-I love you            --3
-I am in love with you --6
-I love you, too       --5
+I love you            
+I am in love with you
+I love you, too
 ```
 
-
-### Understand The Exact Starting Point
-shape: `(nbatches, n_seq)`
-
-So let's say the batch of sentences are already transformed into sequence of token IDs using the Tokenizer. This will be our starting point.
-
-For example, based on [GPT-4o & GPT-4o mini tokenizer](https://platform.openai.com/tokenizer) provided by OpenAI
-
-{{< note >}}
-Note: the only reason we use the GPT-4o tokenizer here is since it's the most convenient tokenizer available on the web. However all the rest of the concepts and parameters (e.g. size of $vocab$) will be based on the original paper
-{{< /note >}}
-
-```Plain Text
-I love you            --3
-I am in love with you --6
-I love you, too       --5
-```
+are converted into discrete tokens:
 
 ![[shaped-trasnformer-example-1.png]]
 
+{{< note >}}
+The only reason we use the GPT-4o tokenizer here is since it's the most convenient tokenizer available on the web. However all the rest of the concepts and parameters (e.g. size of $vocab$) will be based on the original paper!
+{{< /note >}}
 
-We use padding token(`PAD`) to keep the length of all `n_seq` same (which is crucial for matrix calculation). If we set `n_seq` to 6, the padding will fill as below:
+
+We use padding tokens(`PAD`) to keep the length of all `n_seq` same (which is crucial for matrix calculation). If we set `n_seq` to 6, the padding will fill as below:
 
 ![[shaped-trasnformer-example-2.png]]
-
 
 These tokens converted to token ids will be
 
 ![[shaped-trasnformer-example-3.png]]
 
-{{< note >}}
-$Q$. Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?
+This will be our exact starting point (input) for Transformer Architecture.
 
-$A$. In the original paper, the authors simply state that they use _learned embeddings_ to map token IDs to vectors of dimension $d_{model}$, without mentioning one-hot explicitly. 
+
+{{< qa question="Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?" >}}
+
+In the original paper, the authors simply state that they use _learned embeddings_ to map token IDs to vectors of dimension $d_{model}$, without mentioning one-hot explicitly. 
 
 Mathematically, however, you can think of each token as a one-hot vector, so that the embedding operation becomes
 
@@ -200,8 +196,7 @@ Of course, this representation is very inefficient in practice (huge memory cost
 So in real implementations, we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
 
 **In practice:** think of `vocab` as the _number of unique token IDs (vocabulary size)_, not as an actual one-hot dimension in the input.
-{{< /note >}}
-
+{{< /qa >}}
 
 ### Token Embedding
 
@@ -359,23 +354,22 @@ We calculate $QK^T$ and the output shape becomes `(nbatches, h , n_seq, n_seq)` 
 After calculating, as you see in the mathematical definition, we scale it by $\frac{1}{\sqrt{d_k}}$ to make it `n_seq`-agnostic.
 Mathematically this process is 
 
-
-**6. Mask**
-
+**6. Mask Padding Tokens**
+Padding tokens are just placeholders to match all the sentence to length of `n_seq` for the sake of matrix calculation. Therefore we need to exclude them on applying to $V$. Therefore we mask the padding tokens in the key. We don't need to mask the query matrix since it matrix multiplies with masked key tokens and automatically gets eliminated.
 
 **7. Apply Softmax** 
 We apply a softmax function to the scores, which turns them into positive values that sum to 1. This converts the scores into attention **weights**. The shape remains `(nbatches, h, n_seq, n_seq)`.
 
-**6. Apply Attention to V** Now we multiply our attention weights by the Value matrix `V`. This enhances the representation of each token by incorporating information from the other tokens it's paying attention to.
+**8. Apply Attention to V** Now we multiply our attention weights by the Value matrix `V`. This enhances the representation of each token by incorporating information from the other tokens it's paying attention to.
 Attention weight shape: `(nbatches, h, n_seq, n_seq)`
 `V` shape: `(nbatches, h, n_seq, d_v)` (where `d_v = d_k` in the original paper)
 Output = `weights @ V` and its shape becomes `(nbatches, h, n_seq, d_v)`
 
-**7. Concatenate Heads**
+**9. Concatenate Heads**
 The parallel processing for each head is done. Now we want to merge our `h` heads back into a single tensor. We reverse the transpose from step 3.
 so the shape changes from `(nbatches, h, n_seq, d_v)` to `(nbatches, n_seq, h, d_v)`.
 
-**8. Reshape to Final Output** 
+**10. Reshape to Final Output** 
 Finally, we flatten the `h` and `d_v` dimensions back into the original `d_model` dimension. This is the `reshape()` or `view()` call(in code) that concludes the process.
 Shape changes from `(nbatches, n_seq, h, d_v)` to `(nbatches, n_seq, h * d_v)`.
 Since `h * d_v = d_model`, our final output shape is `(nbatches, n_seq, d_model)`, which is exactly what we started with! This allows us to pass it to the next layer in the network.
