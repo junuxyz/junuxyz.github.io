@@ -267,6 +267,9 @@ Back to our example, "I love you" has three positions.
 PE[0, :] = [ 0.00,  1.00,  0.00,  1.00,  0.00,  1.00,  0.00,  1.00, ... ]   # pos=0
 PE[1, :] = [ 0.84,  0.54,  0.84,  0.54,  0.84,  0.54,  0.84,  0.54, ... ]   # pos=1
 PE[2, :] = [ 0.91, -0.42,  0.91, -0.42,  0.91, -0.42,  0.91, -0.42, ... ]   # pos=2
+PE[3, :] = [ 0.14, -0.99, 0.14, -0.99, 0.14, -0.99, 0.14, -0.99, ... ] # pos=3 
+PE[4, :] = [-0.76, -0.65, -0.76, -0.65, -0.76, -0.65, -0.76, -0.65, ... ] # pos=4
+PE[5, :] = [-0.96, 0.28, -0.96, 0.28, -0.96, 0.28, -0.96, 0.28, ... ] # pos=5
 ```
 
 We add the PE with E for every token:
@@ -279,9 +282,19 @@ E+PE[0, 1, :] = [ 0.33+0.84, 0.25+0.54, -0.48+0.84, 0.18+0.54, ... ]     # "love
 
 E+PE[0, 2, :] = [-0.55+0.91, 0.19-0.42, 0.07+0.91, 0.92-0.42, ... ]     # "you"
            = [ 0.36, -0.23, 0.98, 0.50, 0.77, -0.34, 1.27, -0.44, ... ]
+
+E+PE[0, 3, :] = [ 0.00+0.14, 0.00-0.99, 0.00+0.14, 0.00-0.99, ... ]     # [PAD] at pos=3
+           = [ 0.14, -0.99, 0.14, -0.99, 0.14, -0.99, 0.14, -0.99, ... ]
+
+E+PE[0, 4, :] = [ 0.00-0.76, 0.00-0.65, 0.00-0.76, 0.00-0.65, ... ]     # [PAD] at pos=4
+           = [-0.76, -0.65, -0.76, -0.65, -0.76, -0.65, -0.76, -0.65, ... ]
+
+E+PE[0, 5, :] = [ 0.00-0.96, 0.00+0.28, 0.00-0.96, 0.00+0.28, ... ]     # [PAD] at pos=5
 ```
 
-As always **remember** this process is done by all sequences in the batch! (which means this process is parallelly done in the sentences "I am in love with you" and "I love you, too" as well!)
+	We can see that even though the padding tokens have no semantic meaning, they still receive a unique positional signal before being processed by the Transformer layers. 
+
+As always, **remember** this process is done by all sequences in the batch! (which means this process is parallelly done in the sentences "I am in love with you" and "I love you, too" as well!)
 
 
 ### Encoder
@@ -312,7 +325,11 @@ When the input enters an Encoder Layer, its first destination is the Self-Attent
 
 Though this post isn't a deep theoretical dive, the core idea is simple: instead of calculating attention just once, we use multiple "attention heads." Think of it like having several experts look at the same sentence; each expert (or head) can focus on different relationships between words. Each head has its own set of learned weights (`W_Q`, `W_K`, `W_V`) to find these different relationships. In the original paper, they use 8 heads (`h=8`).
 
-Let's break down how the tensor shapes transform in this process step-by-step.
+Mathetmatically we represent Attention calculation as 
+
+$$\text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V$$
+
+Let's break down how the actual tensor shapes transform step-by-step.
 
 {{< note >}}
 From now, we will call the input as `x`.
@@ -339,8 +356,14 @@ To perform the attention calculation ($QK^T$) across all heads at once, we need 
 
 **4. Calculate Attention Scores**
 We calculate $QK^T$ and the output shape becomes `(nbatches, h , n_seq, n_seq)` due to matrix mulitplicatin. 
+After calculating, as you see in the mathematical definition, we scale it by $\frac{1}{\sqrt{d_k}}$ to make it `n_seq`-agnostic.
+Mathematically this process is 
 
-**5. Apply Softmax** 
+
+**6. Mask**
+
+
+**7. Apply Softmax** 
 We apply a softmax function to the scores, which turns them into positive values that sum to 1. This converts the scores into attention **weights**. The shape remains `(nbatches, h, n_seq, n_seq)`.
 
 **6. Apply Attention to V** Now we multiply our attention weights by the Value matrix `V`. This enhances the representation of each token by incorporating information from the other tokens it's paying attention to.
