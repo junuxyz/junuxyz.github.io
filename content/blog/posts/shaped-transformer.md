@@ -352,7 +352,12 @@ After projection, we split `d_model` into `h` seperate heads. Since in the paper
 
 In code, it will be implementing as follow:
 
+
 ```python
+def clones(module, N):
+    "Produce N identical layers."
+    return nn.ModuleList([copy.deepcopy(module) for _ in range(N)])
+    
 class MultiHeadedAttention(nn.Module):
 	def __init__(self, h, d_model, dropout=0.1):
 	...
@@ -364,10 +369,21 @@ class MultiHeadedAttention(nn.Module):
 	def forward(self, query, key, value, mask=None):
 	...
 	query, key, value = [lin(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2) for lin, x in zip(self.linears, (query, key, value))]
+	...
 ```
 
-
 Let's break down the last line.
+
+For conveninece we make four Linear Layer of shape `(d_model, d_model)` for `W_q, W_k, W_v, W_o` and save it in ModuleList.
+
+{{< note >}}
+To be accurate it's `(d_model, h, d_k)` but for sake of convenience, since `d_model = h * d_k`, we write as `(d_model, d_model)` for sake of convenience.
+{{< /note >}}
+
+We `zip` it with tuple `(query, key, value)`. Since we don't need q,k,v for `W_o`, it is intended to zip with only three tuples.
+Since `query, key, value` are all shape of `(nbatches, n_seq, d_model)`, we pass it through `lin(x)`. since the Linear Layer itself has the same input and output size, the output of query, key, value after the Linear Layer have the same shape `(nbatches, n_seq, d_model)`. However we transpose it to `(nbatches, h, n_seq, d_k)` to make matrix multiplication available for parallel processing of each heads.
+
+
 
 
 
