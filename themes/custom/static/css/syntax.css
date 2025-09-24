@@ -2,6 +2,15 @@
 .chroma {
     color: #c9d1d9;
     background-color: #1e2a3a;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+.chroma .line {
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
   }
   .chroma .err {
     color: #f85149;
