@@ -299,13 +299,55 @@ pre {
     background: var(--border);
     padding: 1rem;
     border-radius: 6px;
-    overflow-x: auto;
     margin: 1.5rem 0;
+    /* Remove horizontal scrollbar and wrap long lines */
+    overflow: hidden !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
 }
 
 pre code {
     background: none;
     padding: 0;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Ensure Hugo/Chroma wrappers never scroll horizontally */
+.highlight, .highlight pre, .highlight .chroma, .highlight pre.chroma, .highlight pre code {
+    overflow: hidden !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    max-width: 100% !important;
+}
+
+.chroma .line {
+    display: block;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Chroma often adds tabindex on <pre>; make sure desktop wraps too */
+pre[tabindex], pre[tabindex] code {
+    overflow: hidden !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Hide scrollbars to prevent horizontal bar UI */
+pre::-webkit-scrollbar,
+code::-webkit-scrollbar,
+.chroma::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 /* Blockquotes */
