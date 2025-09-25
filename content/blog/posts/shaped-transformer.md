@@ -10,43 +10,48 @@ tags = ['Transformer']
 
 **How can one learn Transformer?**
 
-The Transformer Architecture (introduced in the paper _Attention is All You Need_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of what the model is, how it works, and even annotated code implementations. These days, most developers don’t need to implement Transformers from scratch because libraries like HuggingFace provide easy-to-use classes and methods. There are plenty of things to build on top of the architecture! Still, I think it is worth implementing a Transformer from scratch at least once, to really understand and appreciate the techniques that form the base of the ChatGPT era.
+The Transformer Architecture (introduced in the paper _[Attention is All You Need](https://arxiv.org/abs/1706.03762)_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of [what the model is](https://jalammar.github.io/illustrated-transformer/), [how it works](https://www.deeplearning.ai/short-courses/how-transformer-llms-work/), and even [annotated code implementation of it](https://nlp.seas.harvard.edu/annotated-transformer/). These days, most developers don’t need to implement Transformers from scratch because libraries like [HuggingFace Transformers](https://huggingface.co/docs/transformers/index) provide easy-to-use classes and methods. Yes, there are plenty of things to build on top of the architecture! Still, I think it is worth having a great understanding of Transformer Model, beyond intuitive, abstract level. In fact one of the best way to learn Transformer, as [Feynman said](https://www.goodreads.com/quotes/7306651-what-i-cannot-build-i-do-not-understand), is to build one yourself from scratch to really understand and appreciate all the underlying techniques and modules that form the base of the ChatGPT era.
 
 
 **How is this different from other content?**
 
-Before I start, I strongly recommend reading other resources as well. Each has a different abstraction layer (or depth of explanation). The paper itself is fairly straightforward but not chronologically ordered, so it can be hard to follow as a blueprint. _The Illustrated Transformer_ is very beginner-friendly, abstracting away many implementation details and explaining the overall big picture. On the other hand, _The Annotated Transformer_ is very deep, building the entire architecture end to end in PyTorch. But since it follows the paper’s order (which is not consistent) and leaves out some explanations, readers who only have an abstract understanding of the model may feel intimidated or overwhelmed.
+I do strongly recommend reading other resources as well. I believe each sources has different layers of abstraction (or depth of explanation). The [paper itself](https://arxiv.org/abs/1706.03762) is fairly straightforward but not chronologically ordered, so it can be hard to follow in details. _[The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)_ is beginner-friendly, abstracting away many implementation details and excels at explaining the overall big picture. On the other hand, _[The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)_ is very deep, building the entire architecture end to end in PyTorch. But since it follows the paper’s order (which isn't chronological) and leaves out some explanations, readers who only have an abstract understanding of the model may feel overwhelmed or questionable.
 
-Another challenge is that the Transformer is not a single monolithic block—it’s made up of many modularized layers (tokenization, positional encoding, self-attention, cross-attention, etc.). Unless you already have a solid background in deep learning and NLP, it’s hard to fully understand all the pieces in one go. You’ll often need additional resources, and repeated exposure, to get comfortable with it.
+Also note that Transformer is not a single monolithic block—it’s made up of many modularized layers (tokenization, positional encoding, encoder-decoder model, self-attention, cross-attention, etc.). Unless you already have a solid background in deep learning and NLP, it’s hard to fully understand all the pieces in one go. You’ll often need additional resources, and repeated exposure, to get comfortable with it.
 
-While there are many great explanations of the mathematics and abstract concepts, I think the end-to-end **shape changes** are often missing. This blog post specifically aims to enhance the reader’s intuition about what the input actually looks like in real code, how it gets transformed step by step, and how it eventually becomes the “next token.” 
+While there are many great explanations of the mathematics and abstract concepts, I think the end-to-end **shape changes** and detailed explanation of code implementation are often missing. This blog post specifically aims to enhance the reader’s intuition about what the input actually looks like in real code, how it gets transformed step by step, and how it eventually can successfully predict the “next token”.
 
 Hopefully this helps you form a more concrete understanding of the architecture and makes the code easier to implement :)
 
+<br>
 
 ## 1. Commonly Used Parameters
 
-Before we talk about shape transformation, it is helpful to understand the parameter and notation names. It will help the code readability. If you are famaliar with the papaers and parameters used, feel free to skip this section.
+Before we talk about shape transformation, it is helpful to understand the names of the parameter/notations. It will help the code readability. If you are famaliar with the paper and the parameters used, feel free to skip this section.
 
 ### $N$ , $b$, or `nbatches`
 
 The Paper use the expression $N$ but in code, it is expressed as `nbatches`.
 
-The reason why you may be confused about `nbatches` is because most explanation (of course the original paper) omit about it.
+The reason why you may be confused about `nbatches` in code implementation from Annotated Transformer is because most explanation (including the original paper) omit about it.
+
 
 The most representative image of Transformer is usually
-
 1. One head from one batch or
 2. Multi-Head from one batch
 
-but they omit there is actually every layers are processed in batches.
+but they don't explicitly tell there are `nbatches` batches processed parallely for each batch.
 
-The reality is, $N$ sentences are put into batch and passed as input. But this doesn’t introduce anything new to the original architecture (all sentences in batch are just parallely processed) but it’s still worth noting that `nbatches` mean that because it’s the default parameter in all shapes in the Transformer.
+The reality is, $N$ sentences are put into batch and passed as input. But this doesn’t change or introduce anything new to the original architecture we know. Still it's worth noting that `nbatches` mean the number of sentences being processed per batch. It will appear in the code several times.
 
-For example let’s say $N=3$. That means we have 3 sentences per batch.
+Ex. let’s say $N=3$. That means we have $3$ sentences per batch.
+
+
 ### $S$ or `n_seq`
 
-`n_seq` means the number of tokens in one sentence. Since Transformer utilizes parallel processing, we need to pre-define the length of it. Usually we define it based on the longest sentence.
+`n_seq` means the number of tokens in one sentence. Since Transformer utilizes parallel processing, we need to pre-define (statically) the length of the sentence. Usually we define it based on the longest sentence.
+
+For example,
 
 ```
 I love you            --3
@@ -54,17 +59,18 @@ I am in love with you --6
 I love you, too       --5
 ```
 
-In this case, since the longest sentence in the batch is 6, we can set `n_seq=6` . For the sentences that have less tokens than 6 will be filled with mask. We will see how mask is implemented later in this post.
+In this case, since the longest sentence in the batch is $6$, we can set `n_seq = 6`.
+For the sentences that have less tokens than 6 will be filled with mask. We will see how mask(padding) is implemented later in this post.
 
 ### $d_{\text{model}}$ or `d_model`
 
-`d_model` is a hyperparameter which is the size of the vector for all residual stream.
+`d_model` is the dimensionality of the **residual stream**, i.e., the vector size that represents each token throughout the Transformer.
 
-Transformer typically express token information as `d_model` . In all sublayers both in encoder and decoder, residual connection (`x = x + sublayer(x)`) is used. Therefore it is helpful to match the dimension space for the sake of that. The output of Embedding Module, Attention Block, and FFN are all `(N,S,d_model)` shaped. So basically, `d_model` is set to unify the dimension for residual connection.
+All major components, including Embedding, Attention, and Feed-Forward layers, produce outputs of shape `(N, S, d_model)`. This uniform dimension ensures that residual connections (`x = x + sublayer(x)`) can be applied seamlessly across all sublayers.
 
-In the paper, `d_model=512`
+In the original paper, `d_model` was set to 512.
 
-### $vocab$
+### $vocab$ or `vocab`
 
 `vocab` is number of all token (or token ID). It depends on how you tokenize it.
 
@@ -72,13 +78,7 @@ I think prior resources didn’t explain about the exact input of Transformer ar
 
 First, even before the transformer process begins, there is a thing called Tokenizer which is independent from the Transformer Architecture. The tokenizer splits raw sentences into seqeunce of tokens.
 
-For example if the raw sentence input was “I love you”,
-
-```
-I love you
-```
-
-Tokenizer divides it into tokens,
+For example if the raw sentence input was `I love you`, Tokenizer would divide it into tokens,
 
 ```
 ["I", "love", "you"]
@@ -90,7 +90,11 @@ and using the $vocab$ dictionary, we map the tokens with its correspoining token
 [0, 1, 2]
 ```
 
-Now **this (sequences of token id)** is the input of the Transformer Architecture. The first step of Transformer Architecture, is Embedding and this is done by selecting the row from W_emb using the token ID as a key: `W_emb[token ID]`
+Now **this (sequences of token id)** is the input of the Transformer Architecture. 
+
+Then you might ask **what's the input of Transformer then?**
+
+The very first step of Transformer is Embedding and this is done by selecting the row from `W_emb` using the token ID as a key: `W_emb[token ID]`
 
 ```
 token_id = 1 ("love")
@@ -100,33 +104,37 @@ token_id = 1 ("love")
 Since the vector representation of token has size of $d_\text{model}$ (as mentioned above) The shape of $W_\text{emb}$ will be $(vocab, d_{\text{model}})$.
 
 tldr:
-`vocab` means number of all possible tokens, which depends on the Tokenizer.
-After the token is converted into token id, that is the actual “input” of the Transformer Architecture (The most left, below from the Transformer Architecture image)
+- `vocab` means number of all possible tokens, which depends on the Tokenizer.
+- After the token is converted into token id, the sequence of token ids become the actual “input” of the Transformer Architecture (The most left, below from the Transformer Architecture image)
 
 ### Parameters specifically used During Attention Calculation
 
+Below are the parameters only seen in Attention Calculation (Self-Attention and Cross-Attention)
+
 ### $H$, $h$, or `h`
 
-`h` is a hyperparameter that means the number of head of Multi-Head Attention.
-
-In the original paper, researchers set it to `h=8`.
+`h` is a hyperparameter which means the number of head of Multi-Head Attention.
+In the original paper, researchers set it as `h = 8`.
 
 ### $d_k$ or `d_k`
 
 `d_k` is the vector size of key($K$) representation of each token.
 
-We will look into more detail about how shape transforms in Multi-Head Attention Phase, but to shortly address, $Q$(query) and $K$(key) are matrix multiplied to get the Attention weight. Therefore `d_q == d_k`.
+We will look into more detail about how shape transforms during Multi-Head Attention in the upcoming section, but to shortly address, $Q$(query) and $K$(key) are matrix multiplied to get the Attention Score. Therefore `d_q` must be the same as `d_k`.
 
-In the paper `d_k = d_model / h` which is $64$ ($=512/8$). Most people think `d_k` must be `d_model / h` but this is just a design choice and totally depends on the developer. I will show cases in the next section where `d_k` is NOT `d_model / h` and why it’s still efficient to use `d_k = d_model / h`.
+In the paper `d_k = d_model // h` which is $64$ ($=512/8$). Most people think `d_k` must be `d_model // h` but this is just a design choice and totally depends on the developer. I will explain cases where this is not always true, while it's still efficient to use `d_k = d_model // h`.
 
 ### $d_v$ or `d_v`
 
-`d_k` is the vectore size of value($V$) representation of each token.
+`d_v` is the dimension of the value($V$) vector for each token.
 
-After Attention weight is calculated, it is applied to `d_v` to get the value with all the context(implied in attention weight) which is used to predict the next token.
+After the attention weights are calculated, they are multiplied by the Value matrix $V$. This process yields a new set of vectors, each with dimension `d_v`, that now holds the contextual information from the sequence. This output is then used to help predict the next token. 
+(Don't worry if this sounds too compact. I will explain it in more detail in the next section!)
 
-In the paper, it used `d_v = d_k = d_q` and while `d_k` must be `d_q`, `d_v` does NOT need to be `d_q` at all! Just another design choice made by the authors. I will show the case where `d_v != d_k` later in this post, as well.
+In the original "Attention Is All You Need" paper, the authors set `d_v = d_k = d_q`. However, while `d_k` must equal `d_q`, it's not required for d_v to be the same size. This is simply another design choice. I will also explain later in this post when `d_v != d_k` is acceptable.
 
+
+<br>
 
 ## 2. How Shape Changes, end to end (w/ Code Examples)
 
@@ -195,10 +203,11 @@ O[0, 5, :] = [1(at 0), 0, 0, ..., 0]          # [PAD]
 
 Of course, this representation is very inefficient in practice (huge memory cost). 
 
-So in real implementations, we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
+So in real implementations (e.g. PyTorch), we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
 
 **In practice:** think of `vocab` as the _number of unique token IDs (vocabulary size)_, not as an actual one-hot dimension in the input.
 {{< /qa >}}
+
 
 ### Token Embedding
 
