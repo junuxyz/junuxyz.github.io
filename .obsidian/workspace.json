@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/posts/deep-rl.md",
+                "file": "content/blog/posts/shaped-transformer.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "deep-rl"
+              "title": "shaped-transformer"
             }
           }
         ],
@@ -230,8 +230,8 @@
   },
   "active": "a7e9e0d46fed9c3d",
   "lastOpenFiles": [
-    "content/blog/posts/a-shallow-dive-into-vscode-debugger.md",
     "content/posts/deep-rl.md",
+    "content/blog/posts/a-shallow-dive-into-vscode-debugger.md",
     "content/blog/posts/shaped-transformer.md",
     "themes/custom/layouts/shortcodes/qa.html",
     "conflict-files-obsidian-git.md",
