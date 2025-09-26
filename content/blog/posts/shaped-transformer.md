@@ -9,12 +9,10 @@ tags = ['Transformer']
 ## 0. Understanding Transformer
 
 **How can one learn Transformer?**
-
 The Transformer Architecture (introduced in the paper _[Attention is All You Need](https://arxiv.org/abs/1706.03762)_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of [what the model is](https://jalammar.github.io/illustrated-transformer/), [how it works](https://www.deeplearning.ai/short-courses/how-transformer-llms-work/), and even [annotated code implementation of it](https://nlp.seas.harvard.edu/annotated-transformer/). These days, most developers don’t need to implement Transformers from scratch because libraries like [HuggingFace Transformers](https://huggingface.co/docs/transformers/index) provide easy-to-use classes and methods. Yes, there are plenty of things to build on top of the architecture! Still, I think it is worth having a great understanding of Transformer Model, beyond intuitive, abstract level. In fact one of the best way to learn Transformer, as [Feynman said](https://www.goodreads.com/quotes/7306651-what-i-cannot-build-i-do-not-understand), is to build one yourself from scratch to really understand and appreciate all the underlying techniques and modules that form the base of the ChatGPT era.
 
 
 **How is this different from other content?**
-
 I do strongly recommend reading other resources as well. I believe each sources has different layers of abstraction (or depth of explanation). The [paper itself](https://arxiv.org/abs/1706.03762) is fairly straightforward but not chronologically ordered, so it can be hard to follow in details. _[The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)_ is beginner-friendly, abstracting away many implementation details and excels at explaining the overall big picture. On the other hand, _[The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)_ is very deep, building the entire architecture end to end in PyTorch. But since it follows the paper’s order (which isn't chronological) and leaves out some explanations, readers who only have an abstract understanding of the model may feel overwhelmed or questionable.
 
 Also note that Transformer is not a single monolithic block—it’s made up of many modularized layers (tokenization, positional encoding, encoder-decoder model, self-attention, cross-attention, etc.). Unless you already have a solid background in deep learning and NLP, it’s hard to fully understand all the pieces in one go. You’ll often need additional resources, and repeated exposure, to get comfortable with it.
@@ -59,7 +57,7 @@ I am in love with you --6
 I love you, too       --5
 ```
 
-In this case, since the longest sentence in the batch is $6$, we can set `n_seq = 6`.
+in this case, since the longest sentence in the batch is $6$, we can set `n_seq = 6`.
 For the sentences that have less tokens than 6 will be filled with mask. We will see how mask(padding) is implemented later in this post.
 
 ### $d_{\text{model}}$ or `d_model`
@@ -133,16 +131,43 @@ After the attention weights are calculated, they are multiplied by the Value mat
 
 In the original "Attention Is All You Need" paper, the authors set `d_v = d_k = d_q`. However, while `d_k` must equal `d_q`, it's not required for d_v to be the same size. This is simply another design choice. I will also explain later in this post when `d_v != d_k` is acceptable.
 
-
 <br>
+## 2. TLDR
 
-## 2. How Shape Changes, end to end (w/ Code Examples)
+I wrote this part for people who don't have much time to look into all the details (though I believe it's worth digging in), and also wanted to emphasize the most important part, how everything works in the big picture and how the shape changes.
 
-When we encounter the code implementation of Transformer Architecture, all kinds of `view()`, `transpose()`, `reshape()` methods are frequently used, hindering what are being changed and what it implies. After all, if you understand there is a general order of the code and the shape form all has its meanings, code readability enhances significantly.
+**0.** Raw sentences in batches are each converted into sequence of tokens. output shape: `(nbatches, n_seq, vocab)`
+
+**1. Embedding Layer**
+1-1. Each tokens are embedded in `d_model` sized vector. `(nbatches, n_seq, vocab)` -> `(nbatches, n_seq, d_model)`
+1-2. Each token adds positional information through Positional Embedding. Since the size of Positional vector is same(`d_model`), shape doesn't change. `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, d_model)`.
+
+**2. Encoding Layer**
+2-1. Multi-Head Attention
+The result of 1-2 becomes the input and goes into Multi-Head Attention. input shape: `(nbatches, n_seq, d_model)`
+2-1-1. Copy the input and Project it to `W_q`, `W_k`, `W_v`. Since each weights are all shape of `(d_model, d_model)`, the shape doesn't change. Q, K, V = `(nbatches, n_seq, d_model)`
+2-1-2. Split into multiple heads. `d_k = d_model // h`, so we can reshape the model as `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
+2-1-3. Transpose the head for parallel processing. Since we want to process each head's attention process in parallel, we transpose the head and sequence. This makes processing each sequence(sentence) for each head in parallel. `(nbatches, n_seq, h, d_k)` -> `(nbatches, h, n_seq, d_k)`
+2-1-4. Matrix Multiply $QK^T$ `(nbatches, h, n_seq, d_k)` -> `(nbatches, h, n_seq, n_seq)`
+2-1-5. Get Attention weights by Softmax. Shape of course, doesn't change. `(nbatches, h, n_seq, n_seq)` -> `(nbatches, h, n_seq, n_seq)`
+2-1-6.
+
+
+
+
+Section 3 below explains much detailed explanation for each steps with examples, illustrations, and code examples(from _Annotated Transformer_).
+
+## 3. How Shape Changes, end to end (w/ Code Examples)
+
+{{< note >}}
+This section is working in progress!
+{{< /note >}}
+
+When we encounter the code implementation of Transformer Architecture, all kinds of `view()`, `transpose()`, `reshape()` methods are frequently used, hindering what are being changed , what it implies, and why we need to do it. After all, if you understand there is a general order of the code and the shape form all has its meanings, code readability can significantly enhance.
 
 Before we start, a simple but effective tip is to remember that most calculations 
-(token embedding, self-attention, feed-forward, etc.) are applied **per token**.
-In practice, the input shape is `(nbatches, n_seq, …)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel), except for the masked(or, *padded*) ones. So you can think of it as running the same function `nbatches × n_seq` times in parallel.
+(token embedding, self-attention, feed-forward, etc.) in Transformer are applied **per token**(`d_model`).
+In practice, the input shape is `(nbatches, n_seq, d_model)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel). So you can think of it as running the same function `nbatches × n_seq` times in parallel.
 
 Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` or `h` for clarity but I will explain including all the parameters). Then we will see how code is actually written to match these shapes. We won't cover all code, just the shape transformation parts, for simplicity. Also, to give you a clear intuition of how everything is working, I will use the three following sentences I used above. Code can be found in ... :
 
@@ -151,7 +176,7 @@ Now, let's explore the journey from the very first embedding to the last output 
 
 **shape: `(nbatches, n_seq)`**
 
-This is a step before the transformer architecture even starts. It's a process to convert raw sentences into sequence of tokens. For example, based on [GPT-4o & GPT-4o mini tokenizer](https://platform.openai.com/tokenizer) provided by OpenAI,
+As mentioned above, this is a step before the transformer architecture even starts. It's a process to convert raw sentences into sequence of tokens. For example, based on [GPT-4o & GPT-4o mini tokenizer](https://platform.openai.com/tokenizer) provided by OpenAI,
 
 ```Plain Text
 I love you            
@@ -159,6 +184,7 @@ I am in love with you
 I love you, too
 ```
 
+(we will use these three sentences in each step until the end of the architecture)
 are converted into discrete tokens:
 
 ![[shaped-trasnformer-example-1.png]]
@@ -166,6 +192,13 @@ are converted into discrete tokens:
 {{< note >}}
 The only reason we use the GPT-4o tokenizer here is since it's the most convenient tokenizer available on the web. However all the rest of the concepts and parameters (e.g. size of $vocab$) will be based on the original paper!
 {{< /note >}}
+
+In code, we use `tokenizer.tokenizer` module:
+
+```python
+def tokenize(text, tokenizer):
+    return [tok.text for tok in tokenizer.tokenizer(text)]
+```
 
 
 We use padding tokens(`PAD`) to keep the length of all `n_seq` same (which is crucial for matrix calculation). If we set `n_seq` to 6, the padding will fill as below:
@@ -177,6 +210,34 @@ These tokens converted to token ids will be
 ![[shaped-trasnformer-example-3.png]]
 
 This will be our exact starting point (input) for Transformer Architecture.
+
+Let's see how this is implemented as code:
+
+```python
+class Batch:
+    """Object for holding a batch of data with mask during training."""
+    # In this code, padding token(`<blank>`) is set to '2'.
+    # This is just because the authors of Annotated Transformer
+    # set `<blank>` as the third special token (
+    # specials=["<s>", "</s>", "<blank>", "<unk>"])
+    def __init__(self, src, tgt=None, pad=2):  # 2 = <blank>
+        self.src = src
+        self.src_mask = (src != pad).unsqueeze(-2)
+        if tgt is not None:
+            self.tgt = tgt[:, :-1]
+            self.tgt_y = tgt[:, 1:]
+            self.tgt_mask = self.make_std_mask(self.tgt, pad)
+            self.ntokens = (self.tgt_y != pad).data.sum()
+
+    @staticmethod
+    def make_std_mask(tgt, pad):
+        "Create a mask to hide padding and future words."
+        tgt_mask = (tgt != pad).unsqueeze(-2)
+        tgt_mask = tgt_mask & subsequent_mask(tgt.size(-1)).type_as(
+            tgt_mask.data
+        )
+        return tgt_mask
+```
 
 
 {{< qa question="Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?" >}}
