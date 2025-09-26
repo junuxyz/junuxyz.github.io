@@ -132,7 +132,8 @@ After the attention weights are calculated, they are multiplied by the Value mat
 In the original "Attention Is All You Need" paper, the authors set `d_v = d_k = d_q`. However, while `d_k` must equal `d_q`, it's not required for d_v to be the same size. This is simply another design choice. I will also explain later in this post when `d_v != d_k` is acceptable.
 
 <br>
-## 2. TLDR
+
+## 2. The Big Picture (TLDR)
 
 I wrote this part for people who don't have much time to look into all the details (though I believe it's worth digging in), and also wanted to emphasize the most important part, how everything works in the big picture and how the shape changes.
 
@@ -142,7 +143,9 @@ I wrote this part for people who don't have much time to look into all the detai
 1-1. Each tokens are embedded in `d_model` sized vector. `(nbatches, n_seq, vocab)` -> `(nbatches, n_seq, d_model)`
 1-2. Each token adds positional information through Positional Embedding. Since the size of Positional vector is same(`d_model`), shape doesn't change. `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, d_model)`.
 
-**2. Encoding Layer**
+**2. Encoder Layer**
+2-1~ 2.4 is recurred $N$($N=6$ in the original paper) times.
+
 2-1. Multi-Head Attention
 The result of 1-2 becomes the input and goes into Multi-Head Attention. input shape: `(nbatches, n_seq, d_model)`
 2-1-1. Copy the input and Project it to `W_q`, `W_k`, `W_v`. Since each weights are all shape of `(d_model, d_model)`, the shape doesn't change. Q, K, V = `(nbatches, n_seq, d_model)`
@@ -150,12 +153,24 @@ The result of 1-2 becomes the input and goes into Multi-Head Attention. input sh
 2-1-3. Transpose the head for parallel processing. Since we want to process each head's attention process in parallel, we transpose the head and sequence. This makes processing each sequence(sentence) for each head in parallel. `(nbatches, n_seq, h, d_k)` -> `(nbatches, h, n_seq, d_k)`
 2-1-4. Matrix Multiply $QK^T$ `(nbatches, h, n_seq, d_k)` -> `(nbatches, h, n_seq, n_seq)`
 2-1-5. Get Attention weights by Softmax. Shape of course, doesn't change. `(nbatches, h, n_seq, n_seq)` -> `(nbatches, h, n_seq, n_seq)`
-2-1-6.
+2-1-6. Matrix Multiply with $V$ `(nbatches, h, n_seq, n_seq)` -> `(nbatches, h, n_seq, d_k)`
+2-1-7. Now due to 2-1-1~2-1-6 we've got `h` numbers of $V$s and we would want to concatenate all the information and represent as one.
+
+2-2. Residual connection & Layer Normalization
+
+2-3. Feed Forward Network
+
+2-4. Residual connection & Layer Normalization
+
+**3. Decoder Layer**
 
 
+---
 
 
 Section 3 below explains much detailed explanation for each steps with examples, illustrations, and code examples(from _Annotated Transformer_).
+
+<br>
 
 ## 3. How Shape Changes, end to end (w/ Code Examples)
 
