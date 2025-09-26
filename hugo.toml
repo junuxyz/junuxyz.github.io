@@ -41,6 +41,7 @@ buildExpired = false
     [markup.goldmark.renderer]
       # Enable raw HTML in markdown (needed for math)
       unsafe = true
+      hardWraps = true
     [markup.goldmark.parser]
       # Enable math delimiters
       wrapStandAloneImageWithinParagraph = false
