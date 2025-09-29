@@ -133,17 +133,17 @@ In the original "Attention Is All You Need" paper, the authors set `d_v = d_k =
 
 <br>
 
-### **2. The Big Picture (TL;DR)**
+## 2. The Big Picture (TL;DR)
 
 This section shows only the **shape flow** and **key operations**. You can see a much detailed explanation of each steps below in section 3.
 
-**0. Input (both Encoder & Decoder)**  
+### 0. Input (both Encoder & Decoder)
 Raw sentences → token **IDs**. `(nbatches, n_seq)`
 
-**1. Encoder Embedding Layer**  
+### 1. Encoder Embedding Layer
 1-1. Token Embedding: `(nbatches, n_seq_src) → (nbatches, n_seq_src, d_model)` 1-2. Positional Embedding (added): `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
 
-**2. Encoder Layer**
+### 2. Encoder Layer
 Encoder Layer is consisted of two submodules, 2-1. Multi-Head Self Attention and 2-2. Feed Forward Network. Encoder Layer is repeated **N** times (e.g., 6).
 
 **2-1. Multi-Head Self Attention (MHA)**  
@@ -169,11 +169,11 @@ Shapes overall: `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_mode
 **Residual + LayerNorm**  
 `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
 
-**3. Decoder Embedding Layer**  
+### 3. Decoder Embedding Layer
 3-1. Token Embedding: `(nbatches, n_seq_tgt) → (nbatches, n_seq_tgt, d_model)`  
 3-2. Positional Embedding (added): `(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
 
-**4. Decoder Layer**  
+### 4. Decoder Layer
 Decoder Layer is consisted of three submodules, 4-1. Maksed Multi-Head Self Attention, 4-2. Cross Attention, and 4-3. Feed Forward Network. Decoder Layer is repeated **N** times (e.g., 6).
 
 **4-1. Masked Multi-Head Self Attention**  
@@ -194,7 +194,10 @@ Inputs:
 - K,V from Encoder: `(nbatches, n_seq_src, d_model)`
 4-2-1. Project to Q,K,V (shapes unchanged)  
 4-2-2. Split heads (reshape where `d_model = h × d_k`): Q → `(nbatches, n_seq_tgt, h, d_k)`; K,V → `(nbatches, n_seq_src, h, d_k)` 4-2-3. Transpose: Q → `(nbatches, h, n_seq_tgt, d_k)`; K,V → `(nbatches, h, n_seq_src, d_k)`  
-4-2-4. Compute attention scores `QKᵀ / √d_k`: `(nbatches, h, n_seq_tgt, n_seq_src)` 4-2-5. Softmax: `(nbatches, h, n_seq_tgt, n_seq_src)` 4-2-6. Multiply by V: `(nbatches, h, n_seq_tgt, d_k)` 4-2-7. Transpose back & concat: `(nbatches, n_seq_tgt, d_model)`  
+4-2-4. Compute attention scores `QKᵀ / √d_k`: `(nbatches, h, n_seq_tgt, n_seq_src)`
+4-2-5. Softmax: `(nbatches, h, n_seq_tgt, n_seq_src)`
+4-2-6. Multiply by V: `(nbatches, h, n_seq_tgt, d_k)`
+4-2-7. Transpose back & concat: `(nbatches, n_seq_tgt, d_model)`  
 4-2-8. Output projection `W_O`: `(nbatches, n_seq_tgt, d_model)`
 
 **Residual + LayerNorm**  
@@ -207,7 +210,7 @@ Same as Encoder FFN.
 **Residual + LayerNorm**  
 `(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
 
-**5. LM Head (Generator)**  
+### 5. LM Head (Generator)
 5-1. Linear `d_model → vocab`: `(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, vocab)`  
 5-2. Softmax over `vocab`: `(nbatches, n_seq_tgt, vocab) → (nbatches, n_seq_tgt, vocab)`
 
