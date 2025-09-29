@@ -83,12 +83,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/blog/posts/shaped-transformer.md",
+                "file": "content/blog/gd-and-bp.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "shaped-transformer"
+              "title": "gd-and-bp"
             }
           }
         ],
@@ -149,8 +149,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672,
-    "collapsed": true
+    "width": 206.50469207763672
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -245,9 +244,9 @@
   },
   "active": "b186225141c29887",
   "lastOpenFiles": [
-    "content/posts/gd-and-bp.md",
     "content/blog/posts/shaped-transformer.md",
-    "content/posts/deep-rl.md",
+    "content/blog/gd-and-bp.md",
+    "content/blog/deep-rl.md",
     "content/blog/posts/a-shallow-dive-into-vscode-debugger.md",
     "themes/custom/layouts/shortcodes/qa.html",
     "conflict-files-obsidian-git.md",

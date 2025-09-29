@@ -192,6 +192,7 @@ Input: `(nbatches, n_seq_tgt, d_model)`
 Inputs:
 - Q from Decoder: `(nbatches, n_seq_tgt, d_model)`
 - K,V from Encoder: `(nbatches, n_seq_src, d_model)`
+
 4-2-1. Project to Q,K,V (shapes unchanged)  
 4-2-2. Split heads (reshape where `d_model = h × d_k`): Q → `(nbatches, n_seq_tgt, h, d_k)`; K,V → `(nbatches, n_seq_src, h, d_k)` 4-2-3. Transpose: Q → `(nbatches, h, n_seq_tgt, d_k)`; K,V → `(nbatches, h, n_seq_src, d_k)`  
 4-2-4. Compute attention scores `QKᵀ / √d_k`: `(nbatches, h, n_seq_tgt, n_seq_src)`
@@ -235,8 +236,7 @@ This section is working in progress!
 When we encounter the code implementation of Transformer Architecture, all kinds of `view()`, `transpose()`, `reshape()` methods are frequently used, hindering what are being changed , what it implies, and why we need to do it. After all, if you understand there is a general order of the code and the shape form all has its meanings, code readability can significantly enhance.
 
 Before we start, a simple but effective tip is to remember that most calculations 
-(token embedding, self-attention, feed-forward, etc.) in Transformer are applied **per token**(`d_model`).
-In practice, the input shape is `(nbatches, n_seq, d_model)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel). So you can think of it as running the same function `nbatches × n_seq` times in parallel.
+(token embedding, self-attention, feed-forward, etc.) in Transformer are applied **per token**(`d_model`). In practice, the input shape is `(nbatches, n_seq, d_model)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel). So you can think of it as running the same function `nbatches × n_seq` times in parallel.
 
 Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` or `h` for clarity but I will explain including all the parameters). Then we will see how code is actually written to match these shapes. We won't cover all code, just the shape transformation parts, for simplicity. Also, to give you a clear intuition of how everything is working, I will use the three following sentences I used above. Code can be found in ... :
 
@@ -522,10 +522,6 @@ To be accurate it's `(d_model, h, d_k)` but for sake of convenience, since `d_mo
 We `zip` it with tuple `(query, key, value)`. Since we don't need q,k,v for `W_o`, it is intended to zip with only three tuples.
 Since `query, key, value` are all shape of `(nbatches, n_seq, d_model)`, we pass it through `lin(x)`. since the Linear Layer itself has the same input and output size, the output of query, key, value after the Linear Layer have the same shape `(nbatches, n_seq, d_model)`. However we transpose it to `(nbatches, h, n_seq, d_k)` to make matrix multiplication available for parallel processing of each heads.
 
-
-
-
-
 **3. Transpose for Attention Calculation**
 To perform the attention calculation ($QK^T$) across all heads at once, we need `n_seq` and `d_k` to be the last two dimensions. So we transpose the shape $Q$ into `(nbatches, h, n_seq, d_k)`. Since $K^T$ is transposed version of $K$, its shape is `(nbatches, h, d_k, n_seq)`.
 
@@ -563,10 +559,10 @@ final output shape: `(nbatches, n_seq, d_model)`
 
 Below are two common parts most people are wrong about, or didn't think of.
 
-- Does `d_k` have to be `d_model / h`?
+- Does `d_k` have to be `d_model // h`?
 	No, but it's a very practical choice to make.
 	The main reason is to ensure the output of the attention block matches the shape as the input. This is crucial for the residual connection(`x = x + MHA(x)`). 
-	When `d_k = d_model / h`, After we concatenate the heads, the final dimension is `h * d_k = h * (d_model / h) = d_model`. The output shape `(..., d_model)` perfectly matches the input shape, so the residual connection works seamlessly. When `d_k` is different from `d_model / h`, The concatenated dimension becomes `h * d_k`, which is not equal to `d_model`. This creates a shape mismatch. To fix this, the final linear layer (`W_O`) must act as a projection, mapping the shape from `h * d_k` back to `d_model`. So it's just a practical and rational design choice to keep the dimension consistent.
+	When `d_k = d_model // h`, After we concatenate the heads, the final dimension is `h * d_k = h * (d_model / h) = d_model`. The output shape `(..., d_model)` perfectly matches the input shape, so the residual connection works seamlessly. When `d_k` is different from `d_model // h`, The concatenated dimension becomes `h * d_k`, which is not equal to `d_model`. This creates a shape mismatch. To fix this, the final linear layer (`W_O`) must act as a projection, mapping the shape from `h * d_k` back to `d_model`. So it's just a practical and rational design choice to keep the dimension consistent.
 - Does `d_k` have to match `d_v`?
 	**No**, not at all.
 	While the query and key dimensions (`d_q` and `d_k`) must be identical for the dot product to work, the value dimension (`d_v`) can be any size you want.
