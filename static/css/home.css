@@ -62,6 +62,31 @@
     border-bottom-color: #3b82f6;
 }
 
+/* Blog link */
+.blog-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #6b7280;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.blog-link:hover {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+}
+
+.blog-link::after {
+    content: ' →';
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.blog-link:hover::after {
+    opacity: 1;
+}
+
 .researcher-container figure.avatar {
     float: right;
     margin: 0 0 2rem 2.5rem;

@@ -11,6 +11,8 @@ I am double majoring Psychology and Computer Science. I'm exploring various area
 I read and take notes on some books. (book reviews: [here](https://junuxyz.notion.site/books/)). I also run a public [Notion page](https://junuxyz.notion.site/) where I document and share most of what I learn or think about.
 Beyond my technical/academic pursuits, I maintain a daily workout routine and enjoy sauna weekly.
 
+<a href="/blog/" class="blog-link">Go to blog</a>
+
 ## Research Interests
 I'm exploring various areas of AI, currently focusing on:
 - [**ML Systems**: GPU optimization, memory hierarchy, parallel computing](https://junuxyz.notion.site/mlsys)
