@@ -1,4 +1,4 @@
- :root {
+:root {
     /* Minimal color palette - dark theme only */
     --bg: #1a202c;
     --text: #e2e8f0;
@@ -21,6 +21,18 @@
     --content-padding: 1rem;
     --section-gap: 2rem;
     --section-gap-mobile: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --max-width: 840px;
+    }
+}
+
+@media (min-width: 1440px) {
+    :root {
+        --max-width: 960px;
+    }
 }
 
 /* Reset and base */

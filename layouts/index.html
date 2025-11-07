@@ -1,17 +1,5 @@
 {{ define "main" }}
-<div class="minimal-container">
-    <header class="minimal-header">
-        <h1>{{ .Site.Title }}</h1>
-        <p class="minimal-description">{{ .Site.Params.description }}</p>
-    </header>
-    
-    <div class="minimal-nav">
-        <a href="/blog/" class="minimal-link">Enter Blog</a>
-    </div>
+<div class="researcher-container">
+    {{ .Content }}
 </div>
 {{ end }}
-
-
-
-
-
