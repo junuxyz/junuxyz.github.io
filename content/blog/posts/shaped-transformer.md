@@ -21,8 +21,6 @@ While there are many great explanations of the mathematics and abstract concepts
 
 Hopefully this helps you form a more concrete understanding of the architecture and makes the code easier to read and implement :)
 
-<br>
-
 ## 1. Commonly Used Parameters
 
 Before we talk about shape transformation, it is helpful to understand the names of the parameter/notations. It will help the code readability. If you are famaliar with the paper and the parameters used, feel free to skip this section.
@@ -33,7 +31,6 @@ The Paper use the expression $N$ but in code, it is expressed as `nbatches`.
 
 The reason why you may be confused about `nbatches` in code implementation from Annotated Transformer is because most explanation (including the original paper) omit about it.
 
-
 The most representative image of Transformer is usually
 1. One head from one batch or
 2. Multi-Head from one batch
@@ -43,7 +40,6 @@ but they don't explicitly tell there are `nbatches` batches processed parallely 
 The reality is, $N$ sentences are put into batch and passed as input. But this doesn’t change or introduce anything new to the original architecture we know. Still it's worth noting that `nbatches` mean the number of sentences being processed per batch. It will appear in the code several times.
 
 Ex. let’s say $N=3$. That means we have $3$ sentences per batch.
-
 
 ### $S$ or `n_seq`
 
@@ -141,14 +137,15 @@ This section shows only the **shape flow** and **key operations**. You can see a
 Raw sentences → token **IDs**. `(nbatches, n_seq)`
 
 ### 1. Encoder Embedding Layer
-1-1. Token Embedding: `(nbatches, n_seq_src) → (nbatches, n_seq_src, d_model)` 1-2. Positional Embedding (added): `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
+1-1. Token Embedding: `(nbatches, n_seq_src) → (nbatches, n_seq_src, d_model)`
+1-2. Positional Embedding (added): `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
 
 ### 2. Encoder Layer
 Encoder Layer is consisted of two submodules, 2-1. Multi-Head Self Attention and 2-2. Feed Forward Network. Encoder Layer is repeated **N** times (e.g., 6).
 
 **2-1. Multi-Head Self Attention (MHA)**  
 Input: `(nbatches, n_seq_src, d_model)`  
-2-1-1. Project to Q,K,V: `(nbatches, n_seq_src, d_model)`  
+2-1-1. Project to Q,K,V: `(nbatches, n_seq_src, d_model)` (shapes unchanged)
 2-1-2. Split heads (reshape where `d_model = h × d_k`): `(nbatches, n_seq_src, h, d_k)`  
 2-1-3. Transpose (parallelize heads): `(nbatches, h, n_seq_src, d_k)`  
 2-1-4. Compute attention scores `QKᵀ / √d_k`: `(nbatches, h, n_seq_src, n_seq_src)`  
@@ -181,7 +178,9 @@ Input: `(nbatches, n_seq_tgt, d_model)`
 4-1-1. Project to Q,K,V: `(nbatches, n_seq_tgt, d_model)`  
 4-1-2. Split heads (reshape where `d_model = h × d_k`): `(nbatches, n_seq_tgt, h, d_k)`  
 4-1-3. Transpose: `(nbatches, h, n_seq_tgt, d_k)`  
-4-1-4. Compute attention scores `QKᵀ / √d_k` **+ causal mask**: `(nbatches, h, n_seq_tgt, n_seq_tgt)` 4-1-5. Softmax: `(nbatches, h, n_seq_tgt, n_seq_tgt)` 4-1-6. Multiply by V: `(nbatches, h, n_seq_tgt, d_k)`  
+4-1-4. Compute attention scores `QKᵀ / √d_k` **+ causal mask**: `(nbatches, h, n_seq_tgt, n_seq_tgt)`
+4-1-5. Softmax: `(nbatches, h, n_seq_tgt, n_seq_tgt)`
+4-1-6. Multiply by V: `(nbatches, h, n_seq_tgt, d_k)`  
 4-1-7. Transpose back & concat: `(nbatches, n_seq_tgt, d_model)`  
 4-1-8. Output projection `W_O`: `(nbatches, n_seq_tgt, d_model)`
 
@@ -192,7 +191,6 @@ Input: `(nbatches, n_seq_tgt, d_model)`
 Inputs:
 - Q from Decoder: `(nbatches, n_seq_tgt, d_model)`
 - K,V from Encoder: `(nbatches, n_seq_src, d_model)`
-
 4-2-1. Project to Q,K,V (shapes unchanged)  
 4-2-2. Split heads (reshape where `d_model = h × d_k`): Q → `(nbatches, n_seq_tgt, h, d_k)`; K,V → `(nbatches, n_seq_src, h, d_k)` 4-2-3. Transpose: Q → `(nbatches, h, n_seq_tgt, d_k)`; K,V → `(nbatches, h, n_seq_src, d_k)`  
 4-2-4. Compute attention scores `QKᵀ / √d_k`: `(nbatches, h, n_seq_tgt, n_seq_src)`
@@ -224,8 +222,9 @@ Same as Encoder FFN.
 
 ---
 
-Section 3 below explains much detailed explanation for each steps with examples, illustrations, and code examples(from _Annotated Transformer_).
 <br>
+
+Section 3 below explains much detailed explanation for each steps with examples, illustrations, and code examples(from _Annotated Transformer_).
 
 ## 3. How Shape Changes, end to end (w/ Code Examples)
 
@@ -233,10 +232,12 @@ Section 3 below explains much detailed explanation for each steps with examples,
 This section is working in progress!
 {{< /note >}}
 
-When we encounter the code implementation of Transformer Architecture, all kinds of `view()`, `transpose()`, `reshape()` methods are frequently used, hindering what are being changed , what it implies, and why we need to do it. After all, if you understand there is a general order of the code and the shape form all has its meanings, code readability can significantly enhance.
+When we encounter the code implementation of Transformer Architecture, all kinds of `view()`, `transpose()`, `reshape()` methods are frequently used, hindering what are being changed , what it implies, and why we need to do it. After all, if you understand there is a general order within the parameters and the shape form all has its meanings, code readability can significantly enhance.
 
 Before we start, a simple but effective tip is to remember that most calculations 
-(token embedding, self-attention, feed-forward, etc.) in Transformer are applied **per token**(`d_model`). In practice, the input shape is `(nbatches, n_seq, d_model)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel). So you can think of it as running the same function `nbatches × n_seq` times in parallel.
+(token embedding, self-attention, feed-forward, etc.) in Transformer are applied **per token**(`d_model`).
+
+In practice, the input shape is `(nbatches, n_seq, d_model)`, which means each sequence has `n_seq` tokens and each batch has `nbatches` sentences. Almost all operations are performed independently on each of these tokens (in parallel). So you can think of it as running the same function `nbatches × n_seq` times in parallel.
 
 Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` or `h` for clarity but I will explain including all the parameters). Then we will see how code is actually written to match these shapes. We won't cover all code, just the shape transformation parts, for simplicity. Also, to give you a clear intuition of how everything is working, I will use the three following sentences I used above. Code can be found in ... :
 
@@ -285,10 +286,6 @@ Let's see how this is implemented as code:
 ```python
 class Batch:
     """Object for holding a batch of data with mask during training."""
-    # In this code, padding token(`<blank>`) is set to '2'.
-    # This is just because the authors of Annotated Transformer
-    # set `<blank>` as the third special token (
-    # specials=["<s>", "</s>", "<blank>", "<unk>"])
     def __init__(self, src, tgt=None, pad=2):  # 2 = <blank>
         self.src = src
         self.src_mask = (src != pad).unsqueeze(-2)
@@ -307,6 +304,9 @@ class Batch:
         )
         return tgt_mask
 ```
+
+In this code, padding token(`<blank>`) is set to '2'.
+	This is just because the authors of Annotated Transformer set `<blank>` as the third special token (`specials=["<s>", "</s>", "<blank>", "<unk>"]`)
 
 
 {{< qa question="Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?" >}}
