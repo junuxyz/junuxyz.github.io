@@ -4,44 +4,89 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+
+    {{ $description := cond (ne .Description "") .Description .Site.Params.description }}
+    {{ if $description }}
+    <meta name="description" content="{{ $description }}">
+    {{ end }}
+    {{ if .Site.Params.author }}
     <meta name="author" content="{{ .Site.Params.author }}">
-    
-    <!-- CSS - only minimal styles for root -->
+    {{ end }}
+
     {{ if .IsHome }}
-    <link rel="stylesheet" href="{{ "css/minimal.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "css/home.css" | relURL }}">
     {{ else }}
     <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
     <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
-    
-    <!-- KaTeX CSS for math rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
     {{ end }}
 
-    <!-- Favicon -->
+    {{ partial "extend_head.html" . }}
+
+    {{ with .Site.Params.favicon }}
+    <link rel="icon" type="image/x-icon" href="{{ . | absURL }}">
+    {{ else }}
     <link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}">
-</head>
-<body{{ if not .IsHome }} class="blog-section"{{ end }}>
-    {{ if not .IsHome }}
-    {{ partial "header.html" . }}
     {{ end }}
-    
-    <main class="main">
+
+    {{ block "head-extra" . }}{{ end }}
+</head>
+<body class="{{ if .IsHome }}home-page{{ else }}blog-section{{ end }}">
+    {{ if not .IsHome }}
+        {{ partial "header.html" . }}
+    {{ end }}
+
+    <main class="{{ if .IsHome }}home-main{{ else }}main{{ end }}">
         {{ block "main" . }}{{ end }}
     </main>
-    
+
     {{ if not .IsHome }}
-    {{ partial "footer.html" . }}
-    
-    <!-- KaTeX JavaScript for math rendering -->
+        {{ partial "footer.html" . }}
+    {{ end }}
+
+    {{ if not .IsHome }}
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
-    
-    <!-- Math rendering script -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                const pre = block.parentElement;
+                if (!pre.querySelector('.code-copy-btn')) {
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'code-copy-btn';
+                    copyBtn.textContent = 'Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+
+                    copyBtn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(block.textContent).then(() => {
+                            copyBtn.textContent = 'Copied!';
+                            copyBtn.classList.add('copied');
+                            setTimeout(() => {
+                                copyBtn.textContent = 'Copy';
+                                copyBtn.classList.remove('copied');
+                            }, 2000);
+                        });
+                    });
+
+                    pre.style.position = 'relative';
+                    pre.appendChild(copyBtn);
+                }
+
+                if (!pre.querySelector('.code-language')) {
+                    let language = block.getAttribute('data-lang');
+                    if (!language) {
+                        const match = (block.className || '').match(/language-([^\s]+)/);
+                        if (match && match[1]) language = match[1];
+                    }
+                    if (language) {
+                        const langLabel = document.createElement('span');
+                        langLabel.className = 'code-language';
+                        langLabel.textContent = language.charAt(0).toUpperCase() + language.slice(1);
+                        pre.appendChild(langLabel);
+                    }
+                }
+            });
+
             renderMathInElement(document.body, {
                 delimiters: [
                     {left: "$$", right: "$$", display: true},
@@ -56,7 +101,5 @@
     {{ end }}
 </body>
 </html>
-
-
 
 
