@@ -7,9 +7,9 @@ title = "About"
 {{< figure class="avatar" src="/images/avatar.jpg" alt="Avatar" >}}
 
 Hi. I'm an undergraduate student at Chung-Ang University.
-I am double majoring Psychology and Computer Science. I'm exploring various areas of AI, currently focusing on machine learning systems and GPU optimization, while also interested in reinforcement learning and data efficiency.
+I am double majoring in Psychology and Computer Science. I'm exploring various areas of AI, currently focusing on machine learning systems and GPU optimization, while also interested in reinforcement learning and data efficiency.
 I read and take notes on some books. (book reviews: [here](https://junuxyz.notion.site/books/)). I also run a public [Notion page](https://junuxyz.notion.site/) where I document and share most of what I learn or think about.
-Beyond my technical/academic pursuits, I maintain a daily workout routine and enjoy sauna weekly.
+Outside academics, I work out daily and enjoy weekly sauna sessions.
 
 <a href="/blog/" class="blog-link">Go to blog</a>
 
@@ -22,14 +22,14 @@ I'm exploring various areas of AI, currently focusing on:
 ## Experience
 **AI & ML**
 - Member of [CUAI](https://cuai.kr) (2025.03 ~ present)
-- Qualified for Open Source SWAI Deep Learning Hackathon (2025)
+- Qualified for Open Source SW/AI Deep Learning Hackathon (2025)
 
 **Other**
 - Part-time Frontend Developer at early-stage startup (2024.05 ~ 2024.12)
 - [TEU Deeptech Moonshot Program](https://www.te.university/deeptechmoonshot) (2023.08 ~ 2023.11)
 
-## Links
+## Additional Links
 - Email: [jpjunior211@gmail.com](mailto:jpjunior211@gmail.com/)
 - GitHub: [@junuxyz](https://github.com/junuxyz/)
-- Blog: [junupark.xyz/blog/](https://junupark.xyz/blog/)
+- Blog: [junupark.xyz/blog](https://junupark.xyz/blog/)
 - Notion: [junuxyz.notion.site](https://junuxyz.notion.site/)
