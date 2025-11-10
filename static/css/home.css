@@ -2,7 +2,7 @@
 .researcher-container {
     max-width: 720px;
     margin: 0 auto;
-    padding: 2rem 2.5rem;
+    padding: 1.5rem 2.5rem;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.8;
     color: #374151;
@@ -12,7 +12,7 @@
     font-size: 1.75rem;
     font-weight: 300;
     letter-spacing: -0.02em;
-    margin: 2rem 0 1rem;
+    margin: 1.25rem 0 0.75rem;
     color: #111827;
 }
 
@@ -21,13 +21,13 @@
 }
 
 .researcher-container p {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     color: #6b7280;
     font-size: 1.05rem;
 }
 
 .researcher-container ul {
-    margin: 1rem 0;
+    margin: 0.75rem 0;
     padding: 0;
     list-style: none;
 }
@@ -89,7 +89,7 @@
 
 .researcher-container figure.avatar {
     float: right;
-    margin: 0 0 2rem 2.5rem;
+    margin: 0 0 1.5rem 2.5rem;
     width: 180px;
     height: 210px;
     border-radius: 50% / 55%;
@@ -110,7 +110,7 @@
 .social-links {
     display: flex;
     gap: 1.5rem;
-    margin-top: 2.5rem;
+    margin-top: 1.75rem;
     list-style: none !important;
     padding: 0 !important;
     margin-left: 0 !important;
@@ -188,7 +188,7 @@
     
     .researcher-container figure.avatar {
         float: none;
-        margin: 0 auto 2.5rem;
+        margin: 0 auto 2rem;
         display: block;
         width: 150px;
         height: 175px;
@@ -196,7 +196,7 @@
     
     .researcher-container h2 {
         font-size: 1.5rem;
-        margin: 1.5rem 0 0.75rem;
+        margin: 1.25rem 0 0.5rem;
     }
     
     .researcher-container h2:first-of-type {
@@ -205,7 +205,7 @@
     
     .researcher-container p {
         font-size: 1rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
     }
     
     .social-links {
