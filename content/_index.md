@@ -11,25 +11,29 @@ I am double majoring in Psychology and Computer Science. I'm exploring various a
 I read and take notes on some books. (book reviews: [here](https://junuxyz.notion.site/books/)). I also run a public [Notion page](https://junuxyz.notion.site/) where I document and share most of what I learn or think about.
 Outside academics, I work out daily and enjoy weekly sauna sessions.
 
+<div class="blog-link-wrapper">
 <a href="/blog/" class="blog-link">Go to blog</a>
+</div>
+
+<div class="two-columns">
+
+<div class="column-left">
 
 ## Research Interests
-I'm exploring various areas of AI, currently focusing on:
-- [**ML Systems**: GPU optimization, memory hierarchy, parallel computing](https://junuxyz.notion.site/mlsys)
-- Efficient data processing and representation
+Currently focusing on:
+- [**ML Systems**: GPU optimization, sw/hw codesign, heterogeneous computing](https://junuxyz.notion.site/mlsys)
 - [Deep Reinforcement Learning and decision-making systems](https://junuxyz.notion.site/drl)
 
-## Experience
-**AI & ML**
-- Member of [CUAI](https://cuai.kr) (2025.03 ~ present)
-- Qualified for Open Source SW/AI Deep Learning Hackathon (2025)
+</div>
 
-**Other**
-- Part-time Frontend Developer at early-stage startup (2024.05 ~ 2024.12)
-- [TEU Deeptech Moonshot Program](https://www.te.university/deeptechmoonshot) (2023.08 ~ 2023.11)
+<div class="column-right">
 
 ## Additional Links
-- Email: [jpjunior211@gmail.com](mailto:jpjunior211@gmail.com/)
+- Email: jpjunior211 [at] gmail [dot] com
 - GitHub: [@junuxyz](https://github.com/junuxyz/)
 - Blog: [junupark.xyz/blog](https://junupark.xyz/blog/)
 - Notion: [junuxyz.notion.site](https://junuxyz.notion.site/)
+
+</div>
+
+</div>
