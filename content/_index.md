@@ -6,8 +6,8 @@ title = "About"
 
 {{< figure class="avatar" src="/images/avatar.jpg" alt="Avatar" >}}
 
-Hi. I'm an undergraduate student at Chung-Ang University.
-I am double majoring in Psychology and Computer Science. I'm exploring various areas of AI, currently focusing on machine learning systems and GPU optimization, while also interested in reinforcement learning and data efficiency.
+Hi. I'm Junu. I am undergraduate student at Chung-Ang University.
+I am double majoring in Psychology and Computer Science. I'm exploring various areas of AI, currently focusing on ML System and software/hardware co-design, while also interested in Reinforcement Learning and data representation.
 I read and take notes on some books. (book reviews: [here](https://junuxyz.notion.site/books/)). I also run a public [Notion page](https://junuxyz.notion.site/) where I document and share most of what I learn or think about.
 Outside academics, I work out daily and enjoy weekly sauna sessions.
 
@@ -21,7 +21,7 @@ Outside academics, I work out daily and enjoy weekly sauna sessions.
 
 ## Research Interests
 Currently focusing on:
-- [**ML Systems**: GPU optimization, sw/hw codesign, heterogeneous computing](https://junuxyz.notion.site/mlsys)
+- [**ML Systems**: xPU optimization, sw/hw co-design, heterogeneous computing](https://junuxyz.notion.site/mlsys)
 - [Deep Reinforcement Learning and decision-making systems](https://junuxyz.notion.site/drl)
 
 </div>
