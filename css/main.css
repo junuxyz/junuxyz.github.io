@@ -96,6 +96,22 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Quote tags - neon green */
+.blog-section q {
+    color: #5AFF3D;
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+.blog-section q::before {
+    content: open-quote;
+    color: #5AFF3D;
+}
+
+.blog-section q::after {
+    content: close-quote;
+    color: #5AFF3D;
+}
+
 /* Touch-friendly links in content */
 .post-content a {
     padding: 0.1rem 0.2rem;
@@ -108,6 +124,7 @@ a:hover {
     background: rgba(99, 179, 237, 0.1);
     text-decoration: none;
 }
+
 
 /* Header - mobile-first responsive */
 .header {
