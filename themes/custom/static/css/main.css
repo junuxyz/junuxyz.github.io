@@ -1,16 +1,16 @@
 :root {
-    /* Minimal color palette - dark theme only */
-    --bg: #1a202c;
-    --text: #e2e8f0;
-    --text-light: #a0aec0;
-    --accent: #63b3ed;
-    --border: #1e2a3a;
-    --border-light: #2d3748;
+    /* Warm Charcoal palette */
+    --bg: #171717;
+    --text: #e5e5e5;
+    --text-light: #a3a3a3;
+    --accent: #f59e0b;
+    --border: #262626;
+    --border-light: #404040;
     
     /* Typography */
-    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --line-height: 1.6;
-    --line-height-mobile: 1.5;
+    --font-family: 'Sora', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --line-height: 1.7;
+    --line-height-mobile: 1.6;
     
     /* Layout */
     --max-width: 650px;
@@ -198,22 +198,22 @@ code {
     background: var(--border);
     padding: 0.125rem 0.4rem;
     border-radius: 4px;
-    color: #e2e8f0;
+    color: var(--text);
     font-weight: 500;
     letter-spacing: 0.025em;
 }
 
 /* Enhanced code blocks */
 pre {
-    background: #0f1419;
-    background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+    background: #1f1f1f;
+    background: linear-gradient(135deg, #1f1f1f 0%, #262626 100%);
     padding: 1.5rem;
     border-radius: 12px;
     margin: 2rem 0;
-    border: 1px solid #2d3748;
+    border: 1px solid var(--border-light);
     position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
-                0 4px 15px rgba(0, 0, 0, 0.2),
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                0 4px 15px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
     /* Completely remove scrollbars and enable text wrapping */
     overflow: hidden;
@@ -252,9 +252,9 @@ pre code {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: rgba(45, 55, 72, 0.9);
-    color: #a0aec0;
-    border: 1px solid #4a5568;
+    background: rgba(38, 38, 38, 0.9);
+    color: var(--text-light);
+    border: 1px solid var(--border-light);
     border-radius: 6px;
     padding: 0.4rem 0.8rem;
     font-size: 0.75rem;
@@ -268,21 +268,21 @@ pre code {
 }
 
 .code-copy-btn:focus {
-    outline: 2px solid #63b3ed;
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
 .code-copy-btn:hover {
-    background: rgba(63, 179, 237, 0.2);
-    border-color: #63b3ed;
-    color: #e2e8f0;
+    background: rgba(245, 158, 11, 0.1);
+    border-color: var(--accent);
+    color: var(--text);
     transform: translateY(-1px);
 }
 
 .code-copy-btn.copied {
-    background: rgba(72, 187, 120, 0.2);
-    border-color: #48bb78;
-    color: #68d391;
+    background: rgba(34, 197, 94, 0.2);
+    border-color: #22c55e;
+    color: #22c55e;
 }
 
 /* Language label styles */
@@ -290,8 +290,8 @@ pre code {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background: rgba(99, 179, 237, 0.15);
-    color: #63b3ed;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--accent);
     padding: 0.25rem 0.6rem;
     border-radius: 4px;
     font-size: 0.7rem;
@@ -299,7 +299,7 @@ pre code {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     z-index: 10;
-    border: 1px solid rgba(99, 179, 237, 0.3);
+    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 /* Highlight.js theme overrides for better integration */
