@@ -1,9 +1,9 @@
 /* Minimal CSS for root page only */
 :root {
-    --bg: #1a202c;
-    --text: #e2e8f0;
-    --text-light: #a0aec0;
-    --accent: #63b3ed;
+    --bg: #111111;
+    --text: #d6d6d6;
+    --text-light: #8a8a8a;
+    --accent: #ffffff;
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
