@@ -1,11 +1,11 @@
-
 # Hugo build output
 public/
-
-# Hugo build lock file
+resources/
 .hugo_build.lock
 
 # Obsidian vault files
+.obsidian/
+.trash/
 content/posts/.obsidian/
 content/posts/Templates/
 *.canvas
@@ -20,6 +20,7 @@ ehthumbs.db
 Thumbs.db
 
 # Editor files
+.vscode/
 *.swp
 *.swo
 *~
@@ -30,3 +31,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Node modules
+node_modules/
+package-lock.json

@@ -1,7 +1,6 @@
 baseURL = "https://junuxyz.github.io/"
 languageCode = "en-us"
 title = "jlog"
-theme = "custom"
 
 [pagination]
   pagerSize = 5
@@ -69,7 +68,7 @@ buildExpired = false
   [[menu.main]]
     identifier = "about"
     name = "About"
-    url = "/blog/about/"
+    url = "/"
     weight = 40
   [[menu.main]]
     identifier = "tags"

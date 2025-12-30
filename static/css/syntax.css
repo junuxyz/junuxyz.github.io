@@ -1,0 +1,381 @@
+/* Minimal Dark theme for Hugo Chroma */
+.chroma {
+    color: #d6d6d6;
+    background-color: #181818;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+.chroma .line {
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+.chroma .line {
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+  .chroma .err {
+    color: #f7768e;
+  }
+  .chroma .k {
+    color: #bb9af7;
+  }
+  .chroma .kc {
+    color: #ff9e64;
+  }
+  .chroma .kd {
+    color: #bb9af7;
+  }
+  .chroma .kn {
+    color: #89ddff;
+  }
+  .chroma .kp {
+    color: #ff9e64;
+  }
+  .chroma .kr {
+    color: #bb9af7;
+  }
+  .chroma .kt {
+    color: #2ac3de;
+  }
+  .chroma .n {
+    color: #c0caf5;
+  }
+  .chroma .na {
+    color: #7aa2f7;
+  }
+  .chroma .nb {
+    color: #2ac3de;
+  }
+  .chroma .nc {
+    color: #e0af68;
+  }
+  .chroma .no {
+    color: #ff9e64;
+  }
+  .chroma .nd {
+    color: #bb9af7;
+  }
+  .chroma .ni {
+    color: #c0caf5;
+  }
+  .chroma .ne {
+    color: #f7768e;
+  }
+  .chroma .nf {
+    color: #7aa2f7;
+  }
+  .chroma .nl {
+    color: #7aa2f7;
+  }
+  .chroma .nn {
+    color: #2ac3de;
+  }
+  .chroma .nt {
+    color: #f7768e;
+  }
+  .chroma .nv {
+    color: #c0caf5;
+  }
+  .chroma .nx {
+    color: #c0caf5;
+  }
+  .chroma .s {
+    color: #9ece6a;
+  }
+  .chroma .sa {
+    color: #9ece6a;
+  }
+  .chroma .sb {
+    color: #9ece6a;
+  }
+  .chroma .sc {
+    color: #9ece6a;
+  }
+  .chroma .sd {
+    color: #9ece6a;
+  }
+  .chroma .s2 {
+    color: #9ece6a;
+  }
+  .chroma .se {
+    color: #ff9e64;
+  }
+  .chroma .sh {
+    color: #9ece6a;
+  }
+  .chroma .si {
+    color: #9ece6a;
+  }
+  .chroma .sx {
+    color: #9ece6a;
+  }
+  .chroma .sr {
+    color: #b4f9f8;
+  }
+  .chroma .s1 {
+    color: #9ece6a;
+  }
+  .chroma .ss {
+    color: #73daca;
+  }
+  .chroma .m {
+    color: #ff9e64;
+  }
+  .chroma .mb {
+    color: #ff9e64;
+  }
+  .chroma .mf {
+    color: #ff9e64;
+  }
+  .chroma .mh {
+    color: #ff9e64;
+  }
+  .chroma .mi {
+    color: #ff9e64;
+  }
+  .chroma .mo {
+    color: #ff9e64;
+  }
+  .chroma .il {
+    color: #ff9e64;
+  }
+  .chroma .o {
+    color: #89ddff;
+  }
+  .chroma .ow {
+    color: #89ddff;
+  }
+  .chroma .c {
+    color: #565f89;
+  }
+  .chroma .ch {
+    color: #565f89;
+  }
+  .chroma .cm {
+    color: #565f89;
+  }
+  .chroma .c1 {
+    color: #565f89;
+  }
+  .chroma .cs {
+    color: #565f89;
+  }
+  .chroma .cp {
+    color: #565f89;
+  }
+  .chroma .cpf {
+    color: #565f89;
+  }
+  .chroma .gd {
+    color: #f7768e;
+    background-color: #41222e;
+  }
+  .chroma .ge {
+    font-style: italic;
+  }
+  .chroma .gh {
+    font-weight: bold;
+    color: #7aa2f7;
+  }
+  .chroma .gi {
+    color: #9ece6a;
+    background-color: #2b3b2a;
+  }
+  .chroma .gs {
+    font-weight: bold;
+  }
+  .chroma .gu {
+    font-weight: bold;
+    color: #7aa2f7;
+  }
+  .chroma .gl {
+    text-decoration: underline;
+  }
+
+  /* Tokyo Night Dark theme for Hugo Chroma */
+  .dark .chroma {
+    color: #c0caf5;
+    background-color: #1a1b26;
+  }
+  .dark .chroma .err {
+    color: #f85149;
+  }
+  .dark .chroma .k {
+    color: #ff7b72;
+  }
+  .dark .chroma .kc {
+    color: #79c0ff;
+  }
+  .dark .chroma .kd {
+    color: #ff7b72;
+  }
+  .dark .chroma .kn {
+    color: #ff7b72;
+  }
+  .dark .chroma .kp {
+    color: #79c0ff;
+  }
+  .dark .chroma .kr {
+    color: #ff7b72;
+  }
+  .dark .chroma .kt {
+    color: #ff7b72;
+  }
+  .dark .chroma .n {
+    color: #c9d1d9;
+  }
+  .dark .chroma .na {
+    color: #79c0ff;
+  }
+  .dark .chroma .nb {
+    color: #c9d1d9;
+  }
+  .dark .chroma .nc {
+    color: #ffa657;
+  }
+  .dark .chroma .no {
+    color: #79c0ff;
+  }
+  .dark .chroma .nd {
+    color: #d2a8ff;
+  }
+  .dark .chroma .ni {
+    color: #ffa657;
+  }
+  .dark .chroma .ne {
+    color: #ffa657;
+  }
+  .dark .chroma .nf {
+    color: #d2a8ff;
+  }
+  .dark .chroma .nl {
+    color: #79c0ff;
+  }
+  .dark .chroma .nn {
+    color: #ff7b72;
+  }
+  .dark .chroma .nt {
+    color: #7ee787;
+  }
+  .dark .chroma .nv {
+    color: #79c0ff;
+  }
+  .dark .chroma .nx {
+    color: #c9d1d9;
+  }
+  .dark .chroma .s {
+    color: #a5d6ff;
+  }
+  .dark .chroma .sa {
+    color: #a5d6ff;
+  }
+  .dark .chroma .sb {
+    color: #a5d6ff;
+  }
+  .dark .chroma .sc {
+    color: #a5d6ff;
+  }
+  .dark .chroma .sd {
+    color: #a5d6ff;
+  }
+  .dark .chroma .s2 {
+    color: #a5d6ff;
+  }
+  .dark .chroma .se {
+    color: #79c0ff;
+  }
+  .dark .chroma .sh {
+    color: #a5d6ff;
+  }
+  .dark .chroma .si {
+    color: #a5d6ff;
+  }
+  .dark .chroma .sx {
+    color: #a5d6ff;
+  }
+  .dark .chroma .sr {
+    color: #a5d6ff;
+  }
+  .dark .chroma .s1 {
+    color: #a5d6ff;
+  }
+  .dark .chroma .ss {
+    color: #a5d6ff;
+  }
+  .dark .chroma .m {
+    color: #a5d6ff;
+  }
+  .dark .chroma .mb {
+    color: #a5d6ff;
+  }
+  .dark .chroma .mf {
+    color: #a5d6ff;
+  }
+  .dark .chroma .mh {
+    color: #a5d6ff;
+  }
+  .dark .chroma .mi {
+    color: #a5d6ff;
+  }
+  .dark .chroma .mo {
+    color: #a5d6ff;
+  }
+  .dark .chroma .il {
+    color: #a5d6ff;
+  }
+  .dark .chroma .o {
+    color: #ff7b72;
+  }
+  .dark .chroma .ow {
+    color: #ff7b72;
+  }
+  .dark .chroma .c {
+    color: #8b949e;
+  }
+  .dark .chroma .ch {
+    color: #8b949e;
+  }
+  .dark .chroma .cm {
+    color: #8b949e;
+  }
+  .dark .chroma .c1 {
+    color: #8b949e;
+  }
+  .dark .chroma .cs {
+    color: #8b949e;
+  }
+  .dark .chroma .cp {
+    color: #8b949e;
+  }
+  .dark .chroma .cpf {
+    color: #8b949e;
+  }
+  .dark .chroma .gd {
+    color: #ffa198;
+    background-color: #490202;
+  }
+  .dark .chroma .ge {
+    font-style: italic;
+  }
+  .dark .chroma .gh {
+    font-weight: bold;
+  }
+  .dark .chroma .gi {
+    color: #56d364;
+    background-color: #0f5323;
+  }
+  .dark .chroma .gs {
+    font-weight: bold;
+  }
+  .dark .chroma .gu {
+    font-weight: bold;
+  }
+  .dark .chroma .gl {
+    text-decoration: underline;
+  }
+
