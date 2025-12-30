@@ -11,7 +11,6 @@ tags = ['Transformer']
 **How can one learn Transformer?**
 The Transformer Architecture (introduced in the paper _[Attention is All You Need](https://arxiv.org/abs/1706.03762)_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of [what the model is](https://jalammar.github.io/illustrated-transformer/), [how it works](https://www.deeplearning.ai/short-courses/how-transformer-llms-work/), and even [annotated code implementation of it](https://nlp.seas.harvard.edu/annotated-transformer/). These days, most developers don’t need to implement Transformers from scratch because libraries like [HuggingFace Transformers](https://huggingface.co/docs/transformers/index) provide easy-to-use classes and methods. Yes, there are plenty of things to build on top of the architecture! Still, I think it is worth having a great understanding of Transformer Model, beyond intuitive, abstract level. In fact one of the best way to learn Transformer, as [Feynman said](https://www.goodreads.com/quotes/7306651-what-i-cannot-build-i-do-not-understand), is to build one yourself from scratch to really understand and appreciate all the underlying techniques and modules that form the base of the ChatGPT era.
 
-
 **How is this different from other content?**
 Before I start, I do strongly recommend reading other resources as well. However note that each sources has different layers of abstraction (or depth of explanation). The [paper itself](https://arxiv.org/abs/1706.03762) is fairly straightforward but not chronologically ordered, so it can be hard to follow in details. _[The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)_ is beginner-friendly, abstracting away many implementation details and excels at explaining the overall big picture. On the other hand, _[The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)_ is very deep, building the entire architecture end to end in PyTorch. But since it follows the paper’s order (which isn't chronological) and leaves out some explanations, readers who only have an abstract understanding of the model may feel overwhelmed or questionable.
 
@@ -127,8 +126,6 @@ After the attention weights are calculated, they are multiplied by the Value mat
 
 In the original "Attention Is All You Need" paper, the authors set `d_v = d_k = d_q`. However, while `d_k` must equal `d_q`, it's not required for d_v to be the same size. This is simply another design choice. I will also explain later in this post when `d_v != d_k` is acceptable.
 
-<br>
-
 ## 2. The Big Picture (TL;DR)
 
 This section shows only the **shape flow** and **key operations**. You can see a much detailed explanation of each steps below in section 3.
@@ -220,9 +217,8 @@ Same as Encoder FFN.
 **Note on input format:** If represented as one-hot: `(nbatches, n_seq, vocab)`. In most codebases, we pass IDs directly to the embedding layer.
 {{< /note >}}
 
----
 
-<br>
+---
 
 Section 3 below explains much detailed explanation for each steps with examples, illustrations, and code examples(from _Annotated Transformer_).
 

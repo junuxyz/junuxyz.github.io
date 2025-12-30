@@ -111,28 +111,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/blog/bellman-backup-resnet.md",
+                "file": "content/blog/posts/shaped-transformer.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "bellman-backup-resnet"
-            }
-          },
-          {
-            "id": "f80c171f1404e091",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.9.14"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.9.14"
+              "title": "shaped-transformer"
             }
           }
         ],
-        "currentTab": 8
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -189,7 +177,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.50469207763672
+    "width": 206.50469207763672,
+    "collapsed": true
   },
   "right": {
     "id": "042c16bc468b58f2",
@@ -282,8 +271,15 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "f80c171f1404e091",
+  "active": "3020a56b2e03d4e2",
   "lastOpenFiles": [
+    "content/blog/posts/qkv.md",
+    "content/blog/bellman-backup-resnet.md",
+    "cv/index.html",
+    "cv/README.md",
+    "cv",
+    "static/cv/index.html",
+    "static/cv",
     "static/images/avatar.jpg",
     "static/favicon.ico",
     "static/css/home.css",
@@ -291,7 +287,6 @@
     "content/_index.md",
     "DOCUMENTATION.md",
     "content/blog/posts/dl-w-no-abstractions.md",
-    "content/blog/bellman-backup-resnet.md",
     "content/blog/posts/a-shallow-dive-into-vscode-debugger.md",
     "content/blog/posts/shaped-transformer.md",
     "content/blog/gd-and-bp.md",
@@ -304,10 +299,6 @@
     "static/images/shaped-trasnformer-example-1.png",
     "themes/custom/layouts/shortcodes/note.html",
     "themes/custom/layouts/shortcodes",
-    "static/tags/index.html",
-    "static/tags",
-    "static/categories/index.html",
-    "static/categories",
     "content/blog/tags.md",
     "content/blog/categories.md",
     "static/images/shaped-attention-attention.png",
@@ -325,10 +316,8 @@
     "content/blog/posts/the-io-and-pipelining-era-of-ml.md",
     "content/blog/posts/neet-code.md",
     "content/blog/posts/mixture-of-architectures.md",
-    "content/blog/posts/mental-model-of-engineering.md",
     "static/images/Pasted image 20250919133611.png",
     "static/images/Pasted image 20250919133513.png",
-    "static/images/Pasted image 20250919130339.png",
-    "static/images/cosine_function.png"
+    "static/images/Pasted image 20250919130339.png"
   ]
 }
