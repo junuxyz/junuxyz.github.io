@@ -13,6 +13,7 @@
     <meta name="author" content="{{ .Site.Params.author }}">
     {{ end }}
 
+    <link rel="stylesheet" href="{{ "css/variables.css" | relURL }}">
     {{ if .IsHome }}
     <link rel="stylesheet" href="{{ "css/home.css" | relURL }}">
     {{ else }}

@@ -1,0 +1,19 @@
+{{- $destination := .Destination -}}
+{{- /* Remove static/ prefix if present (handles both static/ and /static/ patterns) */ -}}
+{{- if hasPrefix $destination "/static/" -}}
+  {{- $destination = strings.TrimPrefix "/static/" $destination -}}
+  {{- $destination = printf "/%s" $destination -}}
+{{- else if hasPrefix $destination "static/" -}}
+  {{- $destination = strings.TrimPrefix "static/" $destination -}}
+  {{- if not (hasPrefix $destination "/") -}}
+    {{- $destination = printf "/%s" $destination -}}
+  {{- end -}}
+{{- else if not (hasPrefix $destination "/") -}}
+  {{- /* Ensure leading slash for relative paths */ -}}
+  {{- $destination = printf "/%s" $destination -}}
+{{- end -}}
+<img src="{{ $destination | safeURL }}" 
+     {{- with .Text }} alt="{{ . }}"{{ end -}}
+     {{- with .Title }} title="{{ . }}"{{ end -}}
+/>
+
