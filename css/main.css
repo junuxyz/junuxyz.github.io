@@ -1,8 +1,8 @@
  :root {
     /* Minimalist Professional Dark */
     --bg: #111111;
-    --text: #d6d6d6;
-    --text-light: #8a8a8a;
+    --text: #e0e0e0;
+    --text-light: #999999;
     --accent: #ffffff;
     --accent-secondary: #eeeeee;
     --border: #222222;
@@ -207,7 +207,7 @@ a:hover {
 .nav-item {
     padding: 0.625rem 0.875rem;
     font-size: 1.125rem;
-    color: #666666;
+    color: #888888;
     border-radius: 0;
     transition: color 0.2s ease;
     min-height: var(--touch-target);
@@ -310,7 +310,7 @@ a:hover {
 
 .nav-label {
     font-size: 0.75rem;
-    color: #555555;
+    color: #777777;
     text-transform: none;
     letter-spacing: 0;
     display: block;
@@ -319,7 +319,7 @@ a:hover {
 
 .nav-title {
     font-weight: 400;
-    color: #888888;
+    color: #aaaaaa;
     line-height: 1.4;
     transition: color 0.2s ease;
 }
@@ -454,7 +454,7 @@ code::-webkit-scrollbar,
     top: 0.5rem;
     right: 0.5rem;
     background: transparent;
-    color: #444444;
+    color: #555555;
     border: none;
     border-radius: 4px;
     padding: 0.35rem;
@@ -474,7 +474,7 @@ pre:hover .code-copy-btn {
 }
 
 .code-copy-btn:hover {
-    color: #888888;
+    color: #aaaaaa;
 }
 
 .code-copy-btn.copied {
@@ -488,7 +488,7 @@ pre:hover .code-copy-btn {
     top: 0.5rem;
     left: 0.75rem;
     background: transparent;
-    color: #444444;
+    color: #555555;
     padding: 0;
     font-size: 0.7rem;
     font-weight: 500;
@@ -507,7 +507,7 @@ blockquote {
     border-left: 2px solid #333333;
     padding-left: 1.25rem;
     margin: 2.5rem 0;
-    color: #777777;
+    color: #999999;
     font-style: italic;
     line-height: 1.8;
 }
@@ -551,7 +551,7 @@ img {
 /* Tags - minimal style */
 .tag {
     background: transparent;
-    color: #666666;
+    color: #888888;
     padding: 0;
     font-size: 0.85rem;
     text-decoration: none;
@@ -571,7 +571,7 @@ img {
     padding-top: 2rem;
     border-top: 1px solid #1a1a1a;
     text-align: center;
-    color: #555555;
+    color: #777777;
     font-size: 0.85rem;
 }
 
