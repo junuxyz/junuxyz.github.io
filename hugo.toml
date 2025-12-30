@@ -49,6 +49,7 @@ buildExpired = false
   env = "production"
   description = "Personal blog and thoughts"
   author = "Junu"
+  math = true
   
   # Social Icons
   [[params.socialIcons]]
