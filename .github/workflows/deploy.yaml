@@ -12,19 +12,6 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Process content
-        run: |
-          # Remove Obsidian vault files
-          find content -name ".obsidian" -type d -exec rm -rf {} + 2>/dev/null || true
-          find content -name "Templates" -type d -exec rm -rf {} + 2>/dev/null || true
-          find content -name "*.canvas" -delete 2>/dev/null || true
-          
-          # Convert Obsidian image links to Hugo format
-          find content -name "*.md" -type f -exec sed -i 's/!\[\[\([^]]*\)\]\]/![Image](\/images\/\1)/g' {} \;
-          
-          # Convert /static/images/ paths to /images/ paths
-          find content -name "*.md" -type f -exec sed -i 's/\/static\/images\//\/images\//g' {} \;
-
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:

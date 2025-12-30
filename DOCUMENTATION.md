@@ -10,7 +10,7 @@ blog/
 ├── content/             # All blog posts and pages
 ├── layouts/             # HTML templates
 ├── static/              # CSS, JS, images
-├── themes/              # Custom theme (active: custom/)
+├── scripts/             # Build and utility scripts
 ├── hugo.toml            # Config file
 └── public/              # Build output
 ```
@@ -53,32 +53,31 @@ Project-level templates in `layouts/` override theme templates.
 ```
 static/
 ├── css/
-│   ├── main.css         # Blog styles (active)
-│   ├── minimal.css      # Homepage styles (active)
-│   └── main-scoped.css  # Unused
+│   ├── variables.css    # CSS variables and theme colors
+│   ├── main.css         # Blog styles (all pages except homepage)
+│   ├── home.css         # Homepage styles
+│   └── syntax.css       # Code highlighting styles
 ├── js/                  # JavaScript
-├── images/              # Images
+├── images/              # Images (use /images/ path in markdown)
 └── CNAME                # GitHub Pages config
 ```
 
 Active CSS files:
+- `variables.css` - CSS variables (loaded first)
 - `main.css` - all pages except homepage
-- `minimal.css` - homepage only
-- Code highlighting: `themes/custom/static/css/syntax.css`
+- `home.css` - homepage only
+- `syntax.css` - code highlighting
 
 
 
-### themes/custom/
-
-Active custom theme. `syntax.css` handles code highlighting. Theme files are overridden by same-path files in project root (`layouts/` and `static/`).
 
 ## Configuration (hugo.toml)
 
 Key settings:
 - `baseURL = "https://junuxyz.github.io/"` - site URL
 - `title = "jlog"` - site name
-- `theme = "custom"` - active theme
 - `pagerSize = 5` - posts per page
+- Theme-less structure: all templates in `layouts/`, all assets in `static/`
 
 Permalinks:
 - Categories: `/blog/categories/:slug/`
@@ -104,13 +103,15 @@ date = 2025-11-03T10:00:00Z
 draft = false
 categories = ["Category"]
 tags = ["tag1", "tag2"]
+math = true  # Enable KaTeX math rendering (optional)
 +++
 ```
 
 Required: `title`, `date`
-Optional: `draft`, `categories`, `tags`, `description`
+Optional: `draft`, `categories`, `tags`, `description`, `math`
 
 Set `draft = false` to publish. Posts won't appear on future dates.
+Set `math = true` to enable KaTeX math rendering (only loads KaTeX libraries when needed).
 
 ## Running Locally
 
@@ -131,48 +132,63 @@ hugo
 ### CSS Files
 
 Active CSS (modify these):
+- `static/css/variables.css` - CSS variables and theme colors (loaded first)
 - `static/css/main.css` - All pages except homepage
-- `static/css/minimal.css` - Homepage only
-- `themes/custom/static/css/syntax.css` - Code highlighting
-
-Inactive (ignore):
-- `themes/custom/static/css/main.css` - Overridden by root `static/css/main.css`
-- `static/css/main-scoped.css` - Empty placeholder, unused
+- `static/css/home.css` - Homepage only
+- `static/css/syntax.css` - Code highlighting
 
 ### How CSS Loading Works
 
 `layouts/_default/baseof.html` conditionally loads CSS:
 
 ```html
+<link rel="stylesheet" href="{{ "css/variables.css" | relURL }}">
 {{ if .IsHome }}
-  <link rel="stylesheet" href="{{ "css/minimal.css" | relURL }}">
+  <link rel="stylesheet" href="{{ "css/home.css" | relURL }}">
 {{ else }}
   <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
   <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
 {{ end }}
 ```
 
-Project root files take precedence over theme files with the same path.
-
 ### Edit Guidelines
+
+**For CSS variables and theme colors**: Edit `static/css/variables.css`
 
 **For blog post/page layout**: Edit `static/css/main.css`
 
-**For homepage only**: Edit `static/css/minimal.css`
+**For homepage only**: Edit `static/css/home.css`
 
-**For code highlighting**: Edit `themes/custom/static/css/syntax.css` or copy to `static/css/syntax.css` for project-level management
+**For code highlighting**: Edit `static/css/syntax.css`
 
 **Testing**: Changes auto-reload in `hugo server`. Use hard refresh (Shift+Reload) if cache persists.
 
 ## Math & Code
 
-Math rendering via KaTeX (already configured):
+### Math Rendering (KaTeX)
+
+Math rendering via KaTeX is **conditionally loaded** - only pages with `math: true` in front matter will load KaTeX libraries for better performance.
+
+To enable math rendering in a post, add `math = true` to the front matter:
+
+```toml
++++
+title = "My Post with Math"
+math = true
++++
+```
+
+Then use standard LaTeX syntax:
 ```
 Display: $$E = mc^2$$
 Inline: $E = mc^2$
 ```
 
-Code blocks:
+**Performance Note**: Pages without `math: true` will not load KaTeX CSS/JS, reducing page load time.
+
+### Code Blocks
+
+Code blocks with syntax highlighting:
 ````markdown
 ```python
 print("hello")
@@ -212,9 +228,48 @@ Add `.js` file to `static/js/`, then load in `layouts/_default/baseof.html`:
 <script src="{{ "js/my-script.js" | relURL }}"></script>
 ```
 
+## Adding Images
+
+### Using Obsidian
+
+If you use Obsidian to write posts, configure it to work seamlessly with Hugo:
+
+1. **Obsidian Settings** → **Files & Links**:
+   - **Use Wiki links**: **Off** (필수) - Hugo Render Hook requires standard markdown links
+   - **Default location for new attachments**: Choose one of:
+     - `In subfolder under current folder` → `images/`
+     - `Specified folder` → `static/images/`
+
+2. **Image Path Format**: Use standard markdown image syntax:
+   ```markdown
+   ![Alt text](images/my-image.png)
+   ```
+   or
+   ```markdown
+   ![Alt text](/images/my-image.png)
+   ```
+
+3. **Hugo Render Hook**: The `layouts/_default/_markup/render-image.html` automatically converts:
+   - `static/images/` → `/images/`
+   - `images/` → `/images/`
+   - Relative paths → `/images/`
+
+### Image Location
+
+Place images in `static/images/` directory. They will be served at `/images/` URL path.
+
+**Example**:
+- File location: `static/images/screenshot.png`
+- Markdown: `![Screenshot](images/screenshot.png)` or `![Screenshot](/images/screenshot.png)`
+- Rendered URL: `/images/screenshot.png`
+
 ## Deployment
 
-The `public/` directory is deployed to GitHub Pages. Ensure GitHub Actions or your deployment script is configured.
+The `public/` directory is deployed to GitHub Pages via GitHub Actions (`.github/workflows/deploy.yaml`).
+
+**Note**: The deployment workflow no longer includes content processing steps (Obsidian file cleanup, path conversion) as these are handled by:
+- `.gitignore` for Obsidian files
+- Hugo Render Hook for image path conversion
 
 ## Common Issues
 
@@ -224,7 +279,11 @@ The `public/` directory is deployed to GitHub Pages. Ensure GitHub Actions or yo
 
 **CSS not working**: Verify file location. Root `static/css/` overrides theme CSS.
 
-**Math not rendering**: Only enabled on blog pages (not homepage). Check delimiters: `$$`, `$`, `\(`, `\[`.
+**Math not rendering**: 
+- Ensure `math = true` is set in post front matter
+- Only enabled on blog pages (not homepage)
+- Check delimiters: `$$`, `$`, `\(`, `\[`
+- Verify KaTeX libraries are loading in browser DevTools (Network tab)
 
 **Templates broken**: Check file is in `layouts/` not theme. Verify Hugo syntax.
 
