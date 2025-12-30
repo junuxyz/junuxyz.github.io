@@ -34,14 +34,14 @@
       <link>https://junuxyz.github.io/blog/posts/paper-review-uniskill-imitating-human-videos-via-cross-embodiment-skill-representation/</link>
       <pubDate>Tue, 26 Aug 2025 13:04:39 +0900</pubDate>
       <guid>https://junuxyz.github.io/blog/posts/paper-review-uniskill-imitating-human-videos-via-cross-embodiment-skill-representation/</guid>
-      <description>&lt;img src=&#34;https://junuxyz.github.io/images/unkskill.png&#34; alt=&#34;Image&#34;&gt;&lt;h1 id=&#34;abstract&#34;&gt;Abstract&lt;/h1&gt;&#xA;&lt;p&gt;Imitating experts is challenging due to visual, physical differences between human and robot.&lt;/p&gt;&#xA;&lt;p&gt;Previous methods used cross-embodiment datasets with shared scenes and tasks but these data are limited which makes it hard to scale.&lt;/p&gt;&#xA;&lt;p&gt;This paper presents a new framework called &lt;strong&gt;UniSkill&lt;/strong&gt; that learns embodiment-agnostic skill representation from large video dataset.&lt;/p&gt;&#xA;&lt;h1 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h1&gt;&#xA;&lt;p&gt;UniSkill uses image-editing pipeline for the neural network to focus on capturing the dynamics changes (over static content) between temproally distant video frames.&lt;/p&gt;</description>
+      <description>&lt;p&gt;![[unkskill.png]]&lt;/p&gt;&#xA;&lt;h1 id=&#34;abstract&#34;&gt;Abstract&lt;/h1&gt;&#xA;&lt;p&gt;Imitating experts is challenging due to visual, physical differences between human and robot.&lt;/p&gt;&#xA;&lt;p&gt;Previous methods used cross-embodiment datasets with shared scenes and tasks but these data are limited which makes it hard to scale.&lt;/p&gt;&#xA;&lt;p&gt;This paper presents a new framework called &lt;strong&gt;UniSkill&lt;/strong&gt; that learns embodiment-agnostic skill representation from large video dataset.&lt;/p&gt;&#xA;&lt;h1 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h1&gt;&#xA;&lt;p&gt;UniSkill uses image-editing pipeline for the neural network to focus on capturing the dynamics changes (over static content) between temproally distant video frames.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Lab02: Deploying DialoGPT-Medium with FastAPI &amp; Docker</title>
       <link>https://junuxyz.github.io/blog/posts/lab02-deploying-dialogpt-medium-with-fastapi-docker/</link>
       <pubDate>Wed, 20 Aug 2025 15:57:15 +0900</pubDate>
       <guid>https://junuxyz.github.io/blog/posts/lab02-deploying-dialogpt-medium-with-fastapi-docker/</guid>
-      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;In Lab02, We are going to look at how Jupyter/Colab Notebook models, codes are actually deployed as a service.&lt;/p&gt;&#xA;&lt;img src=&#34;https://junuxyz.github.io/images/simple-chat.png&#34; alt=&#34;Image&#34;&gt;&lt;p&gt;This is a simple chatbot called &lt;em&gt;simple chat&lt;/em&gt; which is containerized in Docker and run on FastAPI.&lt;/p&gt;&#xA;&lt;p&gt;We will build and deploy this chatbot using DialoGPT as the model, use FastAPI to create API endpoints, and deploy it with Docker.&lt;/p&gt;&#xA;&lt;p&gt;The goal of this lab is to experience the end-to-end of deploying and serving a LLM model from scratch, with minimal configuration.&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;In Lab02, We are going to look at how Jupyter/Colab Notebook models, codes are actually deployed as a service.&lt;/p&gt;&#xA;&lt;p&gt;![[simple-chat.png]]&lt;/p&gt;&#xA;&lt;p&gt;This is a simple chatbot called &lt;em&gt;simple chat&lt;/em&gt; which is containerized in Docker and run on FastAPI.&lt;/p&gt;&#xA;&lt;p&gt;We will build and deploy this chatbot using DialoGPT as the model, use FastAPI to create API endpoints, and deploy it with Docker.&lt;/p&gt;&#xA;&lt;p&gt;The goal of this lab is to experience the end-to-end of deploying and serving a LLM model from scratch, with minimal configuration.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Mental Model of Engineering</title>
@@ -119,27 +119,6 @@
       <pubDate>Sat, 08 Mar 2025 00:00:00 +0900</pubDate>
       <guid>https://junuxyz.github.io/blog/posts/a-useful-mental-model-on-how-to-build-your-unique-career/</guid>
       <description>&lt;p&gt;If you want to be a pro, imagine the job role or the company you want to get in. Google, Tesla, Facebook, Apple, etc&amp;hellip; logically you need to work as much or harder than that everyday.&lt;/p&gt;&#xA;&lt;p&gt;Then, what should you work on?&lt;/p&gt;&#xA;&lt;p&gt;Hard problems; the problems people are facing in the domain.&lt;/p&gt;&#xA;&lt;p&gt;Find out and contemplate on&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;what the problem is&lt;/li&gt;&#xA;&lt;li&gt;why it&amp;rsquo;s a problem&lt;/li&gt;&#xA;&lt;li&gt;what have been done to solve the problem&lt;/li&gt;&#xA;&lt;li&gt;why those problems don&amp;rsquo;t work&lt;/li&gt;&#xA;&lt;li&gt;what can be done to solve that problem&lt;/li&gt;&#xA;&lt;li&gt;why that can be a candidate logically (rationally)&lt;/li&gt;&#xA;&lt;li&gt;and do it&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
-    </item>
-    <item>
-      <title>About</title>
-      <link>https://junuxyz.github.io/blog/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://junuxyz.github.io/blog/about/</guid>
-      <description>&lt;script&gt;&#xA;    window.location.href = &#34;/&#34;;&#xA;&lt;/script&gt;&#xA;&lt;meta http-equiv=&#34;refresh&#34; content=&#34;0; url=https://junuxyz.github.io/&#34;&gt;&#xA;&lt;link rel=&#34;canonical&#34; href=&#34;https://junuxyz.github.io/&#34;&gt;&#xA;&lt;p&gt;Redirecting to &lt;a href=&#34;https://junuxyz.github.io/&#34;&gt;homepage&lt;/a&gt;...&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Categories</title>
-      <link>https://junuxyz.github.io/blog/categories/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://junuxyz.github.io/blog/categories/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tags</title>
-      <link>https://junuxyz.github.io/blog/tags/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://junuxyz.github.io/blog/tags/</guid>
-      <description></description>
     </item>
   </channel>
 </rss>
