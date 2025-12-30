@@ -1,6 +1,6 @@
 /* Minimal yet fancy styles for homepage - Light theme with blue accent */
 body.home-page {
-    background-color: #ffffff;
+    background-color: var(--light-bg);
     margin: 0;
     padding: 0;
 }
@@ -11,7 +11,7 @@ body.home-page {
     padding: 3.5rem 2.5rem;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.8;
-    color: #374151;
+    color: var(--light-text);
     text-align: center;
 }
 
@@ -20,7 +20,7 @@ body.home-page {
     font-weight: 600;
     letter-spacing: -0.01em;
     margin: 1.5rem 0 1rem;
-    color: #111827;
+    color: var(--light-text-dark);
     text-align: center;
 }
 
@@ -61,7 +61,7 @@ body.home-page {
 
 .researcher-container p {
     margin-bottom: 1rem;
-    color: #4b5563;
+    color: var(--light-text-muted);
     font-size: 1.05rem;
     text-align: left;
 }
@@ -79,7 +79,7 @@ body.home-page {
 
 .researcher-container li {
     margin-bottom: 0.75rem;
-    color: #4b5563;
+    color: var(--light-text-muted);
     padding-left: 1.25rem;
     position: relative;
 }
@@ -92,18 +92,18 @@ body.home-page {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #3b82f6;
+    background: var(--light-accent-dot);
     transform: translateY(-50%);
 }
 
 .researcher-container a {
-    color: #2563eb;
+    color: var(--light-accent);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .researcher-container a:hover {
-    color: #1d4ed8;
+    color: var(--light-accent-hover);
 }
 
 /* Blog link */
@@ -117,13 +117,13 @@ body.home-page {
 
 .blog-link {
     display: inline-block;
-    color: #6b7280;
+    color: var(--light-text-subtle);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .blog-link:hover {
-    color: #2563eb;
+    color: var(--light-accent);
 }
 
 .blog-link::after {
@@ -139,7 +139,7 @@ body.home-page {
     height: 160px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #e5e7eb;
+    border: 3px solid var(--light-border);
 }
 
 .researcher-container figure.avatar img {
@@ -175,19 +175,19 @@ body.home-page {
     justify-content: center;
     width: 2.25rem;
     height: 2.25rem;
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
+    background: var(--light-bg-subtle);
+    border: 1px solid var(--light-border);
     border-radius: 6px;
-    color: #6b7280;
+    color: var(--light-text-subtle);
     text-decoration: none;
     transition: all 0.2s ease;
     font-size: 0;
 }
 
 .social-links a:hover {
-    background: #eff6ff;
-    color: #2563eb;
-    border-color: #bfdbfe;
+    background: var(--light-bg-accent);
+    color: var(--light-accent);
+    border-color: var(--light-border-accent);
 }
 
 .social-links a::before {

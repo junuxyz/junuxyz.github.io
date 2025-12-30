@@ -22,7 +22,7 @@ body {
 h1, h2, h3 {
     line-height: 1.3;
     margin-bottom: 1rem;
-    color: #fff; /* Make headings pure white for maximum contrast */
+    color: var(--accent); /* Make headings pure white for maximum contrast */
 }
 
 h1 { 
@@ -50,21 +50,21 @@ p {
 
 /* Links - mobile optimized */
 a {
-    color: #ffffff;
+    color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-color: #666666;
+    text-decoration-color: var(--text-light);
     text-decoration-thickness: 1px;
     transition: all 0.2s ease;
 }
 
 a:hover {
-    text-decoration-color: #ffffff;
+    text-decoration-color: var(--accent);
 }
 
 /* Quote tags */
 .blog-section q {
-    color: #ffffff;
+    color: var(--accent);
     font-style: italic;
 }
 
@@ -72,12 +72,12 @@ a:hover {
 .post-content a {
     text-decoration: underline;
     text-underline-offset: 4px;
-    text-decoration-color: #666666;
+    text-decoration-color: var(--text-light);
     text-decoration-thickness: 1px;
 }
 
 .post-content a:hover {
-    text-decoration-color: #ffffff;
+    text-decoration-color: var(--accent);
     background: transparent;
 }
 
@@ -86,10 +86,10 @@ a:hover {
 .header {
     margin-bottom: var(--section-gap);
     padding-bottom: 1rem;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
-    background: #111111;
+    background: var(--bg);
     z-index: 100;
 }
 
@@ -104,7 +104,7 @@ a:hover {
 .logo a {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--accent);
     padding: 0.5rem 0;
     display: block;
     min-height: var(--touch-target);
@@ -168,7 +168,7 @@ a:hover {
 .nav-item {
     padding: 0.625rem 0.875rem;
     font-size: 1.125rem;
-    color: #888888;
+    color: var(--text-light);
     border-radius: 0;
     transition: color 0.2s ease;
     min-height: var(--touch-target);
@@ -181,7 +181,7 @@ a:hover {
 .nav a:hover,
 .nav-item:hover {
     background: transparent;
-    color: #ffffff;
+    color: var(--accent);
     text-decoration: none;
 }
 
@@ -219,7 +219,7 @@ a:hover {
     hyphens: auto;
     font-size: 2.5rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--accent);
 }
 
 .post-meta {
@@ -266,12 +266,12 @@ a:hover {
 }
 
 .nav-link:hover .nav-title {
-    color: #ffffff;
+    color: var(--accent);
 }
 
 .nav-label {
     font-size: 0.75rem;
-    color: #777777;
+    color: var(--text-light);
     text-transform: none;
     letter-spacing: 0;
     display: block;
@@ -280,7 +280,7 @@ a:hover {
 
 .nav-title {
     font-weight: 400;
-    color: #aaaaaa;
+    color: var(--text);
     line-height: 1.4;
     transition: color 0.2s ease;
 }
@@ -310,7 +310,7 @@ a:hover {
 .post-content h2 {
     font-size: 2rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #1f1f1f;
+    border-bottom: 1px solid var(--border);
 }
 
 .post-content h3 {
@@ -350,14 +350,14 @@ a:hover {
 code {
     font-family: 'SF Mono', Monaco, 'Consolas', monospace;
     font-size: 0.9em;
-    background: #1a1a1a;
+    background: var(--border);
     padding: 0.15rem 0.4rem;
     border-radius: 3px;
-    color: #cccccc;
+    color: var(--text);
 }
 
 pre {
-    background: #151515;
+    background: var(--bg);
     padding: 1.25rem;
     padding-top: 2.25rem; /* Extra space at top for language label */
     border-radius: 4px;
@@ -369,7 +369,7 @@ pre {
 pre code {
     background: none;
     padding: 0;
-    color: #d6d6d6;
+    color: var(--text);
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
     word-break: break-all !important;
@@ -415,7 +415,7 @@ code::-webkit-scrollbar,
     top: 0.5rem;
     right: 0.5rem;
     background: transparent;
-    color: #555555;
+    color: var(--text-light);
     border: none;
     border-radius: 4px;
     padding: 0.35rem;
@@ -435,11 +435,11 @@ pre:hover .code-copy-btn {
 }
 
 .code-copy-btn:hover {
-    color: #aaaaaa;
+    color: var(--text);
 }
 
 .code-copy-btn.copied {
-    color: #4ade80;
+    color: var(--success);
     opacity: 1;
 }
 
@@ -449,7 +449,7 @@ pre:hover .code-copy-btn {
     top: 0.5rem;
     left: 0.75rem;
     background: transparent;
-    color: #555555;
+    color: var(--text-light);
     padding: 0;
     font-size: 0.7rem;
     font-weight: 500;
@@ -465,10 +465,10 @@ pre:hover .code-copy-btn {
 
 /* Blockquotes - minimal style */
 blockquote {
-    border-left: 2px solid #333333;
+    border-left: 2px solid var(--border-light);
     padding-left: 1.25rem;
     margin: 2.5rem 0;
-    color: #999999;
+    color: var(--text-light);
     font-style: italic;
     line-height: 1.8;
 }
@@ -488,17 +488,17 @@ th, td {
     padding: 0.75rem 1rem;
     text-align: left;
     border: none;
-    border-bottom: 1px solid #222222;
+    border-bottom: 1px solid var(--border);
 }
 
 th {
     background-color: transparent;
     font-weight: 500;
-    color: #888888;
+    color: var(--text-light);
     font-size: 0.95rem;
     text-transform: capitalize;
     letter-spacing: 0;
-    border-bottom: 1px solid #333333;
+    border-bottom: 1px solid var(--border-light);
 }
 
 /* Images */
@@ -512,7 +512,7 @@ img {
 /* Tags - minimal style */
 .tag {
     background: transparent;
-    color: #888888;
+    color: var(--text-light);
     padding: 0;
     font-size: 0.85rem;
     text-decoration: none;
@@ -522,7 +522,7 @@ img {
 }
 
 .tag:hover {
-    color: #ffffff;
+    color: var(--accent);
     text-decoration: none;
 }
 
@@ -530,9 +530,9 @@ img {
 .footer {
     margin-top: 4rem;
     padding-top: 2rem;
-    border-top: 1px solid #1a1a1a;
+    border-top: 1px solid var(--border);
     text-align: center;
-    color: #777777;
+    color: var(--text-light);
     font-size: 0.85rem;
 }
 
@@ -544,7 +544,7 @@ img {
     padding: 1.25rem 0 1.25rem 1.25rem !important;
     border-radius: 0;
     border: none !important;
-    border-left: 2px solid #333333 !important;
+    border-left: 2px solid var(--border-light) !important;
     font-size: 0.95rem;
     line-height: 1.7;
     position: relative;
@@ -557,7 +557,7 @@ img {
     padding: 1.25rem 0 1.25rem 1.25rem !important;
     border-radius: 0;
     border: none !important;
-    border-left: 2px solid #333333 !important;
+    border-left: 2px solid var(--border-light) !important;
     font-size: 0.95rem;
     line-height: 1.7;
     position: relative;
@@ -579,7 +579,7 @@ img {
 
 .qa-label {
     font-weight: 700;
-    color: #ffffff;
+    color: var(--accent);
     margin-right: 0.5rem;
 }
 
@@ -592,9 +592,9 @@ img {
 .note-block.note-error,
 .note-block.note-success,
 .note-block.note-tip {
-    background: #181818 !important;
+    background: var(--bg) !important;
     border-color: var(--border) !important;
-    border-left-color: #666666 !important;
+    border-left-color: var(--text-light) !important;
 }
 
 .note-icon {
@@ -691,7 +691,7 @@ img {
         padding-bottom: 0; /* Remove bottom padding to eliminate gap */
         position: sticky; /* Keep sticky on mobile */
         top: 0;
-        background: #111111;
+        background: var(--bg);
     }
     
     .header-content {
@@ -718,7 +718,7 @@ img {
         top: 100%;
         left: 0;
         right: 0;
-        background: #111111;
+        background: var(--bg);
         border-top: 1px solid var(--border);
         padding: 1rem 0;
         margin-top: 0; /* Remove margin to eliminate gap */
@@ -1095,7 +1095,7 @@ img {
 @media (max-width: 768px) and (prefers-color-scheme: dark) {
     /* Keep consistent background color */
     .header {
-        background: #111111;
+        background: var(--bg);
     }
 }
 

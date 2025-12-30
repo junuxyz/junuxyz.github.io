@@ -51,7 +51,12 @@ buildExpired = false
   author = "Junu"
   
   # Social Icons
-  # (github and linkedin removed)
+  [[params.socialIcons]]
+    name = "GitHub"
+    url = "https://github.com/junuxyz"
+  [[params.socialIcons]]
+    name = "Email"
+    url = "mailto:jpjunior211@gmail.com"
 
 # Main menu
 [menu]
