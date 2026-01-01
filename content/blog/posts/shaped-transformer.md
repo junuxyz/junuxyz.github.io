@@ -6,7 +6,7 @@ categories = ['ML']
 tags = ['Transformer']
 +++
 
-## 0. Understanding Transformer
+# Understanding Transformer
 
 **How can one learn Transformer?**
 The Transformer Architecture (introduced in the paper _[Attention is All You Need](https://arxiv.org/abs/1706.03762)_) is one of the most successful models in deep learning and the backbone of what made the “ChatGPT moment” possible. Because of its importance and impact, there are already many high-quality explanations of [what the model is](https://jalammar.github.io/illustrated-transformer/), [how it works](https://www.deeplearning.ai/short-courses/how-transformer-llms-work/), and even [annotated code implementation of it](https://nlp.seas.harvard.edu/annotated-transformer/). These days, most developers don’t need to implement Transformers from scratch because libraries like [HuggingFace Transformers](https://huggingface.co/docs/transformers/index) provide easy-to-use classes and methods. Yes, there are plenty of things to build on top of the architecture! Still, I think it is worth having a great understanding of Transformer Model, beyond intuitive, abstract level. In fact one of the best way to learn Transformer, as [Feynman said](https://www.goodreads.com/quotes/7306651-what-i-cannot-build-i-do-not-understand), is to build one yourself from scratch to really understand and appreciate all the underlying techniques and modules that form the base of the ChatGPT era.
@@ -21,9 +21,9 @@ While there are many great explanations of the mathematics and abstract concepts
 
 Hopefully this helps you form a more concrete understanding of the architecture and makes the code easier to read and implement :)
 
-## 1. Commonly Used Parameters
+# Commonly Used Parameters
 
-Before we talk about shape transformation, it is helpful to understand the names of the parameter/notations. It will help the code readability. If you are famaliar with the paper and the parameters used, feel free to skip this section.
+Before we talk about shape transformation, it is helpful to understand the names of the parameter/notations. It will help the code readability. If you are familiar with the paper and the parameters used, feel free to skip this section.
 
 ### $N$ , $b$, or `nbatches`
 
@@ -33,7 +33,7 @@ The reason why you may be confused about `nbatches` in code implementation from 
 The most representative image of Transformer is usually
 1. One head from one batch or
 2. Multi-Head from one batch
-but they don't explicitly tell there are `nbatches` batches processed parallely for each batch.
+but they don't explicitly tell there are `nbatches` batches processed parallel for each batch.
 
 The reality is, $N$ sentences are put into batch and passed as input. But this doesn’t change or introduce anything new to the original architecture we know. Still it's worth noting that `nbatches` mean the number of sentences being processed per batch. It will appear in the code several times.
 
@@ -67,7 +67,7 @@ In the original paper, `d_model` was set to 512.
 
 (I think prior resources didn’t explain about the exact input of Transformer architecture clearly but I think it’s worth noting.)
 
-First, even before the transformer process begins, there is a thing called Tokenizer which is independent from the Transformer Architecture. The tokenizer splits raw sentences into seqeunce of tokens.
+First, even before the transformer process begins, there something called a Tokenizer which is independent from the Transformer Architecture. The tokenizer splits raw sentences into seqeunce of tokens.
 
 For example if the raw sentence input was `I love you`, Tokenizer would divide it into tokens,
 
@@ -83,7 +83,7 @@ and using the $vocab$ dictionary, we map the tokens with its correspoining token
 
 Now **this (sequences of token id)** is the input of the Transformer Architecture. 
 
-Then you might ask **_what's the input of Transformer then?_**
+Then you might ask **what the input of Transformer is**.
 The very first step of Transformer is Embedding and this is done by selecting the row from `W_emb` using the token ID as a key: `W_emb[token ID]`
 
 ```
@@ -101,140 +101,25 @@ tldr:
 
 Below are the parameters only seen in Attention Calculation (Self-Attention and Cross-Attention)
 ### $H$, $h$, or `h`
+
 `h` is a hyperparameter which means the number of head of Multi-Head Attention.
 In the original paper, researchers set it as `h = 8`.
 ### $d_k$ or `d_k`
+
 `d_k` is the vector size of key($K$) representation of each token.
 
 We will look into more detail about how shape transforms during Multi-Head Attention in the upcoming section, but to shortly address, $Q$(query) and $K$(key) are matrix multiplied($QK^T$) to get the Attention Score. Therefore `d_q` must be the same as `d_k`.
 
 In the original paper, `d_k` is set to `d_model // h`($512/8 = 64$). While `d_k` does not strictly have to equal `d_model // h`, this configuration ensures that the concatenated output of all attention heads matches the original `d_model` dimension. This structural alignment allows the output to be added directly to the residual connection without additional linear projections or dimension adjustments, thereby maximizing computational efficiency.
 ### $d_v$ or `d_v`
+
 `d_v` is the dimension of the value($V$) vector for each token.
 
 After the attention weights are calculated, they are multiplied by the Value matrix $V$. This process yields a new set of vectors, each with dimension `d_v`, that now holds the contextual information from the sequence. This output is then used to help predict the next token. 
-(Don't worry if this sounds too compact. I will explain it in more detail in the next section!)
+(Don't worry if this sounds too compact. I will explain it in more detail later.)
 In the original "Attention Is All You Need" paper, the authors set `d_v = d_k = d_q`. However, while `d_k` must equal `d_q`, it's not required for d_v to be the same size. This is simply another design choice. I will also explain later in this post when `d_v != d_k` is acceptable.
 
-## 2. The Big Picture (TL;DR)
-
-This section shows only the **shape flow** and **key operations**. You can see a much detailed explanation of each steps below in section 3.
-
-### 0. Input (both Encoder & Decoder)
-
-Raw sentences → token **IDs**. `(nbatches, n_seq)`
-### 1. Encoder Embedding Layer
-
-1-1. **Token Embedding**: Match each token with its representation(each token's represented in `d_model` size vector) using the tokenizer. 
-`(nbatches, n_seq_src) → (nbatches, n_seq_src, d_model)`
-
-1-2. **Positional Embedding**: Since attention itself doesn't have the ability to consider positions, we add additional information to each tokens. Since the positional embedding vector is also `d_model` size vector, we simply add them and there is no shape change.
-`(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
-
-### 2. Encoder Layer
-Encoder Layer is consisted of two submodules which are:
-2-1. Multi-Head Self Attention
-2-2. Feed Forward Network.
-Encoder Layer is repeated $N$(e.g., 6) times.
-
-2-1. **Multi-Head Self Attention (MHA)**  
-Input from 1-2
-`(nbatches, n_seq_src, d_model)` (shapes unchanged)
-
-2-1-1. **Forward Pass to Q,K,V**: In Self Attention, inputs are copied and passed to three different Forward Passes which each has independent weights($W_Q, W_K, W_V$). This happens "per token" (meaning that `nbatches` and `n_seq_src` are all used) and the vector size of the token stays the same so shape does not change.
-`(nbatches, n_seq_src, d_model)` (shapes unchanged)
-
-2-1-2. **Split heads**: Transformer typically uses multi-heads to capture different aspects of token, thus improving representation(that's why it's called MHA). As mentioned above each `h` is `d_model // d_k` so we need to split `d_model` into `h × d_k`): 
-`(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, h, d_k)`  
-
-2-1-3. **Transpose sequence length with head**: We transpose the sequence length with head in order to parallelize head processing. 
-`(nbatches, n_seq_src, h, d_k) → (nbatches, h, n_seq_src, d_k)`
-
-2-1-4. **Compute attention scores**: Attention score is calculated by $\frac{QK^T}{\sqrt{d_k}}$. Since $\sqrt{d_k}$ is just for scaling, if we look at $QK^T$, we are matrix multiplying $Q$ (`(nbatches, h, n_seq_src, d_k)`) with $K^T$(`(nbatches, h, d_k, n_seq_src)`). Therefore attention score for a single sequence, for each head, for each batch is size of `d_k x d_k`.
-`(nbatches, h, n_seq_src, d_k) → (nbatches, h, n_seq_src, n_seq_src)`
-
-2-1-5. **Softmax**: Apply softmax function to the attention score (doesn't affect the shape) 
-`(nbatches, h, n_seq_src, n_seq_src)` (shapes unchanged)
-
-**2-1-6. Multiply by V**: If attention score (calculated by $Q,K$) tells which token each token should "attend to", $V$ tells which aspect/information to use from the token. We matrix multiply Attention Score with shape `(nbatches, h, n_seq_src, n_seq_src)` with V of shape `(nbathces, h, n_seq,src, d_k)` thus resulting as:
-`(nbatches, h, n_seq_src, n_seq_src) → (nbatches, h, n_seq_src, d_k)`
-
-**2-1-7. Transpose back & concat**: Now we need to transpose the order of h and n_seq_src again. This is because calculation for Multi Head Self Attention is finished and we want to concatenate each head's output.
-`(nbatches, h, n_seq_src, d_k) → (nbatches, n_seq_src, h, d_k)` (transpose)
-`(nbatches, n_seq_src, h, d_k) → (nbatches, n_seq_src, d_model)` (concat)
-
-**2-1-8. Forward Pass to O**: After concatenating, we forward pass the batch into `W_O`. `W_O` is shape of `(nbatches, n_seq_src, d_model)` so there is no shape change during this process.
-`(nbatches, n_seq_src, d_model)` (shapes unchanged)
-
-**Residual + LayerNorm**: After each submodules in Encoder finishes, we use residual connection and LayerNorm. There is no shape change in this process.
-`(nbatches, n_seq_src, d_model)` (shapes unchanged)
-
-**2-2. Feed Forward Network (FFN)**  
-2-2-1. Linear: `d_model → d_ff` (hidden expansion)  
-2-2-2. ReLU (or GELU)  
-2-2-3. Linear: `d_ff → d_model`  
-Shapes overall: `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
-
-**Residual + LayerNorm**  
-`(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
-
-### 3. Decoder Embedding Layer
-3-1. Token Embedding: `(nbatches, n_seq_tgt) → (nbatches, n_seq_tgt, d_model)`  
-3-2. Positional Embedding (added): `(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
-
-### 4. Decoder Layer
-Decoder Layer is consisted of three submodules, 4-1. Maksed Multi-Head Self Attention, 4-2. Cross Attention, and 4-3. Feed Forward Network. Decoder Layer is repeated **N** times (e.g., 6).
-
-**4-1. Masked Multi-Head Self Attention**  
-Input: `(nbatches, n_seq_tgt, d_model)`  
-4-1-1. Project to Q,K,V: `(nbatches, n_seq_tgt, d_model)`  
-4-1-2. Split heads (reshape where `d_model = h × d_k`): `(nbatches, n_seq_tgt, h, d_k)`  
-4-1-3. Transpose: `(nbatches, h, n_seq_tgt, d_k)`  
-4-1-4. Compute attention scores `QKᵀ / √d_k` **+ causal mask**: `(nbatches, h, n_seq_tgt, n_seq_tgt)`
-4-1-5. Softmax: `(nbatches, h, n_seq_tgt, n_seq_tgt)`
-4-1-6. Multiply by V: `(nbatches, h, n_seq_tgt, d_k)`  
-4-1-7. Transpose back & concat: `(nbatches, n_seq_tgt, d_model)`  
-4-1-8. Output projection `W_O`: `(nbatches, n_seq_tgt, d_model)`
-
-**Residual + LayerNorm**  
-`(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
-
-**4-2. Cross (Encoder–Decoder) Attention**  
-Inputs:
-- Q from Decoder: `(nbatches, n_seq_tgt, d_model)`
-- K,V from Encoder: `(nbatches, n_seq_src, d_model)`
-4-2-1. Project to Q,K,V (shapes unchanged)  
-4-2-2. Split heads (reshape where `d_model = h × d_k`): Q → `(nbatches, n_seq_tgt, h, d_k)`; K,V → `(nbatches, n_seq_src, h, d_k)` 4-2-3. Transpose: Q → `(nbatches, h, n_seq_tgt, d_k)`; K,V → `(nbatches, h, n_seq_src, d_k)`  
-4-2-4. Compute attention scores `QKᵀ / √d_k`: `(nbatches, h, n_seq_tgt, n_seq_src)`
-4-2-5. Softmax: `(nbatches, h, n_seq_tgt, n_seq_src)`
-4-2-6. Multiply by V: `(nbatches, h, n_seq_tgt, d_k)`
-4-2-7. Transpose back & concat: `(nbatches, n_seq_tgt, d_model)`  
-4-2-8. Output projection `W_O`: `(nbatches, n_seq_tgt, d_model)`
-
-**Residual + LayerNorm**  
-`(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
-
-**4-3. Feed Forward Network (FFN)**  
-Same as Encoder FFN.  
-`(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
-
-**Residual + LayerNorm**  
-`(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
-
-### 5. LM Head (Generator)
-5-1. Linear `d_model → vocab`: `(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, vocab)`  
-5-2. Softmax over `vocab`: `(nbatches, n_seq_tgt, vocab) → (nbatches, n_seq_tgt, vocab)`
-
-
----
-
-Section 3 below explains much detailed explanation for each steps with examples, illustrations, and code examples(from _Annotated Transformer_).
-
-## 3. How Shape Changes, end to end (w/ Code Examples)
-
-{{< note >}}
-This section is working in progress!
-{{< /note >}}
+# How Shape Changes, End to End (w/ Code Example)
 
 When we encounter the code implementation of Transformer Architecture, all kinds of `view()`, `transpose()`, `reshape()` methods are frequently used, hindering what are being changed , what it implies, and why we need to do it. After all, if you understand there is a general order within the parameters and the shape form all has its meanings, code readability can significantly enhance.
 
@@ -245,10 +130,7 @@ In practice, the input shape is `(nbatches, n_seq, d_model)`, which means each s
 
 Now, let's explore the journey from the very first embedding to the last output (next token) and see how the shape changes and what they all mean. (In most paper or images, they often omit `nbatches` or `h` for clarity but I will explain including all the parameters). Then we will see how code is actually written to match these shapes. We won't cover all code, just the shape transformation parts, for simplicity. Also, to give you a clear intuition of how everything is working, I will use the three following sentences I used above. Code can be found in ... :
 
-
-### Tokenizing
-
-**shape: `(nbatches, n_seq)`**
+## 0. Input (both Encoder & Decoder)
 
 As mentioned above, this is a step before the transformer architecture even starts. It's a process to convert raw sentences into sequence of tokens. For example, based on [GPT-4o & GPT-4o mini tokenizer](https://platform.openai.com/tokenizer) provided by OpenAI,
 
@@ -261,11 +143,7 @@ I love you, too
 (we will use these three sentences in each step until the end of the architecture)
 are converted into discrete tokens:
 
-![[shaped-trasnformer-example-1.png]]
-
-{{< note >}}
-The only reason we use the GPT-4o tokenizer here is since it's the most convenient tokenizer available on the web. However all the rest of the concepts and parameters (e.g. size of $vocab$) will be based on the original paper!
-{{< /note >}}
+![[shaped-transformer-example-1.png]]
 
 In code, we use `tokenizer.tokenizer` module:
 
@@ -277,11 +155,12 @@ def tokenize(text, tokenizer):
 
 We use padding tokens(`PAD`) to keep the length of all `n_seq` same (which is crucial for matrix calculation). If we set `n_seq` to 6, the padding will fill as below:
 
-![[shaped-trasnformer-example-2.png]]
+![[shaped-transformer-example-2.png]]
 
 These tokens converted to token ids will be
 
-![[shaped-trasnformer-example-3.png]]
+![[shaped-transformer-example-3.png]]
+(according to GPT-4o tokenizer)
 
 This will be our exact starting point (input) for Transformer Architecture.
 
@@ -312,40 +191,11 @@ class Batch:
 In this code, padding token(`<blank>`) is set to '2'.
 	This is just because the authors of Annotated Transformer set `<blank>` as the third special token (`specials=["<s>", "</s>", "<blank>", "<unk>"]`)
 
+**shape: `(nbatches, n_seq)`**
 
-{{< qa question="Why is the shape `(nbatches, n_seq)` sometimes described as `(nbatches, n_seq, vocab)` if each token ID is just a scalar value?" >}}
+## 1. Encoder Embedding Layer
 
-In the original paper, the authors simply state that they use _learned embeddings_ to map token IDs to vectors of dimension $d_{model}$, without mentioning one-hot explicitly. 
-
-Mathematically, however, you can think of each token as a one-hot vector, so that the embedding operation becomes
-
-
-$$x_{\text{emb}} = \text{onehot}(token_{id}) \times W_{emb}.$$
-
-This is convenient because it lets us express the embedding as a standard matrix multiplication.
-
-For example, the sentence `"I love you"` with token IDs `[40, 3047, 481, 0, 0, 0]` would look like:
-```mathematica
-O[0, 0, :] = [0, 0, ..., 1(at 40), ..., 0]    # "I"
-O[0, 1, :] = [0, 0, ..., 1(at 3047), ..., 0]  # "love"
-O[0, 2, :] = [0, 0, ..., 1(at 481), ..., 0]   # "you"
-O[0, 3, :] = [1(at 0), 0, 0, ..., 0]          # [PAD]
-O[0, 4, :] = [1(at 0), 0, 0, ..., 0]          # [PAD]
-O[0, 5, :] = [1(at 0), 0, 0, ..., 0]          # [PAD]
-```
-
-
-Of course, this representation is very inefficient in practice (huge memory cost). 
-
-So in real implementations (e.g. PyTorch), we directly use the `(nbatches, n_seq)` token ID tensor to _index_ into `W_emb` and fetch the corresponding rows.
-
-**In practice:** think of `vocab` as the _number of unique token IDs (vocabulary size)_, not as an actual one-hot dimension in the input.
-{{< /qa >}}
-
-
-### Token Embedding
-
-**input shape: `(nbatches, n_seq)`**
+### 1-1. Token Embedding
 
 Now the Transformer Architecture starts. 
 First thing we do is we embed all token in sequences within a batch.
@@ -356,12 +206,9 @@ Input(`(nbatches, n_seq)`) will use `W_emb` as a lookup table and replace the to
 
 After embedding, we scale the elements in d_model by multiplying it with $\sqrt{d_\text{model}} = \sqrt{512}$. Original paper doesn't explain the reason clearly but based on this, it seems they are multiplying to keep/strengthen the token embedding information even after Positional Embedding is added. Since it's just scalar multiplication, this procedure doesn't change the shape.
 
-output shape: `(nbatches, n_seq, d_model)`
-
+**shape: `(nbatches, n_seq_src) → (nbatches, n_seq_src, d_model)`**
 
 Back to our example, the sentence "I love you"(`40 ,3047, 481, 0, 0, 0`) will extract `W_emb[40]`, `W_emb[3047]`, `W_emb[481]`, and `W_emb[0]`. 
-
-
 
 |  token  | token id |                         d_model = 512                         |
 | :-----: | :------: | :-----------------------------------------------------------: |
@@ -390,17 +237,15 @@ E[0, 5, :] = [ 0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00, ... ]   # 
 
 Of course other two sentences in the batch, "I am in love with you" and "I love you, too" also will go through the same process.
 
-### Positional Embedding
+### 1-2. Positional Embedding
 
 We won't go into detail about positional embedding in this post, since itself is a post-worth concept. I recommend [this post](https://kazemnejad.com/blog/transformer_architecture_positional_encoding/) for better understanding of Positional Embedding. Since our main focus here is to see how the shapes change, I will explain mainly on that point of view.
 
-**input shape: `(nbatches, n_seq, d_model)`**
+To briefly explain, Positional Embedding is adding same(`d_model`)-sized vector to each embedded token to preserve the positional information. Unlike other sequence neural networks such as LSTM or RNN, Transformer calculates all tokens parallel. Therefore, if it doesn't have positional information added, it wouldn't know the order of the token. While using $\sin$ and $\cos$ functions are not the only way to preserve positional information, it is known to be a helpful way to do that.
 
-To briefly explain, Positional Embedding is adding same(`d_model`)-sized vector to each embedded token to preserve the positional information. Unlike other sequence neural networks such as LSTM or RNN, Transformer calculates all tokens parallely. Therefore, if it doesn't have positional information added, it wouldn't know the order of the token. While using $\sin$ and $\cos$ functions are not the only way to preserve positional information, it is known to be a helpful way to do that.
 We add the positional information of `d_model` to each embedded tokens and since they have the same shape, the shape does not change.
 
-**output shape: `(nbatches, n_seq, d_model)`**
-
+**shape: `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`**
 
 Back to our example, "I love you" has three positions.
 
@@ -433,184 +278,332 @@ E+PE[0, 4, :] = [ 0.00-0.76, 0.00-0.65, 0.00-0.76, 0.00-0.65, ... ]     # [PAD] 
 E+PE[0, 5, :] = [ 0.00-0.96, 0.00+0.28, 0.00-0.96, 0.00+0.28, ... ]     # [PAD] at pos=5
 ```
 
-	We can see that even though the padding tokens have no semantic meaning, they still receive a unique positional signal before being processed by the Transformer layers. 
+We can see that even though the padding tokens have no semantic meaning, they still receive a unique positional signal before being processed by the Transformer layers. 
 
 As always, **remember** this process is done by all sequences in the batch! (which means this process is parallelly done in the sentences "I am in love with you" and "I love you, too" as well!)
 
+Since attention itself doesn't have the ability to consider positions, we add additional information to each tokens. Since the positional embedding vector is also `d_model` size vector, we simply add them and there is no shape change.
 
-### 2. Encoder
+## 2. Encoder Layer
 
-Now we move to the Encoder Layer. Code implementation of Encoder (and Decoder) Layer in code seems like a matryoshka doll (module inside a module inside a moduel...) but I will try to explain the big picture as clearly as possible.
+Now we move to the Encoder Layer. Code implementation of Encoder (and Decoder) Layer in code seems like a matryoshka doll (module inside a module inside a module...) but I will try to explain the big picture as clearly as possible.
 
 In the blueprint, **Encoder** is consisted of $N$ Layers of **Encoder Layer**. (Note that Encoder and Encoder Layer are NOT the same! Also note that $N$ here and `nbatches` are totally different, independent concepts!) In the original paper $N=6$ which means we go over the Encoder layer 6 times in a single process.
 
 Each Encoder Layer has two **Sublayers**: **Self-Attention Sublayer** first and then **Feed Forward Network($FFN$) Sublayer**. After each sublayers are passed, they are connected to a residual stream and then layer-wise normalized(LayerNorm).
 
-**Sublayers** are the most fundamental building blocks in Encoder-Decoder structure of Transformer Architecture. The two types of sublayers are already mentioned above.
+In code, **Sublayers** are the most fundamental building blocks in Encoder-Decoder structure of Transformer Architecture. The two types of sublayers are already mentioned above.
 
 Now that we went over the modules inside Encoder in a brief top-down approach, we will first go over the shape/dimension changes in Self-Attention Sublayer, then Feed Forward Network Sublayer and will expand further.
 
-
-### 2-1. Self-Attention (Multi-Head Attention)
-
-Now this module is one of the most complicated part in Transformer so we will look in detail, step by step. The goal is to get a clear sense of how shape changes during each process. We are going to divide the Self-Attention process into 8 minor steps. Try to follow through!
+### 2-1. Multi-Head Self Attention (MHA)
 
 
 ![[shaped-attention-attention.png]]
 
-Recap: Each token are `d_model` sized vectors, where token embedded and positional embedded vectors are added.
+When the input enters an Encoder Layer, its first destination is the Self-Attention sublayer.
+To understand what happens here, we need to talk about **Multi-Head Attention**.
+Though this post isn't a deep theoretical dive, the core idea is simple: Instead of calculating attention just once, we use multiple "attention heads." Think of it like having several experts look at the same sentence; each expert (or head) can focus on different relationships between words. Each head has its own set of learned weights (`W_Q`, `W_K`, `W_V`) to find these different relationships. In the original paper, they use 8 heads (`h=8`).
 
-**input shape: `(nbatches, n_seq, d_model)`**
-
-When the input enters an Encoder Layer, its first destination is the Self-Attention sublayer. To understand what happens here, we need to talk about **Multi-Head Attention**.
-
-Though this post isn't a deep theoretical dive, the core idea is simple: instead of calculating attention just once, we use multiple "attention heads." Think of it like having several experts look at the same sentence; each expert (or head) can focus on different relationships between words. Each head has its own set of learned weights (`W_Q`, `W_K`, `W_V`) to find these different relationships. In the original paper, they use 8 heads (`h=8`).
-
-Mathetmatically we represent Attention calculation as 
+Mathematically we represent Attention calculation as
 
 $$\text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V$$
 
-Let's break down how the actual tensor shapes transform step-by-step.
+This module is one of the most complicated part in Transformer so we will look in detail, step by step. The goal is to get a clear sense of how shape changes during each process. We are going to divide the Self-Attention process into 8 minor steps.
+
+We start from input from 1-2
+**shape: `(nbatches, n_seq_src, d_model)` (shapes unchanged)**
 
 {{< note >}}
-From now, we will call the input as `x`.
+From now, we will call the input as `x`
 {{< /note >}}
 
+**2-1-1. Forward Pass to Q,K,V**
+In Self Attention, inputs are copied and passed to three different Forward Passes which each has independent weights($W_Q, W_K, W_V$). The size of the weights are all `(d_model, d_model)`. This happens "per token" and the vector size of the token stays the same so shape does not change.
 
-**1. Project to $Q, K, V$** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, d_model)`
-We first need to get the $Q, K, V$ matrices. This is done by multiplying our input `x` with three learned weight matrices: `W_q`, `W_k`, and `W_v`. Each of the weight matrices have size of shape `(d_model, d_model)`.
+**shape: `(nbatches, n_seq_src, d_model)` (shapes unchanged)**
 
-Each $Q, K, V$ becomes shape `(nbatches, n_seq, d_model)`
-- `Q = x @ W_q = (nbatches, n_seq, d_model)`
-- `K = x @ W_k = (nbatches, n_seq, d_model)`
-- `V = x @ W_v = (nbatches, n_seq, d_model)`
+For example, the sentence "I love you" (with 3 `<PAD>` tokens) will be:
+![[shaped-transformer-example-5.png]]
 
-{{< note type="tip" >}}
-**A Note on Parameters:** We aren't training `Q`, `K`, and `V` directly. 
-The actual parameters we train are the weights: `W_Q`, `W_K`, and `W_V`.
+**2-1-2. Split heads**
+As mentioned above each `h` is `d_model // d_k` so we need to split `d_model` into `h × d_k`): 
+**shape: `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, h, d_k)`**  
+![[shaped-transformer-example-6.png]]
+
+**2-1-3. Transpose sequence length with head**
+We transpose the sequence length with head in order to parallelize head processing.
+**shape: `(nbatches, n_seq_src, h, d_k) → (nbatches, h, n_seq_src, d_k)`**
+![[shaped-transformer-example-7.png]]
+
+**2-1-4. Compute attention scores**
+Attention score is calculated by $\text{softmax}(\frac{QK^T}{\sqrt{d_k}})$. Since $\sqrt{d_k}$ is just for scaling, if we look at $QK^T$, we are matrix multiplying $Q$ (`(nbatches, h, n_seq_src, d_k)`) with $K^T$(`(nbatches, h, d_k, n_seq_src)`). Therefore attention score for a single sequence, for each head, for each batch is size of `n_seq x n_seq`.
+`(nbatches, h, n_seq_src, d_k) → (nbatches, h, n_seq_src, n_seq_src)`
+
+for each head:
+![[shaped-transformer-example-8.png]]
+
+**2-1-5. Softmax**
+Apply softmax function to the attention score (doesn't affect the shape) 
+`(nbatches, h, n_seq_src, n_seq_src)` (shapes unchanged)
+
+**2-1-6. Multiply by V**
+If attention score (calculated by $Q,K$) tells which token each token should "attend to", $V$ tells which aspect/information to use from the token. We matrix multiply Attention Score with shape `(nbatches, h, n_seq_src, n_seq_src)` with V of shape `(nbatches, h, n_seq_src, d_k)` thus resulting as:
+`(nbatches, h, n_seq_src, n_seq_src) → (nbatches, h, n_seq_src, d_k)`
+
+![[shaped-transformer-example-9.png]]
+
+**2-1-7. Transpose back & concat**
+Now we need to transpose the order of h and n_seq_src again. This is because calculation for Multi Head Self Attention is finished and we want to concatenate each head's output.
+`(nbatches, h, n_seq_src, d_k) → (nbatches, n_seq_src, h, d_k)` (transpose)
+`(nbatches, n_seq_src, h, d_k) → (nbatches, n_seq_src, d_model)` (concat)
+![[shaped-transformer-example-10.png]]
+**2-1-8. Forward Pass to O**
+After concatenating, we forward pass the batch into `W_O`.
+
+{{< note >}}
+Q. What is `W_O` and why do we need it?
+A. After concatenation, each head's output simply sits side-by-side without interaction. `W_O` allows Cross-head integration -- allows the model to learn combinations across different heads. e.g., combining a syntactic pattern captured by head 2 with a semantic pattern from head 5.
 {{< /note >}}
 
-**2. Splitting into Heads** `(nbatches, n_seq, d_model)` -> `(nbatches, n_seq, h, d_k)`
-After projection, we split `d_model` into `h` seperate heads. Since in the paper, d_k is defined as `d_k = d_model / h`, we can divide the last dimensions into `h` and `d_k` and view the shape as `(nbatches, n_seq, h, d_k)`.
+`W_O` is shape of `(d_model, d_model)` so there is no shape change during this process.
+**shape: `(nbatches, n_seq_src, d_model)` (shapes unchanged)**
 
-In code, it will be implementing as follow:
 
+If we look the code implementation of *Annotated Transformer*,
 
 ```python
-def clones(module, N):
-    "Produce N identical layers."
-    return nn.ModuleList([copy.deepcopy(module) for _ in range(N)])
-    
 class MultiHeadedAttention(nn.Module):
-	def __init__(self, h, d_model, dropout=0.1):
-	...
-	self.d_k = d_model // h
-	self.h = h
-	self.linears = clones(nn.Linear(d_model, d_model), 4)
-	...
+    def __init__(self, h, d_model, dropout=0.1):
+        "Take in model size and number of heads."
+        super(MultiHeadedAttention, self).__init__()
+        assert d_model % h == 0
+        self.d_k = d_model // h
+        self.h = h
+        self.linears = clones(nn.Linear(d_model, d_model), 4)
+        self.attn = None
+        self.dropout = nn.Dropout(p=dropout)
 
-	def forward(self, query, key, value, mask=None):
-	...
-	query, key, value = [lin(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2) for lin, x in zip(self.linears, (query, key, value))]
-	...
+    def forward(self, query, key, value, mask=None):
+        "Implements Figure 2"
+        if mask is not None:
+            # Same mask applied to all h heads.
+            mask = mask.unsqueeze(1)
+        nbatches = query.size(0)
+
+        # 1) Do all the linear projections in batch from d_model => h x d_k
+        query, key, value = [
+            lin(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)
+            for lin, x in zip(self.linears, (query, key, value))
+        ]
+
+        # 2) Apply attention on all the projected vectors in batch.
+        x, self.attn = attention(
+            query, key, value, mask=mask, dropout=self.dropout
+        )
+
+        # 3) "Concat" using a view and apply a final linear.
+        x = (
+            x.transpose(1, 2)
+            .contiguous()
+            .view(nbatches, -1, self.h * self.d_k)
+        )
+        del query
+        del key
+        del value
+        return self.linears[-1](x)
 ```
 
-Let's break down the last line.
+If we look this code step by step,
 
-For conveninece we make four Linear Layer of shape `(d_model, d_model)` for `W_q, W_k, W_v, W_o` and save it in ModuleList.
+```python
+        # 1) Do all the linear projections in batch from d_model => h x d_k
+        query, key, value = [
+            lin(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)
+            for lin, x in zip(self.linears, (query, key, value))
+        ]
+```
 
-{{< note >}}
-To be accurate it's `(d_model, h, d_k)` but for sake of convenience, since `d_model = h * d_k`, we write as `(d_model, d_model)` for sake of convenience.
-{{< /note >}}
+For convenience, we create four identical Linear layers of shape `(d_model, d_model)` to represent $W_Q, W_K, W_V$, and $W_O$ storing them in a `ModuleList`. 
 
-We `zip` it with tuple `(query, key, value)`. Since we don't need q,k,v for `W_o`, it is intended to zip with only three tuples.
-Since `query, key, value` are all shape of `(nbatches, n_seq, d_model)`, we pass it through `lin(x)`. since the Linear Layer itself has the same input and output size, the output of query, key, value after the Linear Layer have the same shape `(nbatches, n_seq, d_model)`. However we transpose it to `(nbatches, h, n_seq, d_k)` to make matrix multiplication available for parallel processing of each heads.
+We then `zip` this list with the tuple `(query, key, value)`. Since `zip` stops at the shortest iterator, it only iterates three times, effectively using the first three layers for $Q, K, V$ and leaving the fourth($W_O$) for later.
 
-**3. Transpose for Attention Calculation**
-To perform the attention calculation ($QK^T$) across all heads at once, we need `n_seq` and `d_k` to be the last two dimensions. So we transpose the shape $Q$ into `(nbatches, h, n_seq, d_k)`. Since $K^T$ is transposed version of $K$, its shape is `(nbatches, h, d_k, n_seq)`.
+Inside the loop, we pass each input `x` through its corresponding linear layer `lin`. As defined in `__init__`, the output shape remains `(nbatches, n_seq, d_model)` (Step 2-1-1). Next we use `.view()` to split `d_model` dimension into `h` and `d_k`(Step 2-1-2). Finally we transpose the sequence length(`n_seq`) and head dimensions(`h`) using `.transpose(1,2)` to prepare for parallel head processing(2-1-3).
 
-**4. Calculate Attention Scores**
-We calculate $QK^T$ and the output shape becomes `(nbatches, h , n_seq, n_seq)` due to matrix mulitplicatin. 
-After calculating, as you see in the mathematical definition, we scale it by $\frac{1}{\sqrt{d_k}}$ to make it `n_seq`-agnostic.
-Mathematically this process is 
+```python
+        # 2) Apply attention on all the projected vectors in batch.
+        x, self.attn = attention(
+            query, key, value, mask=mask, dropout=self.dropout
+        )
+```
 
-**6. Mask Padding Tokens**
-Padding tokens are just placeholders to match all the sentence to length of `n_seq` for the sake of matrix calculation. Therefore we need to exclude them on applying to $V$. Therefore we mask the padding tokens in the key. We don't need to mask the query matrix since it matrix multiplies with masked key tokens and automatically gets eliminated.
+Here, we call the `attention` function to calculate the attention scores and the final context vector (Step 2-1-4).
 
-**7. Apply Softmax** 
-We apply a softmax function to the scores, which turns them into positive values that sum to 1. This converts the scores into attention **weights**. The shape remains `(nbatches, h, n_seq, n_seq)`.
+Let's look at how this is implemented in the `attention` function:
+```python
+def attention(query, key, value, mask=None, dropout=None):
+    "Compute 'Scaled Dot Product Attention'"
+    # ... (code omitted for brevity)
+    scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)
+    # ...
+    p_attn = scores.softmax(dim=-1)
+	# ...
+    return torch.matmul(p_attn, value), p_attn
+```
 
-**8. Apply Attention to V** Now we multiply our attention weights by the Value matrix `V`. This enhances the representation of each token by incorporating information from the other tokens it's paying attention to.
-Attention weight shape: `(nbatches, h, n_seq, n_seq)`
-`V` shape: `(nbatches, h, n_seq, d_v)` (where `d_v = d_k` in the original paper)
-Output = `weights @ V` and its shape becomes `(nbatches, h, n_seq, d_v)`
+Both `query` and `key` enter with shape `(nbatches, h, n_seq, d_k)`. We transpose the `key` tensor to `(nbatches, h, d_k, n_seq)`. Performing matrix multiplication (`matmul`) between them results in the attention score matrix of shape `(nbatches, h, n_seq, n_seq)`.
 
-**9. Concatenate Heads**
-The parallel processing for each head is done. Now we want to merge our `h` heads back into a single tensor. We reverse the transpose from step 3.
-so the shape changes from `(nbatches, h, n_seq, d_v)` to `(nbatches, n_seq, h, d_v)`.
+Next, we apply `softmax` to these scores (Step 2-1-5). We use `dim=-1` to normalize the scores across the last dimension (the key positions), ensuring the attention weights for each query token sum to 1. Finally, we multiply these normalized weights by `value` to obtain the weighted sum (Step 2-1-6).
 
-**10. Reshape to Final Output** 
-Finally, we flatten the `h` and `d_v` dimensions back into the original `d_model` dimension. This is the `reshape()` or `view()` call(in code) that concludes the process.
-Shape changes from `(nbatches, n_seq, h, d_v)` to `(nbatches, n_seq, h * d_v)`.
-Since `h * d_v = d_model`, our final output shape is `(nbatches, n_seq, d_model)`, which is exactly what we started with! This allows us to pass it to the next layer in the network.
+```python
+        # 3) "Concat" using a view and apply a final linear.
+        x = (
+            x.transpose(1, 2)
+            .contiguous()
+            .view(nbatches, -1, self.h * self.d_k)
+        )
+        del query
+        del key
+        del value
+        return self.linears[-1](x)
+```
 
-This output is then passed through a final linear layer, `W_O`, which also doesn't change the shape.
+Back in the `MultiHeadedAttention` code, we reverse the previous transpose operation and concatenate the heads to restore the shape `(nbatches, n_seq, d_model)` (Step 2-1-7). The `.contiguous()` call is necessary here to ensure the tensor's memory layout is compatible with `.view()`.
 
-final output shape: `(nbatches, n_seq, d_model)`
+The `del` statements are included for memory efficiency, clearing references to large tensors to prevent memory spikes on the GPU11. Finally, we pass the concatenated result through the last linear layer in `self.linears` (which represents $W_O$) to mix the information from different heads (Step 2-1-8).
 
-{{< note >}} 
-- In practice, each attention head receives the **same full input** of shape `(nbatches, n_seq, d_model)`. The difference between heads comes entirely from their learned projection weights $(W_Q, W_K, W_V)$. Heads do not split the input; instead, they naturally learn to focus on different subspaces of the same representation.
+### Residual + LayerNorm
 
-Below are two common parts most people are wrong about, or didn't think of.
+After each submodules in Encoder finishes, we use residual connection and LayerNorm. There is no shape change in this process.
 
-- Does `d_k` have to be `d_model // h`?
-	No, but it's a very practical choice to make.
-	The main reason is to ensure the output of the attention block matches the shape as the input. This is crucial for the residual connection(`x = x + MHA(x)`). 
-	When `d_k = d_model // h`, After we concatenate the heads, the final dimension is `h * d_k = h * (d_model / h) = d_model`. The output shape `(..., d_model)` perfectly matches the input shape, so the residual connection works seamlessly. When `d_k` is different from `d_model // h`, The concatenated dimension becomes `h * d_k`, which is not equal to `d_model`. This creates a shape mismatch. To fix this, the final linear layer (`W_O`) must act as a projection, mapping the shape from `h * d_k` back to `d_model`. So it's just a practical and rational design choice to keep the dimension consistent.
-- Does `d_k` have to match `d_v`?
-	**No**, not at all.
-	While the query and key dimensions (`d_q` and `d_k`) must be identical for the dot product to work, the value dimension (`d_v`) can be any size you want.
-	The output dimension after applying attention and concatenating the heads is always `h * d_v`. The final linear layer, `W_O`, is responsible for projecting this `h * d_v` dimension back to `d_model` to ensure the residual connection works.
-	In fact, the `W_O` layer makes the choice of `d_v` very flexible. Its job is to take whatever the heads output (`h * d_v`) and reshape it into the `d_model` dimension that the rest of the network expects. Setting `d_k = d_v` is just a common simplification.
+**shape: `(nbatches, n_seq_src, d_model)` (shapes unchanged)**
 
-To summarize both questions above, if we just make sure `d_k = d_q` (for attention calculation) and shape of `W_O` as `(h * d_v, d_model)`, `d_k` and `d_v` can be whatever integer it can be. However by matching `d_k` and `d_v` based on `d_model` makes residual connection seamless and computationally efficient.
-{{< /note >}}
+### 2-2. Feed Forward Network (FFN)
 
-Back to our example, "I love you" sentence
+This works as a simple 2-Layer MLP which expands from `d_model` to `d_ff` and the final output returns to `d_model`.
 
-### 2-2. Residual Connection and Normalization
+**2-2-1. Linear Layer**
+`(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_ff)`
 
-### 2-3. Feed Forward Network ($FFN$)
+**2-2-2. ReLU (or GELU)**
+Used as activation function between the two layers.
+`(nbatches, n_seq_src, d_ff)` (shapes unchanged)
 
-input shape: `(nbatches, n_seq, d_model)`
-We use $FFN$ to add non-linearity to learn and represent in higher dimension. 
+**2-2-3. Linear Layer**
+`(nbatches, n_seq_src, d_ff) → (nbatches, n_seq_src, d_model)`
 
-The feed forward network's shape is `(d_model, d_model)` for each token. Therefore the overall shape doesn't change.
+**Residual + LayerNorm**
+Same as above
+`(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
 
-### 2-4. Residual Connection and Normalization
+{{ < note >}}
+Decoder follows the same mechanics as Encoder so we'll focus only on the key differences which are **causal masking** and **cross-attention**.
+{{ < /note > }}
+
+### 3. Decoder Embedding Layer
+
+Decoder Embedding Layer also embeds the tokens for the output. If we only consider the scope of "training", we already have the targetting sequence. We want to embed them as well and use it to train the model to predict the next token. I will write this sequence as `n_seq_tgt` instead of `n_seq_src` to differentiate the two sources. Besides this name change, embedding layer works the same so I will skip duplicate explanation.
+
+**3-1. Token Embedding**
+`(nbatches, n_seq_tgt) → (nbatches, n_seq_tgt, d_model)`
+
+**3-2. Positional Embedding**
+`(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, d_model)`
+
+## 4. Decoder Layer
+
+Decoder Layer is consisted of three submodules which are:
+4-1. Masked Multi-Head Self Attention
+4-2. Cross Attention
+4-3. Feed Forward Network.
+Decoder Layer is repeated $N$(e.g., 6) times.
+
+### 4-1. Masked Multi-Head Self Attention
+
+**Input from 3-2**
+`(nbatches, n_seq_tgt, d_model)` (shapes unchanged)
+
+Steps 1 ~ 4 works exactly the same as Encoder's MHA (Forward $\rightarrow$ Split $\rightarrow$ Transpose $\rightarrow$ Score).
+
+**4-1-5. Masking**
+Mask is applied to the Attention Score matrix(of size `n_seq_tgt, n_seq_tgt` for each heads). Causal mask is an upper-triangular matrix of `-inf` values that prevents position `i` from attending to any position `j > i`. This prevents the model to "cheat" and ensures each token can only attend to itself and previous tokens.
+`(nbatches, h, n_seq_tgt, n_seq_tgt)` (shapes unchanged)
+
+Steps 6 ~ 9 works exactly the same as Encoder's MHA (Softmax $\rightarrow$ Multiply V $\rightarrow$ Concat $\rightarrow$ Forward O).
+
+**Residual + LayerNorm**
+
+### 4-2. Cross (Encoder–Decoder) Attention
+
+**What is Cross Attention?**
+Unlike Self-Attention where $Q, K, V$ all come from the same source, Cross Attention uses $Q$ from Decoder and $K, V$ from Encoder -- the encoded source sequence. 
+This allows each decoder position to attend to all encoder positions, enabling the decoder to extract relevant information from the source sequence.
+
+**Input from 2(Encoder Layer) & 4-1(Masked Multi-Head Attention)**
+Input for $Q$: `(nbatches, n_seq_tgt, d_model)`
+Input for $K,V$: `(nbatches, n_seq_src, d_model)`
+
+**4-2-1. Forward Pass to Q,K,V**
+$Q$: `(nbatches, n_seq_tgt, d_model)`
+$K,V$: `(nbatches, n_seq_src, d_model)`
+
+**4-2-2. Split heads**
+$Q$: `(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, h, d_k)`  
+$K,V$: `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, h, d_k)` 
+
+**4-2-3. Transpose sequence length with head**
+$Q$: `(nbatches, n_seq_tgt, h, d_k) → (nbatches, h, n_seq_tgt, d_k)`
+$K,V$: `(nbatches, n_seq_src, h, d_k) → (nbatches, h, n_seq_src, d_k)`
+
+**4-2-4. Compute attention scores**
+Since $QK^T$ is `(nbatches, h, n_seq_tgt, d_k)` $\cdot$ `(nbatches, h, d_k, n_seq_src)`:
+`(nbatches, h, n_seq_tgt, d_k) → (nbatches, h, n_seq_tgt, n_seq_src)`
+
+{{ < note > }}
+No need for masking since $K,V$ are from Encoder.
+{{ < /note > }}
+
+**4-2-5. Softmax**
+`(nbatches, h, n_seq_tgt, n_seq_src)` (shapes unchanged)
+
+**4-2-6. Multiply by V**
+`(nbatches, h, n_seq_tgt, n_seq_src)` × V `(nbatches, h, n_seq_src, d_k)`:
+`(nbatches, h, n_seq_tgt, n_seq_src) → (nbatches, h, n_seq_tgt, d_k)`
+
+**4-2-7. Transpose back & concat**
+`(nbatches, h, n_seq_tgt, d_k) → (nbatches, n_seq_tgt, h, d_k)` (transpose)
+`(nbatches, n_seq_tgt, h, d_k) → (nbatches, n_seq_tgt, d_model)` (concat)
+
+**4-2-8. Forward Pass to O**
+`(nbatches, n_seq_tgt, d_model)` (shapes unchanged)
+
+**Residual + LayerNorm**: After each submodules in Encoder finishes, we use residual connection and LayerNorm. There is no shape change in this process.
+`(nbatches, n_seq_tgt, d_model)` (shapes unchanged)
 
 
-### 3. Decoder
+### 4-3. Feed Forward Network (FFN) 
+Works exactly same as 2-2 (Feed Forward Network).
 
+### 5. LM Head (Generator)
 
-### 5. LMHead (Generator)
-After Decoder process is done, the decoder's output is projected back into the vocabulary space.
+After $N$ (e.g., 6) steps of Decoder process is done, the decoder's output is projected back into the vocabulary space in order to calculate the probability scores of the next token.
+
 5-1. Linear Layer
-We want to project the `d_model` for each token into token space `vocab`. So after passing this to the linear layer the shape changes `(nbatches, n_seq_tgt, d_model)` -> `(nbatches, n_seq_tgt, vocab)`
+We want to project the `d_model` for each token into token space `vocab`. So after passing this to the linear layer the shape changes: 
+`(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, vocab)`
 
 5-2. Softmax
 We want the model to predict the next token in a stochastic way so we imply softmax function as well.
-`(nbatches, n_seq_tgt, d_model)` -> `(nbatches, n_seq_tgt, vocab)`
-
-As a final output, we recive the probability distribution in the token space, and choose a vocab in a certain criterion (e.g. the most naive way would be to use the token that has the biggest probability value).
+`(nbatches, n_seq_tgt, d_model) → (nbatches, n_seq_tgt, vocab)`
 
 {{< note >}}
-During training, cross-entropy loss is usually applied with the ground truth target tokens. During inference, tokens are sampled or greedily selected step by step.
+**Inference**
+During inference, we select the next token from this distribution using a decoding strategy (greedy, top-k, nucleus sampling, etc.) and feed it back as input to generate the next token autoregressively.
+
+**Training**
+During training, we don't select tokens. Instead we directly compute cross-entropy loss between the predicted distribution and ground truth, then backpropagate to update weights.
 {{< /note >}}
 
+# Conclusion
 
-
-
-## Conclusion
-
-We have went through the common notations used in transformer, and used specific example to go through "one training phase" of Transformer Architecture. Finally we saw how shape changes in actual code (why all those `reshape` and `transpose` are used). Hope this post helps you gain insight and intuition of the bigger picture.
+We have gone through the common notations used in transformer, and used specific example to go through "one training phase" of Transformer Architecture. Finally we saw how shape changes in actual code (why all those `reshape` and `transpose` are used). Hope this post helps you gain insight and intuition of the bigger picture.
