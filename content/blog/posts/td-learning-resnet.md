@@ -1,5 +1,5 @@
 +++
-title = "Reframing Bellman Backup in the perspective of Residual Connection"
+title = "Reframing TD Learning in the Perspective of Residual Connection"
 date = 2025-10-02T10:35:50+09:00
 draft = true
 categories = ['']
@@ -11,8 +11,8 @@ tags = ['']
 
 In the literature of Reinforcement Learning, Bellman Backup is mathematically expressed as 
 $$y = r + \gamma \max_{a'} \hat V(s')$$
-where we update $y$ based on the current reward and next state's estimated reward (via $V$).
-While it seems a bit counterintuitive that this works, the reason why it works is because we are using current reward $r$ as a ground truth, while trying to make $V$ as precise as possible.
+where we update $y$ based on the current reward and next state's estimated reward (via $\hat{V}$).
+While it seems a bit counterintuitive that this works, the reason why it does is because we are using current reward $r$ as a ground truth, while trying to make $V$ as precise as possible.
 
 This can also be reframed as a residual connection, or vice versa.
 

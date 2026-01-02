@@ -496,9 +496,9 @@ Used as activation function between the two layers.
 Same as above
 `(nbatches, n_seq_src, d_model) → (nbatches, n_seq_src, d_model)`
 
-{{ < note >}}
+{{< note >}}
 Decoder follows the same mechanics as Encoder so we'll focus only on the key differences which are **causal masking** and **cross-attention**.
-{{ < /note > }}
+{{< /note >}}
 
 ### 3. Decoder Embedding Layer
 
@@ -559,9 +559,9 @@ $K,V$: `(nbatches, n_seq_src, h, d_k) → (nbatches, h, n_seq_src, d_k)`
 Since $QK^T$ is `(nbatches, h, n_seq_tgt, d_k)` $\cdot$ `(nbatches, h, d_k, n_seq_src)`:
 `(nbatches, h, n_seq_tgt, d_k) → (nbatches, h, n_seq_tgt, n_seq_src)`
 
-{{ < note > }}
+{{< note >}}
 No need for masking since $K,V$ are from Encoder.
-{{ < /note > }}
+{{< note >}}
 
 **4-2-5. Softmax**
 `(nbatches, h, n_seq_tgt, n_seq_src)` (shapes unchanged)

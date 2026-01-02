@@ -10,17 +10,16 @@ _Added some Python code for example._
 
 ---
 
-딥러닝을 이해하기 위해서는 경사하강법이 정확히 어떤 원리와 근거를 통해 진행되는지를 명확히 알 필요가 있다
+In order to understand modern deep learning, we need to know exactly how gradient descent is applied.
 
-경사하강법을 한 문장으로 설명하면 **손실함수라는 다변수 합성함수를 각 변수에 대해 편미분하여 $cos \theta$가 가장 낮아지는 방향으로 이동하는 것의 반복**이다.
+If I explain gradient descent in one sentence, it's a method that iteratively moves toward the direction where $\cos \theta$ of each variables to the Loss Function.
 
+There were total four points I was curious about when trying to understand gradient descent.
 
-경사하강법에 대해 이해할 때 궁금했던 포인트는 크게 네 가지였다.
-
-$Q_1$. '가장 가파르다'는 말이 왜 사용되는거야?
-$Q_2$. 왜 $\nabla f(a) \cdot u$가 가장 클 때가 곧 함수값이 가장 가파르게 증가하는 방향이야?
-$Q_3$. 왜 Gradient Vector는 항상 함수값이 가장 가파르게 증가하는 방향을 가리켜?
-$Q_4$. 왜 $cos \theta$가 가장 낮아지는 방향으로 갈 때 loss가 최소화 돼?
+$Q_1$. Why do we use the expression "the steepest" about the direction? What does it mean?
+$Q_2$. Why is it the most steepest direction when $\nabla f(a) \cdot u$ is the biggest?
+$Q_3$. Why does gradient vector always direct to the steepest direction?
+$Q_4$. Why does the Loss become minimal when we move towrad the direction where $\cos \theta$ becomes minimum.
 
 ### $Q_1$: 가장 가파르게 증가한다는 말이 왜 사용되는거야?
 
