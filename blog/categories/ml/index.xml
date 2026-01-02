@@ -6,8 +6,15 @@
     <description>Recent content in ML on jlog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Sep 2025 07:39:43 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 02 Jan 2026 22:09:17 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/blog/categories/ml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Prefill vs Decode</title>
+      <link>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</link>
+      <pubDate>Fri, 02 Jan 2026 22:09:17 +0900</pubDate>
+      <guid>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</guid>
+      <description>&lt;h2 id=&#34;two-major-operations-in-modern-llm-inference&#34;&gt;Two major operations in modern LLM inference&lt;/h2&gt;&#xA;&lt;p&gt;Two major operations in modern LLM inference are prefill and decode. It’s important to know what they are and how they differ. Most modern LLMs are variations of GPT, which is Decoder-only model. These models take an input (or prompt), process it, sample the next token, and use the previous input + sampled token as the next input in an autoregressive manner. This is called “decoding” and occurs token-by-token.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Shaped Transformer</title>
       <link>https://junuxyz.github.io/blog/posts/shaped-transformer/</link>
