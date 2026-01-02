@@ -561,7 +561,7 @@ Since $QK^T$ is `(nbatches, h, n_seq_tgt, d_k)` $\cdot$ `(nbatches, h, d_k, n_se
 
 {{< note >}}
 No need for masking since $K,V$ are from Encoder.
-{{< note >}}
+{{< /note >}}
 
 **4-2-5. Softmax**
 `(nbatches, h, n_seq_tgt, n_seq_src)` (shapes unchanged)
