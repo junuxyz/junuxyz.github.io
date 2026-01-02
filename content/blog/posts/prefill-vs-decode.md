@@ -60,7 +60,7 @@ Note that we are only reusing the KV values, which means we do need to compute a
 We are going to see how Prefill and Decode works in one example, with the unfinished sequence “The cat sat”.
 
 Let’s say the prompt given to the model is “The cat sat”. 
-![[Pasted image 20260102235716.png]]
+![[prefill-vs-decode-2.png]]
 
 First, we don’t have any pre-calculated KV Cache of these tokens so we would need to “prefill” them(`<sos>` here means "start of sequence" which is used as a special token indicating the sequence starts).
 
@@ -68,7 +68,7 @@ We need to forward pass the QKV in order to calculate the attention score, and s
 
 The image below represents a single head during the attention calculation($QK^T$) with softmax applied.
 
-![[Pasted image 20260102225056.png]]
+![[prefill-vs-decode-3.png]]
 
 As you can see, the Query cannot see the tokens further(in the future) than itself because causal masking is applied. Also note that I colored the tokens that need to be calculated(or forward passed) in pink and tokens that already have KV cache in memory in white. Since we don't have any memory of the prompt in Prefill stage, it's normal to see all tokens need QKV values calculated. Each token's KV values are saved in KV Cache since the sequence didn't end yet.
 
@@ -78,13 +78,13 @@ While this image only shows the attention matrix, note that we need to calculate
 
 After the forward pass of the model, we can sample the next new token, which may be "on".
 
-![[Pasted image 20260102224509.png]]
+![[prefill-vs-decode-4.png]]
 
 Now, since the model finished processing the prompt, it takes the original input(or prompt) including the sampled token from the previous step.
 
 Now let's look at how Attention calculation in Decoding Stage is different from Prefill Stage.
 
-![[Pasted image 20260102225027.png]]
+![[prefill-vs-decode-5.png]]
 
 There are two major differences here. 
 First, it's not a n_seq x n_seq matrix, but instead it's a vector. This is because in order to sample the next token, we only need the attention scores between the sampled token's Q and all previous K values(This is also the reason why we don't need to save previous token's Q values!).
