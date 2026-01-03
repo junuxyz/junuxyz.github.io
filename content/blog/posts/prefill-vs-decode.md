@@ -20,7 +20,7 @@ Prefill is known to be compute-bound, because it uses Matrix-Matrix Multiplicati
 Arithmetic intensity means computation/byte. High arithmetic intensity leads to compute-bound while low arithmetic intensity may lead to memory-bound.
 {{< /note >}}
 
-Ignoring minor calculations such as splitting/concatenating heads for Multi-Head Attention, two major operations we need in a single forward pass is to 1) forward pass each tokens to Q,K,V & 2) calculate Attention scores ($\text{softmax}({\frac{QK^T}{\sqrt{d_k}})V}$). So in Prefill stage, we will need to do 1 & 2 for all the tokens with causal mask applied.
+Ignoring minor calculations such as splitting/concatenating heads for Multi-Head Attention, the major operations in a single Transformer block are: 1) project each token to Q, K, V, 2) calculate attention ($\text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$), and 3) pass through the FFN. In the Prefill stage, we do all of these for every token in parallel, with causal mask applied.
 
 Each token's KV values are stored into a memory space called KV Cache, and reused throughout the decode process. We will look through what KV Cache is later in this post.
 
@@ -44,8 +44,7 @@ In contrast, KV represent the context of the past. Since all future tokens will 
 {{< /note >}}
 
 If it weren’t for KV cache, decoding would be same as “prefilling with the next token added” which is very inefficient since we need to recalculate all the tokens from start. [Image provided from Sebastian Raschka](https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms) clearly visualizes this inefficient computation if we didn’t use KV cache:
-![[prefill-vs-decode-1.png]]
-[Image from *Understanding and Coding the KV Cache in LLMs from Scratch* by Sebastian Raschka](https://substackcdn.com/image/fetch/$s_!gBu0!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F06c2f011-ce16-4832-a3aa-4927703fb752_1259x877.png)
+![[prefill-vs-decode-1.png]][Image from *Understanding and Coding the KV Cache in LLMs from Scratch* by Sebastian Raschka](https://substackcdn.com/image/fetch/$s_!gBu0!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F06c2f011-ce16-4832-a3aa-4927703fb752_1259x877.png)
 
 During decode, we calculate attention in Matrix-Vector Multiplication(GEMV). Unlike Prefill, we only need to matrix multiply the new token's Q value(vector) with the previous KV values(matrix). Therefore the only values calculated are current token's Q,K,V values.
 
@@ -98,7 +97,7 @@ LLM Inference Engines are getting lots of traction due to the high computational
 
 Developers and Researchers realized that the bottleneck of Inference may come from memory more than computation. This is because luckily modern GPU(and CUDA software) is optimized to calculate major operations such as matrix multiplication, while loading KV Cache for attention calculation, without any inference optimization, may work slow, leading to huge latency.
 
-It is even stated as following in the [*PagedAttention* paper](https://arxiv.org/abs/2309.06180).
+In the [*PagedAttention* paper](https://arxiv.org/abs/2309.06180), it is stated as:
 
 > Additionally, given the current trends, the GPU’s computation speed grows faster than the memory capacity. For example, from NVIDIA A100 to H100, The FLOPS increases by more than 2x, but the GPU memory stays at 80GB maximum. Therefore, we believe the memory will become an increasingly significant bottleneck.
 
