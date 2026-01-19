@@ -1,0 +1,37 @@
+/* Unified CV list styles */
+
+.cv-list {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0.25in;
+}
+
+.cv-list li {
+    margin-bottom: 6pt;
+    font-size: 11pt;
+    color: #000;
+    padding-left: 12pt;
+    position: relative;
+    text-indent: -12pt;
+}
+
+.cv-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #000;
+    font-weight: normal;
+}
+
+/* Nested lists use a hollow circle */
+.cv-list ul {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0.25in;
+}
+
+.cv-list ul li::before {
+    content: "◦";
+}
+
+
