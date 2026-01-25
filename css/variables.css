@@ -1,57 +1,34 @@
 :root {
-    /* Common Colors - Dark Theme (Blog) */
-    /* Dark theme - sleek black */
-    --bg: #111111;
-    --text: #DEDEDE;
-    --text-light: #888888;
+    /* Colors - Unified Dark Theme */
+    --bg: #000000;
+    --text: #ffffff;
+    --text-muted: #a1a1a1;
     --accent: #ffffff;
-    --accent-secondary: #eeeeee;
-    --border: #222222;
-    --border-light: #333333;
+    --accent-hover: #d4d4d4;
+    --border: #262626;
+    --border-light: #404040;
     --success: #4ade80;
     
-    /* Light Theme Colors (Homepage) */
-    --light-bg: #ffffff;
-    --light-text: #374151;
-    --light-text-dark: #111827;
-    --light-text-muted: #4b5563;
-    --light-text-subtle: #6b7280;
-    --light-accent: #2563eb;
-    --light-accent-hover: #1d4ed8;
-    --light-accent-dot: #3b82f6;
-    --light-border: #e5e7eb;
-    --light-bg-subtle: #f3f4f6;
-    --light-bg-accent: #eff6ff;
-    --light-border-accent: #bfdbfe;
-    
-    /* Typography - Optimized for Readability */
-    --font-family: 'Inter';
-    --font-size-base: 1.15rem;
-    --line-height: 1.9;
-    --line-height-mobile: 1.8;
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-size-base: 1.1rem;
+    --line-height: 1.8;
+    --line-height-mobile: 1.7;
     
     /* Layout */
-    --max-width: 800px;
+    --max-width: 680px;
     --spacing: 1rem;
-    --touch-target: 44px; /* iOS/Android recommended minimum */
+    --touch-target: 44px;
     
-    /* Mobile-first spacing */
-    --content-padding: 1rem;
-    --section-gap: 3.5rem;
-    --section-gap-mobile: 2.5rem;
+    /* Spacing */
+    --content-padding: 1.5rem;
+    --section-gap: 3rem;
+    --section-gap-mobile: 2rem;
     --paragraph-spacing: 1.25rem;
 }
 
-/* Responsive width for larger screens */
 @media (min-width: 1024px) {
     :root {
-        --max-width: 900px;
+        --max-width: 720px;
     }
 }
-
-@media (min-width: 1440px) {
-    :root {
-        --max-width: 1000px;
-    }
-}
-
