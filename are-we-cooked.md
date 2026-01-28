@@ -1,0 +1,57 @@
+
+## AI Programming is Not a Joke Anymore
+
+These are some thoughts I had in mind, mostly risen due to the rapid growth of AI agents (Anthropic's Claude Code, Cursor, and OpenAI's Codex etc.) I needed to rethink of my focus, my internal thoughts about developer / software engineer, and understand how others feel about the change.
+
+I have to admit that I was terrified by recent talks from Andrej Karpathy, Dario Amodei, and Demis Hassabis, who are at the frontier shaping AI (specifically LLM of AI), on how AI will impact jobs and specifically Software Engineers. e.g. Dario was famous to say "We might be 6-12 months away from a model that can do everything SWEs do end-to-end.".
+
+As a late entry to Computer and Software (currently undergrad but 25 yo) I felt afraid that I won't get a job and there will not be a market for people who professionally code, make product which I tried and am trying to specialize in.
+
+AI coding agents are getting better and better not in months but in weeks and days. Andrej Karpathy and Boris Cherny(Core developer and director of Claude Code)'s X tweet captures this rapid advancement:
+
+[Andrej](https://x.com/karpathy/status/2004607146781278521): "I've never felt this much behind as a programmer. The profession is being dramatically refactored as the bits contributed by the programmer are increasingly sparse and between. I have a sense that I could be 10X more powerful if I just properly string together what has become available over the last ~year and a failure to claim the boost feels decidedly like skill issue. There's a new programmable layer of abstraction to master (in addition to the usual layers below) involving agents, subagents, their prompts, contexts, memory, modes, permissions, tools, plugins, skills, hooks, MCP, LSP, slash commands, workflows, IDE integrations, and a need to build an all-encompassing mental model for strengths and pitfalls of fundamentally stochastic, fallible, unintelligible and changing entities suddenly intermingled with what used to be good old fashioned engineering. Clearly some powerful alien tool was handed around except it comes with no manual and everyone has to figure out how to hold it and operate it, while the resulting magnitude 9 earthquake is rocking the profession. Roll up your sleeves to not fall behind."
+
+[Boris's comment](https://x.com/bcherny/status/2004626064187031831): "I feel this way most weeks tbh. Sometimes I start approaching a problem manually, and have to remind myself “claude can probably do this”. Recently we were debugging a memory leak in Claude Code, and I started approaching it the old fashioned way: connecting a profiler, using the app, pausing the profiler, manually looking through heap allocations. My coworker was looking at the same issue, and just asked Claude to make a heap dump, then read the dump to look for retained objects that probably shouldn’t be there; Claude 1-shotted it and put up a PR. The same thing happens most weeks. In a way, newer coworkers and even new grads that don’t make all sorts of assumptions about what the model can and can’t do — legacy memories formed when using old models — are able to use the model most effectively. It takes significant mental work to re-adjust to what the model can do every month or two, as models continue to become better and better at coding and engineering. The last month was my first month as an engineer that I didn’t open an IDE at all. Opus 4.5 wrote around 200 PRs, every single line. Software engineering is radically changing, and the hardest part even for early adopters and practitioners like us is to continue to re-adjust our expectations. And this is *still* just the beginning."
+
+And I _felt_ that this isn't a joke -- yes AI coding might have been sucked 1, 2 years ago but for now, January of 2026, we are seeing these aren't joke anymore but if used well, is very competent engineer (even better than most senior engineers). If the model capability and the tools on the workflow integrates more stickly, yes it might end SWE job / careers. At the least case, the definition and role of software engineers will change significantly.
+
+## Will SWE Role Become Fully Automated?
+
+We are living in a highly uncertain world, where on one side everything seems hype and AI is in a massive bubble that will burst in the upcoming month/year. On the middle, technical roles like Software Engineering getting replaced and legacy companies falling, new kinds of business models and small teams with excellent talent emerge. On the other end, AGI(or Artificial General Intelligence) showing up, redefining not just jobs but humanity in general.
+
+The answer I found out is _I don't know_. I honeslty don't know what will happen. Yes, I do think SWE recruitment in traditional roles will shrink with high probability. But does that mean people who want to make software pursue something else -- a marketer, PM, etc.? I disagree with this with the two following reasons.
+
+1. No one knows the exact shape of future.
+   I am pretty sure while SWE will be one of the target that will have significant change in the job market, but SWE won't be the only role. Other roles will also be redefined or shrinked as well. So while something "seems" good, I don't think that's robust to the rapid development of AI (especially if it doesn't require any physical labor or human interaction).
+
+2. Strategy is fragile
+   Yes, there are some cases where you make a smart strategy or bet and become the leader of the new emerging market. However winner bias exists and there are so much more cases where startups and people fail predicting wrong future or just because they didn't have enough luck in any way. While smart strategy conducted well can enhance the probability of success, in highly uncertain era like now, nothing is guarenteed. Also even if that strategy works well in current trend, there is no guarentee it will keep work well. The only thing that doesn't change is the fact that everything changes.
+
+One good news is, though we don't know the future and nothing is guarenteed, it applies not just you and me but for whole world. This means you're not the only one who feels lost. I do (and that's why I'm writing something like this), and most people do feel the anxiety. There will be few people who will become the forefront of the change with their "smart strategy" but I don't think all smart strategies will work -- only few exceptions will survive and the rest will be in similar situations or worse than us.
+
+Despite the rapid change and uncertainty, _we must move on_.
+I think the healthiest mindset is to embrace uncertainty, psychologically adapt quickly, be flexible so you can pivot rapidly, and explore and try new things actively -- a startup mindset basically.
+I think adabtability and flexibility, not smart strategy, is the key to maximize our potential in the upcoming years. 
+
+I don't think becoming a maverick or a lone wolf and 100% not following the trend is the answer. I don't think following every trend and hype based on anxiety helps things either. While keeping one foot on what I have, what I like, and what I'm used to, we do need to push our boundary and comfort zone and follow up on how the world changes. I think keeping a healthy balance of exploration and still not losing your core will be one of the most important tasks.
+
+This is why I'm recently giving a try on Claude Code -- which I previously agreed with the primagen that it was stupid to learn how to "prompt engineer" or "tell AI what to do". That seemed so shallow and replacable and just didn't feel competent as an engineer. But after listening to the talks of the people who are at the frontier of AI, I humbly accept learning AI assisted code and other things as well. It isn't easy what to do, what to optimize and I do have the anxiety that after all the hardship I do, there is still no guarentee I will get a role on the companies. But _we must move on_.
+
+
+## Near Term: Using AI to Maximize Growth and Learning
+
+No one knows the future.
+
+Most engineering is about dealing with tradeoffs. For example, Machine Learning System tasks boil down to a task dealing with compute and memory. I think one of the most important tradeoffs SWE will face is learning/growth and productivity.
+
+The reason why this is a hard tradeoff decision choice is because it's so easy and tempting to delegate mental tasks to AI, while long term value may require a slightly different approach. This increases short term productivity but you are likely to gain almost nothing and even if you do, in such a passive way. There will be less critical thinking involved the more heavily you use AI. It is magical and astonishing to see AI generate code in such fast manner and it is very hard to keep a high standard, not accepting everything the AI says when it seems plausable, and sharply and critcally contemplate on it. This is because shipping is fast is easy, feels good, and gives value (in short term). (the meme -- shipping fast: easy ... contemplating and critical thinking: takes time, customer doesn't care, colleagues surpassing u etc.)
+
+Yes, as Karmack said, it all boils down to giving value to customers in this economic system. However current economic system does value scarcity and cheapifies commodities, which means in short term, you think you're using AI to maximize your productivity ("10x dev") but in reality the more you aren't in the loop, the more commoditized your role is. This doesn't mean humans will always have a role that AI cannot do. At the end, when AGI and ASI arrives, everything may be automated and that may come sooner than most of us think. But still that's the case we should think about in a seperate . We do need to live _now_. In the near term, we should focus on harder problems, unsolved problems, and things basically AI cannot do. -- that is hard to define (as shared in Andrej's post). So I think of the actual image as this: (meme reversed)
+
+However this is very hard and not-intuitive to us, since we are used to the "easy" way. This also disaligns with the "ship things fast" culture. But I still think in the near term, hard problem needs more thoughts and understanding before executing things. This indeed will make slower progress. This doesn't mean the speed of growth and learning will be the same as before using AI. I believe there must be a sweet spot between learning and growing while using AI to enhance and accelearte the speed of learning and productivity. This is an undiscovered area, where we will need to think, try, and iterate a lot for the upcoming years.
+
+## Final Thoughts
+
+Jensen Huang, the CEO of NVIDIA said don't study for SWE but study to become. Also recommended becoming a plumber since that will be much more economically rewarding in the near future.
+
+However I disagree with his point. I mean, his take might make sense in pure economic sense but I didn't like how he said that. Running away from something and making a smart strategy often isn't the ultimate solution. As the old saying, **there is no paradise where you run away**. Will running away from SWE make everything better? Will becoming a plumber or bio ~ make you better? It's not the role but the mindset that's important. Focusing on what you can do and what you like and trying to match it with the technology given at that moment, pushing the frontier with all you've got, keep iterating, reshaping, redefining etc. Roles will change but 

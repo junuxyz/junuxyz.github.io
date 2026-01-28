@@ -318,13 +318,28 @@ We start from input from 1-2
 From now, we will call the input as `x`
 {{< /note >}}
 
-**2-1-1. Forward Pass to Q,K,V**
-In Self Attention, inputs are copied and passed to three different Forward Passes which each has independent weights($W_Q, W_K, W_V$). The size of the weights are all `(d_model, d_model)`. This happens "per token" and the vector size of the token stays the same so shape does not change.
+**2-1-1. Project to Q,K,V**
+In Self Attention, inputs are copied and passed to three different Projections which each has independent weights($W_Q, W_K, W_V$).
+
+Mathematically put:
+$$
+\begin{aligned}
+q_i &= h_i \cdot W_Q \\
+k_i &= h_i \cdot W_K \\
+v_i &= h_i \cdot W_V
+\end{aligned}
+$$
+
+The size of the weights (without considering the heads) are all `(d_model, d_model)`. This happens "per token" and the vector size of the token stays the same so shape does not change.
 
 **shape: `(nbatches, n_seq_src, d_model)` (shapes unchanged)**
 
 For example, the sentence "I love you" (with 3 `<PAD>` tokens) will be:
 ![[shaped-transformer-example-5.png]]
+
+{{< note >}}
+Conceptually, each heads $head_j$ has its own $W_Q, W_K, W_V$ of size `(d_model, d_k)` each. However when implementing in code, it's convenient to create a single combined weight matrix of size `(d_model, d_model)` for all heads, then split after projection. Also note that while Q,K,V are per-token (with sequence length `seq_len`), $W_Q, W_K, W_V$ are shared across all tokens within each head.
+{{< /note >}}
 
 **2-1-2. Split heads**
 As mentioned above each `h` is `d_model // d_k` so we need to split `d_model` into `h × d_k`): 

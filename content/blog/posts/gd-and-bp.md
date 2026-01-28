@@ -2,7 +2,7 @@
 title = "Gradient Descent and Backpropagation"
 date = 2025-09-26T22:26:38+09:00
 draft = true
-categories = ['ML']
+categories = ['fundamentals']
 +++
 
 ## What is Back Propagation?
@@ -11,7 +11,12 @@ This part explains the internals of what `backwards()` actually does in deep lea
 
 Back Propagation, [introduced by Geoffrey Hinton and his colleagues](https://www.iro.umontreal.ca/~vincentp/ift3395/lectures/backprop_old.pdf) is a clever way to reuse the deriviation of local derivatives to calculate preliminary(early) layers.
 
-In fact there are other ways to calculate the gradient for each and every weights. One representative way is using **numerical gradient**.
+In fact there are other ways to calculate the gradient for each and every weights. For example, technically we _can_ directly calculate the point where gradient converges to 0 by (visual) The problem is it takes A LOT of time. (O complexity)
+
+Below is a simple Python script showing how inefficient this is and why Back Propagation is so good:
+
+
+Another representative way is using **numerical gradient**.
 
 
 ### Numerical Gradient with NumPy
@@ -49,7 +54,7 @@ Now suppose we got all the gradients of the weights in a vector format (since gr
 
 (image of nn)
 
-but in fact, when we say, we train a **deep neural network model, basically we are training a super high-dimension vector that has ALL the weights from the very first to very last, which is Gradient**. This vector is a gradient that has all the information of how each weights independently affects to create the final output and thus get the loss value. Since the definition of gradient itself is the most rapidly increasing direction of the super high-dimension space, we use gradient descent(negative) and multiply scalar value $\alpha$ or learning rate to each and every elements in the vector.
+but in fact, when we say, we train a **deep neural network model, basically we are training a super high-dimension vector that has ALL the weights from the very first to very last**. This vector is a gradient that has all the information of how each weights independently affects to create the final output and thus get the loss value. Since the definition of gradient itself is the most rapidly increasing direction of the super high-dimension space, we use gradient descent(negative) and multiply scalar value $\alpha$ or learning rate to each and every elements in the vector.
 
 Optimization 수식
 scalar mul in $\alpha \times vector$ (very first weight of very first layer to very last weight of very last layer)
@@ -60,7 +65,7 @@ Now, I believe you've got a better understanding of back propagation and optimiz
 
 ### Optional: Why is Gradient Descent the most rapidly decreasing direction?
 
-This section is for people who want to really understand Gradient Descent, mathematically and why it's the definition of "the direction(vector/matrix) the Loss function decreases most rapidly".
+This section is for people who want to really understand Gradient Descent, mathematically and why it's the definition of "the direction(vector/matrix) the Loss function decreases most rapidly". You can skip this part if you're not interested in these details.
 
 
 Since $D_u$ is the 변화량 of a function, the value of the function increases the most when $D_u$ is the biggest.
@@ -109,4 +114,5 @@ $$|\nabla f| \times 1 \times -1 = -\nabla f$$
 ### RMSProp
 
 ### Adam
+
 
