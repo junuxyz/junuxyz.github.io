@@ -82,7 +82,7 @@ Iteration-level batching requires careful handling of mixed phases. Prefill proc
 To understand why, consider what a forward pass looks like. For a batch of requests, you'd typically stack inputs into a tensor of shape `[batch_size, seq_len, hidden_dim]`. But if request A is prefilling 50 tokens and request B is decoding 1 token, what is `seq_len`? You'd either need to pad request B to 50 tokens (49 tokens padded; wasteful) or handle ragged tensors (tensors with different size of rows = complicated and poorly supported by most frameworks).
 
 {{< note >}}
-For people unfamiliar of the tensor shape used in Transformer, I have a [prior article](https://www.junupark.xyz/blog/posts/shaped-transformer/) that explains how tensor shape changes and why in the Transformer architecture. Also a seperate article that explains [prefill vs decode](https://www.junupark.xyz/blog/posts/prefill-vs-decode/).
+For people unfamiliar of the tensor shape used in Transformer, I have a [prior article](/posts/shaped-transformer/) that explains how tensor shape changes and why in the Transformer architecture. Also a seperate article that explains [prefill vs decode](/posts/prefill-vs-decode/).
 {{< /note >}}
 
 Orca's solution was to use selective batching - batches together operations that have the same shape requirements (like dense layers), but splits out others like attention that depend on sequence length.

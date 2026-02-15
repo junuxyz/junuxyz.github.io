@@ -148,6 +148,7 @@ request.num_tokens_with_spec # Total tokens (prompt + output + spec)
 
 {{< note >}}
 Here, `spec` means speculative tokens. This will be 
+{{< /note >}}
 
 
 - Phase 1: Serve the Running requests first  

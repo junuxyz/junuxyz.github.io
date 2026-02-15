@@ -1,3 +1,5 @@
 ---
-title: "All Posts"
+title: "Posts"
+aliases:
+  - /blog/
 ---

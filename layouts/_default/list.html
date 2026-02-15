@@ -1,7 +1,6 @@
 {{ define "main" }}
 <div class="container">
-    {{ if .IsHome }}
-    {{ else }}
+    {{ if not .IsHome }}
     <header class="page-header">
         <h1>{{ .Title }}</h1>
         {{ if .Description }}
@@ -9,10 +8,11 @@
         {{ end }}
     </header>
     {{ end }}
-    
-    {{ if .Pages }}
+
+    {{ $pages := .Pages.ByDate.Reverse }}
+    {{ if $pages }}
     <div class="posts-minimal">
-        {{ range .Pages }}
+        {{ range $pages }}
         <div class="post-link">
             <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             <span class="post-date">{{ .Date.Format "Jan 2, 2006" }}</span>
@@ -24,4 +24,3 @@
     {{ end }}
 </div>
 {{ end }}
-

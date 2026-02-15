@@ -12,19 +12,15 @@ buildExpired = false
 
 # Enable taxonomies
 [taxonomies]
-  category = "categories"
   tag = "tags"
 
-# Configure taxonomy permalinks
+# Configure permalinks
 [permalinks]
-  categories = "/blog/categories/:slug/"
-  tags = "/blog/tags/:slug/"
   blog = "/blog/posts/:slug/"
-
-# Configure taxonomies to work with sections
-[params.taxonomies]
-  category = "categories"
-  tag = "tags"
+  [permalinks.taxonomy]
+    tags = "/blog/tags/"
+  [permalinks.term]
+    tags = "/blog/tags/:slug/"
 
 [minify]
   disableXML = true
@@ -62,22 +58,17 @@ buildExpired = false
 # Main menu
 [menu]
   [[menu.main]]
-    identifier = "thoughts"
-    name = "Thoughts"
-    url = "/blog/categories/thoughts/"
+    identifier = "posts"
+    name = "Posts"
+    url = "/blog/posts/"
     weight = 10
   [[menu.main]]
-    identifier = "ml"
-    name = "ML"
-    url = "/blog/categories/ml/"
+    identifier = "tags"
+    name = "Tags"
+    url = "/blog/tags/"
     weight = 20
   [[menu.main]]
     identifier = "about"
     name = "About"
     url = "/"
-    weight = 40
-  [[menu.main]]
-    identifier = "tags"
-    name = "Tags"
-    url = "/blog/tags/"
-    weight = 50
+    weight = 30

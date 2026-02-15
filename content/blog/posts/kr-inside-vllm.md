@@ -12,6 +12,7 @@ vLLM의 PagedAttention 개념은 유명하다. 하지만 실제 코드로 들어
 
 {{< note >}}
 지엽적이라고 판단되는 부분들은 
+{{< /note >}}
 # Part 1. LLM Engine & Engine Core
 
 우선 가장 단순한 설정인 offline inference, single GPU, no parallelism 기준으로 어떻게 실행이 되는지 확인해보도록 하겠다.
@@ -233,7 +234,7 @@ inference engine이 다루는 workload 는 크게 두 개가 있다.
 1. **Prefill Request**: forward pass over all prompt tokens. 즉 한 request에 대해 prompt 길이 만큼의 token을 한꺼번에 처리하고 이 때문에 GEMM, attention 연산량이 폭증한다. 따라서 comput bound (= compute 성능에 큰 영향/제약을 받음) workload이다. 이후 prompt에 대해 next token을 sampling하는 것으로 마무리된다.
 2. **Decode Request**: 이전의 token들은 KV Cache를 통해 재사용하고 이를 이용해 next token sampling을 진행하는 것이다. 이는 memory-bandwidth-bound workload이다. KV cache 재사용으로 연산 자체는 prefill request보다 덜 부담되지만 kv cache + LLM weight 을 전부 로드해야 계산이 가능하기 때문에 (특히 KV 가 커질수록) VRAM에 영향을 받는다.
 
-LLM Inference에 한정하면 Prefill은 user 의 input prompt에 대한 forward pass, Decode는 LLM의 autorgressive forward pass를 말함. V1 scheduler는 이 둘을 굳이 구분하지 않음. 즉 한 번의 `step`에 어떤 부분은 prefill, decode 이 혼재돼 있어도 동시에 처리가 가능하게 설계돼 있다. (Prefill와 Decode 에 대해 보다 자세한 설명은 https://www.junupark.xyz/blog/posts/prefill-vs-decode/ 참고)
+LLM Inference에 한정하면 Prefill은 user 의 input prompt에 대한 forward pass, Decode는 LLM의 autorgressive forward pass를 말함. V1 scheduler는 이 둘을 굳이 구분하지 않음. 즉 한 번의 `step`에 어떤 부분은 prefill, decode 이 혼재돼 있어도 동시에 처리가 가능하게 설계돼 있다. (Prefill와 Decode 에 대해 보다 자세한 설명은 /posts/prefill-vs-decode/ 참고)
 
 Scheduler는 running queue에 들어와 있는 decode request 처리를 우선시한다 (Running queue에 들어왔다는 것은 이미 Prefill 과정을 마쳤음을 의미한다)
 
@@ -654,7 +655,7 @@ if __name__ == "__main__":
 
 ## 5. Disaggregated P/D (Prefill/Decode)
 
-[https://www.junupark.xyz/blog/posts/prefill-vs-decode/에서도](https://www.junupark.xyz/blog/posts/prefill-vs-decode/%EC%97%90%EC%84%9C%EB%8F%84) 설명했듯 Prefill와 Decode는 다른 성격의 task이고 두 task가 혼재된 상황에서 maximum throughput을 얻기 위해서는 신중하게 설계해야 합니다.
+[/posts/prefill-vs-decode/에서도](/posts/prefill-vs-decode/%EC%97%90%EC%84%9C%EB%8F%84) 설명했듯 Prefill와 Decode는 다른 성격의 task이고 두 task가 혼재된 상황에서 maximum throughput을 얻기 위해서는 신중하게 설계해야 합니다.
 
 현재 request의 p/d 비율에 따라 `N` prefill instances와 `M` decode instances를 autoscaling하는 식으로 구현합니다. Prefill worker는 Key, Value를 KV-cache service에 적고 decode worker는 KV-cache service로부터 읽는 방식으로 구현됩니다.
 

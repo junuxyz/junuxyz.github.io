@@ -1,3 +1,6 @@
 ---
-title: "Posts"
+title: "Blog"
+_build:
+  render: never
+  list: never
 ---
