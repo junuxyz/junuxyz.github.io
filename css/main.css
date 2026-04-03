@@ -523,7 +523,101 @@ img {
     max-width: 100%;
     height: auto;
     border-radius: 4px;
-    margin: 3rem 0;
+}
+
+.post-content .post-image {
+    width: min(100%, 52rem);
+    margin: clamp(2.75rem, 7vw, 4rem) auto;
+    display: grid;
+    justify-items: center;
+    gap: 0.45rem;
+}
+
+.post-content .post-image-media,
+.post-content .post-image-inline {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid color-mix(in srgb, var(--border-light) 70%, transparent);
+    border-radius: 10px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+}
+
+.post-content .post-image-caption {
+    width: min(100%, 38rem);
+    margin: 0 auto;
+    padding-top: 0.55rem;
+    color: color-mix(in srgb, var(--text-muted) 82%, var(--accent) 18%);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    text-align: center;
+    text-wrap: balance;
+    position: relative;
+}
+
+.post-content .post-image-caption::before {
+    content: "";
+    width: 3rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--border-light) 72%, transparent);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.post-content .post-image-caption > :last-child {
+    margin-bottom: 0;
+}
+
+.post-content .post-image-inline {
+    margin: 2.5rem auto;
+}
+
+.post-content p[align="center"] {
+    width: min(100%, 52rem);
+    margin: clamp(2.75rem, 7vw, 4rem) auto;
+    display: grid;
+    justify-items: center;
+    gap: 0.45rem;
+    text-align: center;
+}
+
+.post-content p[align="center"] img {
+    margin: 0;
+    border: 1px solid color-mix(in srgb, var(--border-light) 70%, transparent);
+    border-radius: 10px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+}
+
+.post-content p[align="center"] br {
+    display: none;
+}
+
+.post-content p[align="center"] sub {
+    width: min(100%, 38rem);
+    display: block;
+    margin: 0 auto;
+    padding-top: 0.55rem;
+    color: color-mix(in srgb, var(--text-muted) 82%, var(--accent) 18%);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    text-align: center;
+    position: relative;
+    vertical-align: baseline;
+}
+
+.post-content p[align="center"] sub::before {
+    content: "";
+    width: 3rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--border-light) 72%, transparent);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Tags - minimal style */
