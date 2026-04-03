@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Inference on jlog</title>
-    <link>https://junuxyz.github.io/blog/tags/inference/</link>
-    <description>Recent content in Inference on jlog</description>
+    <title>Scheduling on jlog</title>
+    <link>https://junuxyz.github.io/blog/tags/scheduling/</link>
+    <description>Recent content in Scheduling on jlog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Apr 2026 10:04:00 +0900</lastBuildDate>
-    <atom:link href="https://junuxyz.github.io/blog/tags/inference/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://junuxyz.github.io/blog/tags/scheduling/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Understanding Orca through tinyorca</title>
       <link>https://junuxyz.github.io/blog/posts/understanding-orca-through-tinyorca/</link>
       <pubDate>Wed, 01 Apr 2026 10:04:00 +0900</pubDate>
       <guid>https://junuxyz.github.io/blog/posts/understanding-orca-through-tinyorca/</guid>
       <description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;This article explains Orca&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt; through a minimal implementation, &lt;strong&gt;&lt;a href=&#34;https://github.com/junuxyz/tinyorca&#34;&gt;tinyorca&lt;/a&gt;&lt;/strong&gt;. Rather than covering the full distributed serving system, we focus on the two core ideas introduced in the paper: iteration-level scheduling and selective batching.&lt;/p&gt;&#xA;&lt;p&gt;Iteration-level scheduling allows the engine to admit a new request as soon as another completes, while selective batching enables requests at different stages to be processed together. Before diving into these concepts, we briefly outline the architecture of tinyorca and the lifecycle of a request.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Prefill vs Decode</title>
-      <link>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</link>
-      <pubDate>Fri, 02 Jan 2026 22:09:17 +0900</pubDate>
-      <guid>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</guid>
-      <description>&lt;h2 id=&#34;two-major-operations-in-modern-llm-inference&#34;&gt;Two major operations in modern LLM inference&lt;/h2&gt;&#xA;&lt;p&gt;Two major operations in modern LLM inference are prefill and decode. It’s important to know what they are and how they differ. Most modern LLMs are variations of GPT, which is Decoder-only model. These models take an input (or prompt), process it, sample the next token, and use the previous input + sampled token as the next input in an autoregressive manner. This is called “decoding” and occurs token-by-token.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -6,8 +6,15 @@
     <description>Recent content in About on jlog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 02 Jan 2026 22:09:17 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 01 Apr 2026 10:04:00 +0900</lastBuildDate>
     <atom:link href="https://junuxyz.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Understanding Orca through tinyorca</title>
+      <link>https://junuxyz.github.io/blog/posts/understanding-orca-through-tinyorca/</link>
+      <pubDate>Wed, 01 Apr 2026 10:04:00 +0900</pubDate>
+      <guid>https://junuxyz.github.io/blog/posts/understanding-orca-through-tinyorca/</guid>
+      <description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;This article explains Orca&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt; through a minimal implementation, &lt;strong&gt;&lt;a href=&#34;https://github.com/junuxyz/tinyorca&#34;&gt;tinyorca&lt;/a&gt;&lt;/strong&gt;. Rather than covering the full distributed serving system, we focus on the two core ideas introduced in the paper: iteration-level scheduling and selective batching.&lt;/p&gt;&#xA;&lt;p&gt;Iteration-level scheduling allows the engine to admit a new request as soon as another completes, while selective batching enables requests at different stages to be processed together. Before diving into these concepts, we briefly outline the architecture of tinyorca and the lifecycle of a request.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Prefill vs Decode</title>
       <link>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</link>

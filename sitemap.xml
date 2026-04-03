@@ -3,18 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://junuxyz.github.io/</loc>
-    <lastmod>2026-01-02T22:09:17+09:00</lastmod>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/blog/tags/inference/</loc>
-    <lastmod>2026-01-02T22:09:17+09:00</lastmod>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/blog/tags/llm/</loc>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/blog/tags/orca/</loc>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/blog/posts/</loc>
-    <lastmod>2026-01-02T22:09:17+09:00</lastmod>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
-    <loc>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</loc>
-    <lastmod>2026-01-02T22:09:17+09:00</lastmod>
+    <loc>https://junuxyz.github.io/blog/tags/scheduling/</loc>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/blog/tags/</loc>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/blog/posts/understanding-orca-through-tinyorca/</loc>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
+  </url><url>
+    <loc>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</loc>
     <lastmod>2026-01-02T22:09:17+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/blog/tags/transformer/</loc>
