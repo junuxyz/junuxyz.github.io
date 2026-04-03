@@ -12,8 +12,26 @@
   {{- /* Ensure leading slash for relative paths */ -}}
   {{- $destination = printf "/%s" $destination -}}
 {{- end -}}
-<img src="{{ $destination | safeURL }}" 
-     {{- with .Text }} alt="{{ . }}"{{ end -}}
-     {{- with .Title }} title="{{ . }}"{{ end -}}
+{{- if .IsBlock -}}
+<figure class="post-image">
+  <img
+    class="post-image-media"
+    src="{{ $destination | safeURL }}"
+    loading="lazy"
+    decoding="async"
+    {{- with .Text }} alt="{{ . }}"{{ end -}}
+  />
+  {{- with .Title }}
+  <figcaption class="post-image-caption">{{ . | markdownify }}</figcaption>
+  {{- end }}
+</figure>
+{{- else -}}
+<img
+  class="post-image-inline"
+  src="{{ $destination | safeURL }}"
+  loading="lazy"
+  decoding="async"
+  {{- with .Text }} alt="{{ . }}"{{ end -}}
+  {{- with .Title }} title="{{ . }}"{{ end -}}
 />
-
+{{- end -}}
