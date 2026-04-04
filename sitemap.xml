@@ -5,6 +5,9 @@
     <loc>https://junuxyz.github.io/</loc>
     <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
+    <loc>https://junuxyz.github.io/blog/posts/improving-llm-inference-with-continuous-batching-orca-through-tinyorca/</loc>
+    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
+  </url><url>
     <loc>https://junuxyz.github.io/blog/tags/inference/</loc>
     <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
@@ -21,9 +24,6 @@
     <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/blog/tags/</loc>
-    <lastmod>2026-04-01T10:04:00+09:00</lastmod>
-  </url><url>
-    <loc>https://junuxyz.github.io/blog/posts/understanding-orca-through-tinyorca/</loc>
     <lastmod>2026-04-01T10:04:00+09:00</lastmod>
   </url><url>
     <loc>https://junuxyz.github.io/blog/posts/prefill-vs-decode/</loc>
