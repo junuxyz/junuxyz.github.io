@@ -4,9 +4,10 @@ title = "About"
 
 ## Junu Park
 
-Hi. I'm an undergraduate student at Chung-Ang University, double majoring in Psychology and Computer Science. Currently I am advised by [Prof. Jeongseob Ahn](https://jeongseob.github.io/), focusing on Machine Learning Systems and Inference. I also run a public [Notion page](https://junuxyz.notion.site/) and a [blog](/blog/posts/) where I document what I learn.
+Hi. I'm an undergraduate student at Chung-Ang University, double majoring in Psychology and Computer Science. Currently I'm learning Mlsys (Machine Learning Systems) focusing on LLM Inference. I also run public [MLSys notes repo](https://github.com/junuxyz/mlsys-notes) and a [blog](/blog/posts/) where I document things I learn.
+
 
 ## Links
 - Email: jpjunior211 [at] gmail [dot] com
 - GitHub: [@junuxyz](https://github.com/junuxyz/)
-- Notion: [junuxyz.notion.site](https://junuxyz.notion.site/)
+- X: [junupark_](https://x.com/junupark_)
