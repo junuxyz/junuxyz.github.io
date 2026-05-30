@@ -131,7 +131,7 @@
             B.A. Psychology / B.S. Software Engineering, Chung-Ang University
         </div>
         <div class="contact">
-            Email: jpjunior211 [at] gmail [dot] com</a> | 
+            Email: jpjunior211 [at] gmail [dot] com | 
             GitHub: <a href="https://github.com/junuxyz" target="_blank">github.com/junuxyz</a>
         </div>
     </div>
@@ -146,48 +146,102 @@
     </div>
 
     <div class="section">
-        <h2 class="section-title">Research Interests</h2>
-        <div class="interests">
-        ML Systems, Efficient LLM Inference, GPU Memory Management
-        </div>
+        <h2 class="section-title">Skills</h2>
+        <ul class="cv-list">
+            <li>Programming: Python, C</li>
+            <li>ML/AI: PyTorch, vLLM</li>
+            <li>Web / Backend: FastAPI, React, Next.js</li>
+            <li>Languages: Korean (native), English (fluent; 2 years in California)</li>
+        </ul>
     </div>
 
     <div class="section">
-        <h2 class="section-title">Experience / Activities</h2>
+        <h2 class="section-title">Projects</h2>
         <ul class="cv-list">
-            <li>Undergraduate Research Intern, CSL Lab — Jan 2026 – Present</li>
+            <li>
+                <a href="https://github.com/junuxyz/tinyorca">tinyorca</a> — Minimal LLM serving engine
+                <ul>
+                    <li>Built an Orca-style serving engine with iteration-level scheduling and selective batching for mixed prefill/decode workloads.</li>
+                    <li>Implemented the core scheduler to study how serving systems handle prefill and decode phases.</li>
+                    <li>Wrote a <a href="https://github.com/junuxyz/mlsys-notes/blob/main/notes/tinyorca.md">technical deep dive</a> documenting the scheduler design and serving tradeoffs.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Open Source Contributions</h2>
+        <ul class="cv-list">
+            <li>
+                <a href="https://github.com/vllm-project/vllm">vLLM</a>
+                <ul>
+                    <li>Fixed false OOM errors in pipeline-parallel KV cache setup by validating per-worker projected cache groups (<a href="https://github.com/vllm-project/vllm/pull/33698">PR #33698</a>).</li>
+                    <li>Removed ShellCheck baseline gating and cleaned CI/test scripts while preserving runtime behavior (<a href="https://github.com/vllm-project/vllm/pull/34514">PR #34514</a>).</li>
+                </ul>
+            </li>
+            <li>
+                <a href="https://github.com/vllm-project/vllm-omni">vLLM-Omni</a>
+                <ul>
+                    <li>Added tuple-based KV cache extraction support for NPU-style layouts and malformed input handling (<a href="https://github.com/vllm-project/vllm-omni/pull/1405">PR #1405</a>).</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Technical Writing</h2>
+        <ul class="cv-list">
+            <li>
+                <a href="https://github.com/junuxyz/mlsys-notes/blob/main/notes/how-mp-serving-works-in-vllm.md">How Multiprocess Serving Works in vLLM</a>
+                <ul>
+                    <li>Traced the V1 online serving path across API server, EngineCore, worker processes, and IPC boundaries.</li>
+                </ul>
+            </li>
+            <li>
+                <a href="https://github.com/junuxyz/mlsys-notes/blob/main/notes/llm-inference-intro-p1.md">Introduction to LLM Inference</a>
+                <ul>
+                    <li>Built a roofline-based performance model for prefill/decode, KV cache memory, and batching efficiency.</li>
+                </ul>
+            </li>
+            <li>
+                <a href="https://www.junupark.xyz/blog/posts/shaped-transformer/">Shaped Transformer</a>
+                <ul>
+                    <li>Walked through Transformer tensor shapes from tokenization to attention, decoder layers, and LM head.</li>
+                </ul>
+            </li>
+            <li>More technical notes are available in <a href="https://github.com/junuxyz/mlsys-notes">mlsys-notes</a>.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Experience</h2>
+        <ul class="cv-list">
+            <li>
+                Undergraduate Research Intern, <a href="https://sites.google.com/korea.ac.kr/csl">CSL Lab</a> — Jan 2026 – Apr 2026
+                <ul>
+                    <li>Studied ML systems and efficient LLM inference topics, with a focus on serving behavior and parallel computing.</li>
+                </ul>
+            </li>
+            <li>
+                Frontend Developer, Startup — May 2024 – Dec 2024
+                <ul>
+                    <li>Built and maintained React/Next.js user interfaces in a fast-moving product environment.</li>
+                    <li>Integrated frontend pages with backend APIs and improved product-facing UI behavior.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Awards / Activities</h2>
+        <ul class="cv-list">
             <li>Executive Member (Server Administration), CUAI (Chung-Ang University AI Student Club) — Jan 2026 – Present</li>
             <li>Excellence Award — Open Source AI/SW Deep Learning Hackathon (Chung-Ang University) — Oct 2025</li>
             <li>Member, CUAI — Mar 2025 – Dec 2025</li>
             <li>Academic Excellence Award — Spring 2025</li>
-            <li>Frontend Developer, Startup — May 2024 – Dec 2024</li>
             <li>Academic Excellence Award — Fall 2021</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2 class="section-title">Projects / Articles</h2>
-        <ul class="cv-list">
-        <li>
-        Open Source Contributions — vLLM (LLM Inference Engine)  
-        <ul>
-            <li>Proposed core abstraction rename for clarity (<a href="...">PR #32513</a>)</li>  
-            <li>Fixed shellcheck CI issue (<a href="...">PR #32458</a>)</li>
-        </ul>
-        </li>
-        <li><a href="https://www.junupark.xyz/blog/posts/shaped-transformer/">Shaped Transformer</a> — Explained Transformer attention mechanics and tensor shape transformations in code-level detail — Sep 2025</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2 class="section-title">Skills</h2>
-        <ul class="cv-list">
-            <li>Programming: Python, C, TypeScript</li>
-            <li>Frameworks / Tools: PyTorch, vLLM, wandb, FastAPI, React, Next.js</li>
-            <li>Languages: English (fluent; 2 years in California), Korean (native)</li>
         </ul>
     </div>
 
 </body>
 </html>
-
