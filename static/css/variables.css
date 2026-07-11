@@ -1,13 +1,16 @@
 :root {
-    /* Colors - Unified Dark Theme */
-    --bg: #000000;
-    --text: #ffffff;
-    --text-muted: #a1a1a1;
-    --accent: #ffffff;
-    --accent-hover: #d4d4d4;
-    --border: #262626;
-    --border-light: #404040;
-    --success: #4ade80;
+    color-scheme: dark;
+
+    /* Dark theme */
+    --bg: #090b0a;
+    --text: #e8ebe8;
+    --text-muted: #9da39f;
+    --accent: #a9d6ee;
+    --accent-hover: #cfe8f6;
+    --accent-soft: #203944;
+    --border: #2d3230;
+    --border-light: #414845;
+    --success: #76c893;
     
     /* Typography */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -25,6 +28,16 @@
     --section-gap: 3rem;
     --section-gap-mobile: 2rem;
     --paragraph-spacing: 1.25rem;
+}
+
+::selection {
+    background: var(--accent-soft);
+    color: var(--text);
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 @media (min-width: 1024px) {
