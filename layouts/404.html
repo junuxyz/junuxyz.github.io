@@ -1,0 +1,27 @@
+{{ define "head-extra" }}
+<style>
+    .main {
+        min-height: calc(100vh - 4rem);
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .main h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    .main a {
+        font-size: 0.9rem;
+    }
+</style>
+{{ end }}
+
+{{ define "main" }}
+<h1>Page not found</h1>
+<a href="{{ "/" | relLangURL }}">Go back to home</a>
+{{ end }}

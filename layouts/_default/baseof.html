@@ -1,3 +1,4 @@
+{{- $is404 := eq .Kind "404" -}}
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
 <head>
@@ -45,7 +46,7 @@
     {{ block "head-extra" . }}{{ end }}
 </head>
 <body class="{{ if .IsHome }}home-page{{ else }}blog-section{{ end }}">
-    {{ if not .IsHome }}
+    {{ if and (not .IsHome) (not $is404) }}
         {{ partial "header.html" . }}
     {{ end }}
 
@@ -53,11 +54,11 @@
         {{ block "main" . }}{{ end }}
     </main>
 
-    {{ if not .IsHome }}
+    {{ if and (not .IsHome) (not $is404) }}
         {{ partial "footer.html" . }}
     {{ end }}
 
-    {{ if not .IsHome }}
+    {{ if and (not .IsHome) (not $is404) }}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Hamburger menu toggle
