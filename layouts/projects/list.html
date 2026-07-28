@@ -1,0 +1,35 @@
+{{ define "main" }}
+<div class="container projects-container">
+    <header class="page-header">
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+        <p class="page-description">{{ . }}</p>
+        {{ end }}
+    </header>
+
+    <div class="project-list">
+        {{ range hugo.Data.projects.projects }}
+        <article class="project-item">
+            <p class="project-kind">{{ .kind }}</p>
+            <h2>{{ .name }}</h2>
+            {{ with .description }}
+            <p class="project-description">{{ . }}</p>
+            {{ end }}
+            {{ with .details }}
+            <ul class="project-details">
+                {{ range . }}<li>{{ . }}</li>{{ end }}
+            </ul>
+            {{ end }}
+            {{ with .stack }}
+            <ul class="project-stack" aria-label="Technologies and topics">
+                {{ range . }}<li>{{ . }}</li>{{ end }}
+            </ul>
+            {{ end }}
+            <div class="project-links">
+                {{ range .links }}<a href="{{ .url }}">{{ .label }} →</a>{{ end }}
+            </div>
+        </article>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

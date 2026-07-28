@@ -1,3 +1,4 @@
+{{- $isProjects := eq .Section "projects" -}}
 {{- $is404 := eq .Kind "404" -}}
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
@@ -19,17 +20,17 @@
     <!-- Twitter Cards -->
     {{ template "_internal/twitter_cards.html" . }}
 
-    <!-- Inter Font -->
+    <!-- Section fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="{{ "css/variables.css" | relURL }}">
     {{ if .IsHome }}
     <link rel="stylesheet" href="{{ "css/home.css" | relURL }}">
     {{ else }}
     <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
     <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
+    {{ if $isProjects }}<link rel="stylesheet" href="{{ "css/projects.css" | relURL }}">{{ end }}
     {{ if or .Params.math .Site.Params.math }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
     {{ end }}
@@ -161,5 +162,3 @@
     {{ end }}
 </body>
 </html>
-
-

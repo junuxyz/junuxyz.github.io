@@ -2,6 +2,7 @@
 title = "Improving LLM Inference with Continuous Batching: Orca through tinyorca"
 date = 2026-04-01T10:04:00+09:00
 draft = false
+archived = true
 categories = ["ML"]
 tags = ["LLM", "inference", "scheduling", "Orca"]
 +++

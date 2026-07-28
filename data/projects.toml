@@ -1,0 +1,50 @@
+[[projects]]
+name = "tinyorca"
+kind = "LLM serving engine"
+description = "Minimal implementation of Orca-style LLM serving for understanding continuous batching behavior."
+details = [
+  "Built an iteration-level scheduler that reselects active requests each model step, allowing finished requests to leave and queued requests to enter without waiting for a static batch.",
+  "Modeled KV-slot reservation and FCFS admission control to make the memory tradeoff behind continuous batching explicit.",
+  "Separated scheduling and execution responsibilities across endpoint, request pool, scheduler, and engine components.",
+  "Documented selective batching and mixed prefill/decode execution in a detailed technical note.",
+  "Added benchmark scenarios to compare equal-size workloads and mixed short/long request patterns.",
+]
+links = [
+  { label = "Source", url = "https://github.com/junuxyz/tinyorca" },
+  { label = "Deep dive", url = "https://github.com/junuxyz/mlsys-notes/blob/main/notes/tinyorca.md" },
+]
+
+[[projects]]
+name = "microengine"
+kind = "Minimal serving system"
+description = "Small readable serving loop built before tinyorca to isolate the core mechanics of request admission and static batching."
+details = [
+  "Implemented request objects, FIFO queueing, endpoint tokenization, static batch scheduling, model runner, and engine orchestration.",
+  "Separated prefill and iterative decode responsibilities in the model runner to make the serving data path explicit.",
+  "Kept the design intentionally batch-to-completion, making it a clean contrast against tinyorca's continuous batching path.",
+]
+links = [
+  { label = "Source", url = "https://github.com/junuxyz/mlsys-notes/tree/main/labs/microengine" },
+]
+
+[[projects]]
+name = "vLLM"
+kind = "Large-scale inference engine"
+details = [
+  "Fixed false OOM errors in pipeline-parallel KV cache setup by projecting global KV cache groups onto each worker's assigned layers before memory validation.",
+  "Removed ShellCheck baseline gating and cleaned CI/test scripts, including argv-splitting fixes and behavior-preserving shell cleanups.",
+]
+links = [
+  { label = "PR #33698", url = "https://github.com/vllm-project/vllm/pull/33698" },
+  { label = "PR #34514", url = "https://github.com/vllm-project/vllm/pull/34514" },
+]
+
+[[projects]]
+name = "vLLM-Omni"
+kind = "Multimodal serving"
+details = [
+  "Fixed KV cache extraction for NPU-style key/value tuple layouts and added checks for unsupported inputs.",
+]
+links = [
+  { label = "PR #1405", url = "https://github.com/vllm-project/vllm-omni/pull/1405" },
+]

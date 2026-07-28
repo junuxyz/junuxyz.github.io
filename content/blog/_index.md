@@ -1,6 +1,3 @@
----
-title: "Blog"
-build:
-  render: never
-  list: never
----
++++
+title = "Essays"
++++

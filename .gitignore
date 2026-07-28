@@ -35,3 +35,8 @@ Thumbs.db
 # Node modules
 node_modules/
 package-lock.json
+!llm-engine/package-lock.json
+llm-engine/dist/
+llm-engine/coverage/
+llm-engine/playwright-report/
+llm-engine/test-results/

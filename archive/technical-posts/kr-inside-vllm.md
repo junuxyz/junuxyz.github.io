@@ -2,6 +2,7 @@
 title = "vLLM V1 Internals (1): Engine Core Deep Dive"
 date = 2026-01-14T21:49:26+09:00
 draft = true
+archived = true
 categories = ['ML']
 tags = ['Transformer', 'inference', 'vLLM']
 +++

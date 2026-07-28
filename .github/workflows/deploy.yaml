@@ -1,40 +1,59 @@
-name: Deploy Hugo site to GitHub Pages
+name: Deploy junupark.xyz
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
+      - name: Checkout website
         uses: actions/checkout@v4
 
-      - name: Process content
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: llm-engine/package-lock.json
+
+      - name: Build interactive LLM engine explainer
+        working-directory: llm-engine
         run: |
-          # Remove Obsidian vault files
+          npm ci
+          npm run build
+
+      - name: Normalize local Markdown
+        run: |
           find content -name ".obsidian" -type d -exec rm -rf {} + 2>/dev/null || true
           find content -name "Templates" -type d -exec rm -rf {} + 2>/dev/null || true
           find content -name "*.canvas" -delete 2>/dev/null || true
-          
-          # Convert Obsidian image links to Hugo format
           find content -name "*.md" -type f -exec sed -i 's/!\[\[\([^]]*\)\]\]/![Image](\/images\/\1)/g' {} \;
-          
-          # Convert /static/images/ paths to /images/ paths
           find content -name "*.md" -type f -exec sed -i 's/\/static\/images\//\/images\//g' {} \;
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest'
+          hugo-version: "latest"
+          extended: true
 
       - name: Build
-        run: hugo --minify
+        run: hugo --gc --minify
+
+      - name: Bundle interactive LLM engine explainer
+        run: |
+          mkdir -p public/llm-engine
+          cp -R llm-engine/dist/. public/llm-engine/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

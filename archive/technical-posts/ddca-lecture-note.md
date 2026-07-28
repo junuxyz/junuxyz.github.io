@@ -2,6 +2,7 @@
 title = "Lecture Note: Digital Design and Computer Architecture(Onur Mutlu)"
 date = 2025-07-17T13:13:16+09:00
 draft = true
+archived = true
 categories = ['ML']
 tags = ['lecture']
 +++
@@ -110,4 +111,3 @@ Combinational Building Blocks are a higher level abstraction of combinational lo
 
 
 ### 3-2. Sequential Logic Circuits
-

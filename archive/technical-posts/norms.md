@@ -2,6 +2,7 @@
 title = "Let's Talk About Normalization"
 date = 2026-01-03T10:01:38+09:00
 draft = true
+archived = true
 categories = ['ML']
 tags = ['fundamentals']
 +++

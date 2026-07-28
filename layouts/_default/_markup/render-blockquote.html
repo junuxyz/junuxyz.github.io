@@ -1,0 +1,27 @@
+{{- if eq .Type "alert" -}}
+{{- $alertTitle := .AlertTitle | plainify | strings.TrimSpace -}}
+<aside class="callout callout-{{ .AlertType }}" role="note">
+    <div class="callout-header">
+        <span class="callout-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 10.75v5"></path>
+                <path d="M12 7.5h.01"></path>
+            </svg>
+        </span>
+        <div class="callout-heading">
+            <span class="callout-label">{{ .AlertType | title }}</span>
+            {{- if and $alertTitle (ne (lower $alertTitle) .AlertType) }}
+            <span class="callout-title">{{ .AlertTitle }}</span>
+            {{- end }}
+        </div>
+    </div>
+    <div class="callout-body">
+        {{ .Text }}
+    </div>
+</aside>
+{{- else -}}
+<blockquote>
+    {{ .Text }}
+</blockquote>
+{{- end -}}

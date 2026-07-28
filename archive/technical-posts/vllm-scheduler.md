@@ -2,6 +2,7 @@
 title = "vLLM V1 Internals (1): How Scheduler Works"
 date = 2026-01-22T22:23:10+09:00
 draft = true
+archived = true
 categories = ['ML']
 tags = ['Transformer', 'inference', 'vLLM']
 +++

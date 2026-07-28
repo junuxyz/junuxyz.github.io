@@ -2,6 +2,7 @@
 title = "Prefill vs Decode"
 date = 2026-01-02T22:09:17+09:00
 draft = false
+archived = true
 categories = ['ML']
 tags = ['Transformer', 'inference']
 +++

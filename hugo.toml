@@ -1,53 +1,43 @@
-baseURL = "https://junuxyz.github.io/"
+baseURL = "https://junupark.xyz/"
 languageCode = "en-us"
-title = "jlog"
-
-[pagination]
-  pagerSize = 5
-
+title = "Junu Park"
 enableRobotsTXT = true
 buildDrafts = false
 buildFuture = false
 buildExpired = false
+disableKinds = ["taxonomy", "term"]
 
-# Enable taxonomies
-[taxonomies]
-  tag = "tags"
+[pagination]
+  pagerSize = 10
 
-# Configure permalinks
 [permalinks]
-  blog = "/blog/posts/:slug/"
-  [permalinks.taxonomy]
-    tags = "/blog/tags/"
-  [permalinks.term]
-    tags = "/blog/tags/:slug/"
+  blog = "/blog/:slug/"
 
 [minify]
   disableXML = true
   minifyOutput = true
 
-# Syntax highlighting configuration
 [markup]
   [markup.highlight]
     noClasses = false
-  
-  # Enable math processing in markdown
   [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
     [markup.goldmark.renderer]
-      # Enable raw HTML in markdown (needed for math)
       unsafe = true
       hardWraps = true
     [markup.goldmark.parser]
-      # Enable math delimiters
       wrapStandAloneImageWithinParagraph = false
 
 [params]
   env = "production"
-  description = "Personal blog and thoughts"
-  author = "Junu"
-  math = true
-  
-  # Social Icons
+  description = "Junu Park — projects and essays."
+  author = "Junu Park"
+  reading_words_per_minute = 200
+
   [[params.socialIcons]]
     name = "GitHub"
     url = "https://github.com/junuxyz"
@@ -55,20 +45,19 @@ buildExpired = false
     name = "Email"
     url = "mailto:jpjunior211@gmail.com"
 
-# Main menu
 [menu]
   [[menu.main]]
-    identifier = "posts"
-    name = "Posts"
-    url = "/blog/posts/"
+    identifier = "home"
+    name = "Home"
+    url = "/"
     weight = 10
   [[menu.main]]
-    identifier = "tags"
-    name = "Tags"
-    url = "/blog/tags/"
+    identifier = "projects"
+    name = "Projects"
+    url = "/projects/"
     weight = 20
   [[menu.main]]
-    identifier = "about"
-    name = "About"
-    url = "/"
+    identifier = "blog"
+    name = "Essays"
+    url = "/blog/"
     weight = 30
