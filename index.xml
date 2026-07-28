@@ -10,15 +10,120 @@
 		
 		
 		
-			<lastBuildDate>Wed, 01 Apr 2026 10:04:00 +0900</lastBuildDate>
+			<lastBuildDate>Tue, 28 Jul 2026 13:49:50 +0900</lastBuildDate>
 		
 			<atom:link href="https://junuxyz.github.io/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Inside nano-vLLM v1</title>
+				<link>https://junuxyz.github.io/mlsys-notes/vllm-inside-nano-vllm-v1/</link>
+				<pubDate>Tue, 28 Jul 2026 13:49:50 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/vllm-inside-nano-vllm-v1/</guid>
+				<description>&lt;p&gt;In this note, we will go over how the following work in vLLM:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;chunked prefill&lt;/li&gt;&#xA;&lt;li&gt;mixed batch scheduling&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;We will do so by going through the &lt;a href=&#34;https://github.com/slwang-ustc/nano-vllm-v1&#34;&gt;nano-vllm-v1&lt;/a&gt; implementation by &lt;a href=&#34;https://github.com/slwang-ustc&#34;&gt;https://github.com/slwang-ustc&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;aside class=&#34;callout callout-note&#34; role=&#34;note&#34;&gt;&#xA;    &lt;div class=&#34;callout-header&#34;&gt;&#xA;        &lt;span class=&#34;callout-icon&#34; aria-hidden=&#34;true&#34;&gt;&#xA;            &lt;svg viewBox=&#34;0 0 24 24&#34; width=&#34;18&#34; height=&#34;18&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;1.8&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;                &lt;circle cx=&#34;12&#34; cy=&#34;12&#34; r=&#34;9&#34;&gt;&lt;/circle&gt;&#xA;                &lt;path d=&#34;M12 10.75v5&#34;&gt;&lt;/path&gt;&#xA;                &lt;path d=&#34;M12 7.5h.01&#34;&gt;&lt;/path&gt;&#xA;            &lt;/svg&gt;&#xA;        &lt;/span&gt;&#xA;        &lt;div class=&#34;callout-heading&#34;&gt;&#xA;            &lt;span class=&#34;callout-label&#34;&gt;Note&lt;/span&gt;&#xA;        &lt;/div&gt;&#xA;    &lt;/div&gt;&#xA;    &lt;div class=&#34;callout-body&#34;&gt;&#xA;        &lt;p&gt;Chunked prefill has also been applied to nano-vllm since April 2026.&lt;/p&gt;&#xA;    &lt;/div&gt;&#xA;&lt;/aside&gt;&lt;p&gt;Since most changes are contained in the Scheduler, Block Manager, and Model Runner, it will be pretty easy to understand the difference if you&amp;rsquo;re already familiar with the V0 architecture.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Inside nano-vLLM: A Code Walkthrough of a Minimal LLM Inference Engine</title>
+				<link>https://junuxyz.github.io/mlsys-notes/vllm-inside-nano-vllm/</link>
+				<pubDate>Sun, 26 Jul 2026 14:19:06 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/vllm-inside-nano-vllm/</guid>
+				<description>&lt;p&gt;In this note, we will dissect nano-vLLM at the code level to understand how a modern LLM inference engine is constructed from the ground up. While its architecture (V0) has since been deprecated in favor of more advanced designs (V1+ in the original vLLM), core principles such as efficient memory management using PagedAttention, dynamic batching, KV caching, and scheduling remain foundational and largely unchanged across today&amp;rsquo;s high-performance engines.&lt;/p&gt;&#xA;&lt;p&gt;I specifically chose this repository because of its minimal, hackable design. With roughly ~1,200 lines of clean Python code (plus a little bit of Triton kernels), it strips away the boilerplate and production complexity of the full vLLM. By the end of this walkthrough, you’ll have a clearer mental model of how inference engines work.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Introduction to CUDA</title>
+				<link>https://junuxyz.github.io/mlsys-notes/accelerators-cuda-intro/</link>
+				<pubDate>Tue, 21 Jul 2026 17:41:41 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/accelerators-cuda-intro/</guid>
+				<description>&lt;p&gt;GPU is based on SIMT(Single Instruction, Multiple Threads). This means it executes instruction across multiple threads. Group of threads is controlled by control unit called SM.&lt;br&gt;&#xA;SM executes a &lt;em&gt;warp&lt;/em&gt; which is a group of 32 threads.&lt;/p&gt;&#xA;&lt;p&gt;SIMT is a variation of SIMD but there is an important distinction. SIMD deterministically executes one instruction. SIMT on the other hand, allows divergent workflow among threads in a group(e.g. if-else branch). However this does add performance penalty.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Softmax: From Naive to Blocked Softmax</title>
+				<link>https://junuxyz.github.io/mlsys-notes/softmax/</link>
+				<pubDate>Sat, 11 Jul 2026 22:45:07 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/softmax/</guid>
+				<description>&lt;p&gt;What is Softmax? The softmax function is a function that converts a vector of length $K$ into a probability distribution of length $K$.&lt;/p&gt;&#xA;&lt;p&gt;For a given an input vector&lt;/p&gt;&#xA;\[&#xA;\mathbf{z} = [z_1, z_2, \dots, z_K]&#xA;\]&lt;p&gt;the softmax value for the $i$-th element is defined as&lt;/p&gt;&#xA;\[&#xA;\sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}&#xA;\]&lt;p&gt;where&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;$\sigma$ = softmax function&lt;/li&gt;&#xA;&lt;li&gt;$\mathbf{z}$ = input vector; size of (1, K)&lt;/li&gt;&#xA;&lt;li&gt;$K$ = length of the vector row.&lt;/li&gt;&#xA;&lt;li&gt;$z_i$ = score of the $i$-th class&lt;/li&gt;&#xA;&lt;li&gt;$\sigma(\mathbf{z})_i$ = probability of the $i$-th element softmax&lt;/li&gt;&#xA;&lt;li&gt;$e^{z_i}$ = exponent of $i$-th element $z_i$&lt;/li&gt;&#xA;&lt;li&gt;$d_K = \sum_{j=1}^{K}$ = denominator that adds the entire row. This makes the sum of all $\sigma(z)_i$ to 1.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Computationally this happens in two passes:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Inside nano-vLLM: A Code Walkthrough of a Minimal LLM Inference Engine</title>
+				<link>https://junuxyz.github.io/mlsys-notes/inside-nano-vllm/</link>
+				<pubDate>Sun, 05 Jul 2026 16:49:29 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/inside-nano-vllm/</guid>
+				<description>&lt;p&gt;In this note, we will dissect nano-vLLM at the code level to understand how a modern LLM inference engine is constructed from the ground up. While its architecture (V0) has since been deprecated in favor of more advanced designs (V1+ in the original vLLM), core principles such as efficient memory management using PagedAttention, dynamic batching, KV caching, and scheduling remain foundational and largely unchanged across today&amp;rsquo;s high-performance engines.&lt;/p&gt;&#xA;&lt;p&gt;I specifically chose this repository because of its minimal, hackable design. With roughly ~1,200 lines of clean Python code (plus a little bit of Triton kernels), it strips away the boilerplate and production complexity of the full vLLM. By the end of this walkthrough, you’ll have a clearer mental model of how inference engines work.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Pipeline Parallelism</title>
+				<link>https://junuxyz.github.io/mlsys-notes/distributed-pp/</link>
+				<pubDate>Wed, 24 Jun 2026 19:39:38 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/distributed-pp/</guid>
+				<description>&lt;h2 id=&#34;pp-pipeline-parallelism&#34;&gt;PP (Pipeline Parallelism)&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Pipeline Parallelism (PP)&lt;/strong&gt; divides model layers across multiple ranks. The core purpose is similar to TP - reduce the portion of the model weights each rank has to hold. The difference is the axis it shards. While TP shards tensors inside each layer, PP shards the model by layer ranges.&lt;/p&gt;&#xA;&lt;p&gt;PP is often used across nodes when one node is not enough to hold or serve a model efficiently. According to the vLLM documentation, pipeline parallelism can also be useful when the GPU count does not evenly divide the model size (for example, 5 GPUs). PP might also be better than TP when GPUs in the same node do not have fast interconnects such as NVLink, for example L4 or L40S GPUs.&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Tensor Parallelism</title>
+				<link>https://junuxyz.github.io/mlsys-notes/distributed-tp/</link>
+				<pubDate>Sun, 31 May 2026 21:50:46 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/distributed-tp/</guid>
+				<description>&lt;h3 id=&#34;tp-tensor-parallelism&#34;&gt;TP (Tensor Parallelism)&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;Tensor Parallelism&lt;/strong&gt; (or TP) is one of the most widely used parallelism strategies in LLM inference, especially in single-node multi-GPU serving.&lt;/p&gt;&#xA;&lt;p&gt;At a high level, TP makes multiple GPUs behave like one larger device for a single model replica. Instead of placing the entire model on every GPU (this is DP), TP shards large tensors inside the model across multiple GPUs. Each GPU, often called a &lt;em&gt;rank&lt;/em&gt;, stores only a slice of the relevant weights and computes only the corresponding slice of the operation.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Overview of DeepSeek V3</title>
+				<link>https://junuxyz.github.io/mlsys-notes/deepseek-v3/</link>
+				<pubDate>Wed, 27 May 2026 23:01:53 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/deepseek-v3/</guid>
+				<description>&lt;p align=&#34;center&#34;&gt;&#xA;  &lt;img src=&#34;https://junuxyz.github.io/mlsys-notes/assets/notes/deepseek-v3/deepseek-v3-1.png&#34; width=&#34;540&#34; /&gt;&#xA;  &lt;br /&gt;&#xA;  &lt;sub&gt;Figure 1. DeepSeek V3/R1 architecture. Credit: Sebastian Rascha.&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;/sub&gt;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;DeepSeek architecture consists 61 Transformer blocks with the first three blocks using dense FFN, and the other 58 blocks using sparse MoE network.&lt;/p&gt;&#xA;&lt;p&gt;As other transformer based architecture, the two most important components are self attention and feed forward network.&lt;/p&gt;&#xA;&lt;h3 id=&#34;multi-head-latent-attention-mla&#34;&gt;Multi-Head Latent Attention (MLA)&lt;/h3&gt;&#xA;&lt;p align=&#34;center&#34;&gt;&#xA;  &lt;img src=&#34;https://junuxyz.github.io/mlsys-notes/assets/notes/deepseek-v3/deepseek-v3-2.png&#34; width=&#34;540&#34; /&gt;&#xA;  &lt;br /&gt;&#xA;  &lt;sub&gt;Figure 2. Multi-Head Latent Attention (MLA). Credit: Sebastian Rascha.&lt;/sub&gt;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;DeepSeek V3 uses MLA, which is a variation of Self Attention method, first introduced in DeepSeek V2, where we compress the key and value and then project it to key and value.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Accelerating Diffusion Inference via Caching</title>
+				<link>https://junuxyz.github.io/mlsys-notes/accelerating-diffusion-inference-via-caching/</link>
+				<pubDate>Thu, 21 May 2026 12:45:08 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/accelerating-diffusion-inference-via-caching/</guid>
+				<description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;In this article, we explore how to achieve significant inference speedups in Diffusion models such as FLUX. Rather than diving deep into the mathematical foundations of diffusion or flow matching, I&amp;rsquo;ll concentrate on the algorithmic ideas on reducing computation and accelerating inference while maintaining generation quality.&lt;/p&gt;&#xA;&lt;h2 id=&#34;diffusion-models&#34;&gt;Diffusion Models&lt;/h2&gt;&#xA;&lt;p&gt;At a high level, a diffusion model works by progressively adding noise to an image until it becomes pure noise, then learning to reverse that process, recovering a coherent image by iteratively denoising the latent representation. During this process the model learns how to generate data from noise to actual distribution. For this post, we focus specifically on the inference side of diffusion models.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>How Multiprocess Serving Works in vLLM</title>
+				<link>https://junuxyz.github.io/mlsys-notes/how-mp-serving-works-in-vllm/</link>
+				<pubDate>Thu, 30 Apr 2026 12:30:47 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/how-mp-serving-works-in-vllm/</guid>
+				<description>&lt;p&gt;This post traces the current V1 multiprocess serving path in vLLM: how online serving starts, how each process connects, and how requests move through the runtime.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;    &lt;p&gt;This article is aligned with commit &lt;code&gt;a4905133f375ec721be441e7ec4a3f923daa28f3&lt;/code&gt; (2026-04-22). Since vLLM moves fast, I will update this (or write a new post) when architecture changes.&lt;/p&gt;&#xA;&#xA;&lt;/blockquote&gt;&lt;p&gt;The focus is OpenAI-compatible online serving through &lt;code&gt;vllm serve&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;h1 id=&#34;why-multi-process&#34;&gt;Why Multi Process?&lt;/h1&gt;&#xA;&lt;p align=&#34;center&#34;&gt;&#xA;  &lt;img&#xA;    src=&#34;https://junuxyz.github.io/mlsys-notes/assets/notes/how-mp-serving-works-in-vllm/how-mp-serving-works-in-vllm-00-process-overview.png&#34;&#xA;    alt=&#34;Online serving with one API server process, one Engine process, and four Worker processes&#34;&#xA;    width=&#34;620&#34;&#xA;  /&gt;&#xA;  &lt;br /&gt;&#xA;  &lt;sub&gt;Figure: online serving with 1 API server process, 1 Engine process, and 4 Worker processes.&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;/sub&gt;&#xA;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Sarathi Serve</title>
+				<link>https://junuxyz.github.io/mlsys-notes/sarathi-serve/</link>
+				<pubDate>Tue, 07 Apr 2026 17:55:35 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/sarathi-serve/</guid>
+				<description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;blockquote&gt;&#xA;    &lt;p&gt;To explain Sarathi-Serve in one sentence, it introduces a way to overcome &lt;em&gt;generation stalls&lt;/em&gt; from decode requests by implementing chunked prefill and stall-free batching.&lt;/p&gt;&#xA;&lt;p&gt;We will talk more about what this means later.&lt;/p&gt;&#xA;&lt;p&gt;While the field seems to favor optimizing prefill and decode separately (P/D disaggregation), the ideas introduced in this paper&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt; are still widely used in industry standard inference engines such as vLLM or SGLang (especially for single node cases).&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Improving LLM Inference with Continuous Batching: Orca through tinyorca</title>
+				<link>https://junuxyz.github.io/mlsys-notes/tinyorca/</link>
+				<pubDate>Wed, 01 Apr 2026 10:04:41 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/tinyorca/</guid>
+				<description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;This article explains Orca&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt; through a minimal implementation, &lt;strong&gt;&lt;a href=&#34;https://github.com/junuxyz/tinyorca&#34;&gt;tinyorca&lt;/a&gt;&lt;/strong&gt;. Rather than covering the full distributed serving system, we focus on the two core ideas introduced in the paper: iteration-level scheduling and selective batching.&lt;/p&gt;&#xA;&lt;p&gt;Iteration-level scheduling allows the engine to admit a new request as soon as another completes, while selective batching enables requests at different stages to be processed together. Before diving into these concepts, we briefly outline the architecture of tinyorca and the lifecycle of a request.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>Improving LLM Inference with Continuous Batching: Orca through tinyorca</title>
 				<link>https://junuxyz.github.io/blog/posts/improving-llm-inference-with-continuous-batching-orca-through-tinyorca/</link>
 				<pubDate>Wed, 01 Apr 2026 10:04:00 +0900</pubDate>
 				<guid>https://junuxyz.github.io/blog/posts/improving-llm-inference-with-continuous-batching-orca-through-tinyorca/</guid>
 				<description>&lt;h2 id=&#34;tldr&#34;&gt;TL;DR&lt;/h2&gt;&#xA;&lt;p&gt;This article explains Orca&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt; through a minimal implementation, &lt;strong&gt;&lt;a href=&#34;https://github.com/junuxyz/tinyorca&#34;&gt;tinyorca&lt;/a&gt;&lt;/strong&gt;. Rather than covering the full distributed serving system, we focus on the two core ideas introduced in the paper: iteration-level scheduling and selective batching.&lt;/p&gt;&#xA;&lt;p&gt;Iteration-level scheduling allows the engine to admit a new request as soon as another completes, while selective batching enables requests at different stages to be processed together. Before diving into these concepts, we briefly outline the architecture of tinyorca and the lifecycle of a request.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>PagedAttention</title>
+				<link>https://junuxyz.github.io/mlsys-notes/pagedattention/</link>
+				<pubDate>Wed, 25 Mar 2026 15:55:16 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/pagedattention/</guid>
+				<description>&lt;p&gt;Notes after reading &lt;em&gt;Efficient Memory Management for Large Language Model Serving with PagedAttention&lt;/em&gt; &amp;amp; additional contents about it.&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;&#xA;&lt;p&gt;PagedAttention and vLLM came out of UC Berkeley&amp;rsquo;s Sky Computing Lab. vLLM was publicly announced on June 20, 2023, and the PagedAttention paper followed on arXiv on September 12, 2023.&lt;sup&gt;&lt;a href=&#34;#reference-2&#34;&gt;[2]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;&#xA;&lt;p&gt;One year before that, ORCA was published, which introduced iterative scheduling and selective batching. ORCA was one of the first papers to focus on how to coordinate multiple requests more efficiently instead of naively making computation (kernels) faster.&lt;sup&gt;&lt;a href=&#34;#reference-3&#34;&gt;[3]&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Introduction to LLM Inference, Part 1</title>
+				<link>https://junuxyz.github.io/mlsys-notes/llm-inference-intro-p1/</link>
+				<pubDate>Fri, 20 Mar 2026 12:05:54 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/llm-inference-intro-p1/</guid>
+				<description>&lt;p&gt;&lt;em&gt;This is &lt;strong&gt;Part 1&lt;/strong&gt; of LLM Inference and Inference Optimization From First Principles. It covers the basic performance model behind LLM inference and may end up either as a standalone post or as part of a longer article.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;how-llm-inference-works&#34;&gt;how LLM inference works&lt;/h2&gt;&#xA;&lt;h3 id=&#34;what-is-llm-inference&#34;&gt;what is LLM inference?&lt;/h3&gt;&#xA;&lt;p&gt;LLM inference simply means generating output tokens from input tokens (the &lt;em&gt;prompt&lt;/em&gt;) using a trained model.&lt;/p&gt;&#xA;&lt;p align=&#34;center&#34;&gt;&#xA;  &lt;img src=&#34;https://junuxyz.github.io/mlsys-notes/assets/notes/llm-inference-intro-p1/llm-inference-intro-p1-1.png&#34; width=&#34;540&#34; /&gt;&#xA;  &lt;br /&gt;&#xA;  &lt;sub&gt;Figure 1. LLM inference generates output tokens autoregressively from an input prompt.&lt;sup&gt;&lt;a href=&#34;#reference-1&#34;&gt;[1]&lt;/a&gt;&lt;/sup&gt;&lt;/sub&gt;&#xA;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>ORCA Paper Review</title>
+				<link>https://junuxyz.github.io/mlsys-notes/orca/</link>
+				<pubDate>Mon, 16 Mar 2026 15:43:22 +0900</pubDate>
+				<guid>https://junuxyz.github.io/mlsys-notes/orca/</guid>
+				<description>&lt;p&gt;&lt;strong&gt;Orca&lt;/strong&gt; is the paper that made iteration-level scheduling and selective batching. The implementation is very systems-heavy (13k+ lines of C++/CUDA code) but the core claim/contribution is simple: &lt;strong&gt;how we schedule requests matters a lot&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;tldr&#34;&gt;tldr;&lt;/h2&gt;&#xA;&lt;p&gt;LLM serving is not just a kernel optimization problem but also a scheduling problem. If we schedule at token-iteration granularity and batch only where batching actually helps, we can improve utilization without paying the full latency cost of static batching.&lt;/p&gt;</description>
 			</item>
 			<item>
 				<title>Prefill vs Decode</title>

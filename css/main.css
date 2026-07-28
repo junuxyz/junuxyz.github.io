@@ -492,6 +492,89 @@ blockquote {
     line-height: 1.8;
 }
 
+/* Markdown alerts such as > [!NOTE] */
+.callout {
+    margin: 2.5rem 0;
+    padding: 1.15rem 1.25rem 1.2rem;
+    border: 1px solid rgba(169, 214, 238, 0.28);
+    border-radius: 8px;
+    background: rgba(169, 214, 238, 0.06);
+    color: var(--text);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.callout-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
+}
+
+.callout-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid rgba(169, 214, 238, 0.32);
+    border-radius: 50%;
+    background: rgba(169, 214, 238, 0.1);
+    color: var(--accent);
+}
+
+.callout-heading {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.12rem;
+}
+
+.callout-label {
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.callout-title {
+    color: var(--text);
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.callout-title strong {
+    font-weight: inherit;
+}
+
+.callout-body {
+    padding-left: 2.55rem;
+    color: var(--text-muted);
+    font-style: normal;
+    line-height: 1.75;
+}
+
+.callout-body > :first-child {
+    margin-top: 0;
+}
+
+.callout-body > :last-child {
+    margin-bottom: 0;
+}
+
+.callout-body p,
+.callout-body ul,
+.callout-body ol {
+    margin-bottom: 0.8rem;
+}
+
+.callout-body pre {
+    margin: 1rem 0;
+}
+
 /* Tables - minimal style */
 table {
     width: 100%;
