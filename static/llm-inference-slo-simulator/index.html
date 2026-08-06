@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM Inference SLO Simulator</title>
+<meta name="description" content="Simulate TTFT, inter-token latency, and end-to-end request latency against Chat, RAG, and Agent SLO targets under a continuous-batching engine model.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #090b0a;
+    --panel: #101312;
+    --panel-raised: #141817;
+    --text: #e8ebe8;
+    --text-muted: #9da39f;
+    --faint: #6d726f;
+    --accent: #a9d6ee;
+    --accent-hover: #cfe8f6;
+    --accent-soft: #203944;
+    --border: #2d3230;
+    --border-light: #414845;
+    --good: #76c893;
+    --good-soft: rgba(118, 200, 147, 0.14);
+    --bad: #f28b82;
+    --bad-soft: rgba(242, 139, 130, 0.14);
+    --amber: #e8c07d;
+    --sans: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", monospace;
+  }
+  * { box-sizing: border-box; }
+  ::selection { background: var(--accent-soft); color: var(--text); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+  }
+  a { color: var(--accent); text-decoration-color: var(--accent-soft); }
+  a:hover { color: var(--accent-hover); }
+  button { font: inherit; }
+
+  .page { width: min(1180px, 100%); margin: 0 auto; padding: 24px 20px 56px; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+  .brand strong { font-size: 1.05rem; font-weight: 650; }
+  .brand span { color: var(--faint); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.03em; }
+  .exit { font-size: 0.85rem; color: var(--text-muted); text-decoration: none; white-space: nowrap; }
+  .exit:hover { color: var(--accent); }
+
+  .intro { max-width: 760px; margin-bottom: 22px; }
+  .intro h1 { font-size: 1.55rem; font-weight: 650; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .intro p { color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin: 0 0 6px; }
+  .intro .disclaimer { font-size: 0.8rem; color: var(--faint); border-left: 2px solid var(--border-light); padding-left: 10px; margin-top: 12px; }
+
+  .scenario-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .scenario-tab {
+    flex: 1 1 220px;
+    text-align: left;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .scenario-tab strong { display: block; color: var(--text); font-size: 0.95rem; margin-bottom: 3px; }
+  .scenario-tab small { display: block; font-size: 0.78rem; line-height: 1.4; }
+  .scenario-tab:hover { border-color: var(--border-light); }
+  .scenario-tab[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 16px 18px;
+  }
+  .panel + .panel { margin-top: 14px; }
+  .panel h2 {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--faint);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+  .field-row span { font-size: 0.82rem; color: var(--text-muted); }
+  .field-row b { font-family: var(--mono); font-size: 0.82rem; color: var(--text); font-weight: 600; }
+  .field input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    height: 4px;
+    cursor: pointer;
+  }
+  .field select {
+    width: 100%;
+    background: var(--panel-raised);
+    color: var(--text);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 7px 8px;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .field-hint { font-size: 0.72rem; color: var(--faint); margin-top: 4px; line-height: 1.4; }
+
+  .load-readout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    background: var(--panel-raised);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .load-readout .num { font-family: var(--mono); font-size: 1.3rem; font-weight: 650; }
+  .load-readout .lbl { font-size: 0.72rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.05em; }
+  .load-bar {
+    position: relative;
+    height: 7px;
+    border-radius: 4px;
+    background: var(--panel-raised);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin: 10px 0 4px;
+  }
+  .load-bar i {
+    position: absolute; inset: 0 auto 0 0;
+    background: linear-gradient(90deg, var(--good), var(--amber) 75%, var(--bad) 100%);
+    border-radius: 4px 0 0 4px;
+  }
+  .load-bar .mark100 {
+    position: absolute; top: -2px; bottom: -2px; width: 1px;
+    background: var(--text-muted);
+  }
+
+  .run-row { display: flex; gap: 8px; margin-top: 4px; }
+  .btn {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--border-light);
+    background: var(--panel-raised);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 550;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn.primary { background: var(--accent-soft); border-color: var(--accent); }
+  .btn.primary:hover { background: var(--accent-soft); color: var(--accent-hover); }
+
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .summary-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 13px;
+  }
+  .summary-card small { display: block; font-size: 0.7rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .summary-card strong { font-family: var(--mono); font-size: 1.05rem; }
+  .summary-card span.note { display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+
+  .metric-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .metric-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .metric-card-head h3 { margin: 0; font-size: 0.98rem; font-weight: 650; }
+  .metric-card-head .target { font-size: 0.78rem; color: var(--text-muted); font-family: var(--mono); }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .badge.pass { background: var(--good-soft); color: var(--good); }
+  .badge.fail { background: var(--bad-soft); color: var(--bad); }
+  .badge.none { background: rgba(255,255,255,0.05); color: var(--faint); }
+
+  .pct-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .pct-cell {
+    background: var(--panel-raised);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .pct-cell.over { border-color: var(--bad); background: var(--bad-soft); }
+  .pct-cell small { display: block; font-size: 0.68rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.04em; }
+  .pct-cell strong { font-family: var(--mono); font-size: 0.98rem; }
+  .pct-cell.over strong { color: var(--bad); }
+
+  .hist {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 64px;
+    position: relative;
+    margin-bottom: 6px;
+    padding-top: 4px;
+  }
+  .hist i {
+    flex: 1;
+    background: var(--accent-soft);
+    border-radius: 2px 2px 0 0;
+    min-height: 1px;
+    position: relative;
+  }
+  .hist i.over { background: rgba(242, 139, 130, 0.45); }
+  .hist .threshold-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--bad);
+    z-index: 2;
+  }
+  .hist-axis { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--faint); font-family: var(--mono); }
+
+  .insight-line {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .insight-line span.mark { color: var(--accent); }
+
+  .footer-note {
+    margin-top: 22px;
+    font-size: 0.78rem;
+    color: var(--faint);
+    line-height: 1.6;
+    max-width: 760px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <strong>LLM Inference SLO Simulator</strong>
+      <span>continuous-batching model · client-side, no live model</span>
+    </div>
+    <a class="exit" href="/">junupark.xyz ↗</a>
+  </header>
+
+  <div class="intro">
+    <h1>Get a feel for TTFT, ITL, and request-latency SLOs</h1>
+    <p>
+      Pick a workload, then drag traffic load past 100% of estimated engine capacity
+      and watch tail latency stop being flat. The simulator runs a small discrete-event
+      model of a continuous-batching scheduler — decode tokens are served first every
+      iteration, chunked prefill spends whatever token budget is left over, same as a
+      real vLLM-style engine — over a batch of synthetic requests, then reports p50/p90/p95/p99.
+    </p>
+    <p class="disclaimer">
+      Throughput numbers per GPU/model tier are illustrative round numbers for building
+      intuition about queueing and batching interference, not calibrated hardware
+      benchmarks. Use it to feel the shape of the problem, not to size a cluster.
+    </p>
+  </div>
+
+  <div class="scenario-tabs" role="tablist" aria-label="Workload scenario" id="scenarioTabs"></div>
+
+  <div class="layout">
+    <div class="controls">
+      <div class="panel">
+        <h2>Traffic</h2>
+        <div class="load-readout">
+          <div>
+            <div class="lbl">Load vs. estimated capacity</div>
+            <div class="num" id="loadPctNum">60%</div>
+          </div>
+          <div style="text-align:right">
+            <div class="lbl">≈ arrival rate</div>
+            <div class="num" id="arrivalRateNum" style="font-size:0.95rem">—</div>
+          </div>
+        </div>
+        <div class="load-bar"><i id="loadBarFill"></i><span class="mark100" style="left:62.5%"></span></div>
+        <input type="range" id="loadPct" min="10" max="160" step="1" value="60" aria-label="Traffic load as percent of estimated capacity">
+        <div class="field-hint">100% mark shown on the bar at load = 160 max. Estimated capacity is recomputed from throughput ÷ tokens-per-request below.</div>
+      </div>
+
+      <div class="panel">
+        <h2>Serving infrastructure</h2>
+        <div class="field">
+          <div class="field-row"><span>GPU tier</span></div>
+          <select id="gpuTier"></select>
+        </div>
+        <div class="field">
+          <div class="field-row"><span>Model size</span></div>
+          <select id="modelSize"></select>
+        </div>
+        <div class="field">
+          <div class="field-row"><span>Token budget / iteration</span><b id="tokenBudgetVal"></b></div>
+          <input type="range" id="tokenBudget" min="256" max="16384" step="256">
+          <div class="field-hint">max_num_batched_tokens — decode tokens are served first each iteration, chunked prefill spends the remainder.</div>
+        </div>
+        <div class="field">
+          <div class="field-row"><span>Max concurrent sequences</span><b id="maxSeqsVal"></b></div>
+          <input type="range" id="maxSeqs" min="4" max="512" step="4">
+          <div class="field-hint">max_num_seqs / KV-cache admission cap — extra requests queue for a slot.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Workload shape</h2>
+        <div class="field">
+          <div class="field-row"><span id="promptLabel">Prompt tokens (mean)</span><b id="promptVal"></b></div>
+          <input type="range" id="promptTokens" min="20" max="6000" step="10">
+        </div>
+        <div class="field">
+          <div class="field-row"><span id="outputLabel">Output tokens (mean)</span><b id="outputVal"></b></div>
+          <input type="range" id="outputTokens" min="10" max="1500" step="5">
+        </div>
+        <div class="field" id="ragField" hidden>
+          <div class="field-row"><span>Retrieval latency (mean, ms)</span><b id="retrievalVal"></b></div>
+          <input type="range" id="retrievalLatency" min="0" max="1500" step="10">
+          <div class="field-hint">Vector search + rerank time spent before generation starts — counts toward TTFT and request latency.</div>
+        </div>
+        <div class="field" id="stepsField" hidden>
+          <div class="field-row"><span>Steps per task</span><b id="stepsVal"></b></div>
+          <input type="range" id="steps" min="1" max="6" step="1">
+          <div class="field-hint">Sequential LLM calls (reasoning → tool → reasoning → answer) inside one agent task.</div>
+        </div>
+        <div class="field" id="toolField" hidden>
+          <div class="field-row"><span>Tool latency between steps (mean, ms)</span><b id="toolLatencyVal"></b></div>
+          <input type="range" id="toolLatency" min="0" max="4000" step="50">
+        </div>
+        <div class="field">
+          <div class="field-row"><span>Simulated requests</span><b id="sampleSizeVal"></b></div>
+          <input type="range" id="sampleSize" min="200" max="5000" step="100">
+          <div class="field-hint">More samples → steadier p99 estimate.</div>
+        </div>
+        <div class="run-row">
+          <button class="btn primary" id="runBtn">Run simulation →</button>
+          <button class="btn" id="rerollBtn" title="Resample with a new random seed">Re-roll</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="results" id="results"></div>
+  </div>
+
+  <p class="footer-note">
+    Model: each iteration, currently-decoding sequences each consume one token of the
+    iteration's token budget; whatever budget remains is spent chunk-prefilling admitted
+    requests in FCFS order, capped at 256 tokens per request per iteration so one long
+    prompt can't monopolize a step (the same reason real engines cap chunked-prefill
+    size). The iteration's wall-clock length is a fixed per-step floor (weight-read /
+    launch overhead — why decode is memory-bandwidth bound and roughly batch-size
+    independent) plus <code>tokens_processed ÷ compute throughput</code> for whatever
+    that step processed. TTFT is measured from when a generation call is issued (after
+    retrieval, for RAG) to its first produced token. ITL is the gap between consecutive
+    decode tokens for a sequence — it widens whenever a chunked prefill shares an
+    iteration with active decodes. Request latency is end-to-end, including any queueing
+    for an admission slot, retrieval, and (for agents) tool round-trips between steps.
+  </p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- RNG ----------
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  var rand = mulberry32(20260806);
+  function reseed() { rand = mulberry32((Math.random() * 2 ** 31) | 0); }
+
+  function gaussian() {
+    var u = 1 - rand(), v = rand();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  // lognormal sample with given mean and coefficient of variation
+  function lognormalSample(mean, cv) {
+    if (mean <= 0) return 0;
+    var sigma2 = Math.log(1 + cv * cv);
+    var mu = Math.log(mean) - sigma2 / 2;
+    return Math.exp(mu + Math.sqrt(sigma2) * gaussian());
+  }
+  function exponentialInterArrival(ratePerSec) {
+    return (-Math.log(1 - rand()) / ratePerSec) * 1000; // ms
+  }
+
+  // ---------- Binary min-heap keyed by readyTime ----------
+  function makeHeap() {
+    var a = [];
+    function up(i) {
+      while (i > 0) {
+        var p = (i - 1) >> 1;
+        if (a[p].readyTime <= a[i].readyTime) break;
+        var t = a[p]; a[p] = a[i]; a[i] = t; i = p;
+      }
+    }
+    function down(i) {
+      var n = a.length;
+      for (;;) {
+        var l = 2 * i + 1, r = 2 * i + 2, s = i;
+        if (l < n && a[l].readyTime < a[s].readyTime) s = l;
+        if (r < n && a[r].readyTime < a[s].readyTime) s = r;
+        if (s === i) break;
+        var t = a[s]; a[s] = a[i]; a[i] = t; i = s;
+      }
+    }
+    return {
+      size: function () { return a.length; },
+      peek: function () { return a[0]; },
+      push: function (item) { a.push(item); up(a.length - 1); },
+      pop: function () {
+        var top = a[0], last = a.pop();
+        if (a.length) { a[0] = last; down(0); }
+        return top;
+      }
+    };
+  }
+
+  function percentile(sortedArr, p) {
+    if (!sortedArr.length) return 0;
+    var idx = Math.min(sortedArr.length - 1, Math.max(0, Math.ceil(p * sortedArr.length) - 1));
+    return sortedArr[idx];
+  }
+
+  // ---------- Engine throughput model ----------
+  // Two components per iteration: a floor latency (weight-read / kernel-launch
+  // overhead, roughly constant regardless of batch size — this is why decode is
+  // memory-bandwidth bound) plus a compute-bound term that scales with tokens
+  // processed that iteration (this is what chunked prefill spends).
+  var GPU_TIERS = [
+    { id: "a100x1", label: "1× A100 80GB", computeMult: 1.0, floorDivisor: 1.0 },
+    { id: "h100x1", label: "1× H100 80GB", computeMult: 1.7, floorDivisor: 1.5 },
+    { id: "h100x4", label: "4× H100 (TP=4)", computeMult: 3.4, floorDivisor: 2.6 },
+    { id: "h100x8", label: "8× H100 (TP=8)", computeMult: 6.0, floorDivisor: 3.8 }
+  ];
+  var MODEL_SIZES = [
+    { id: "7b", label: "7B", computeTokPerSec: 6000, floorMs: 8 },
+    { id: "13b", label: "13B", computeTokPerSec: 3200, floorMs: 14 },
+    { id: "70b", label: "70B", computeTokPerSec: 700, floorMs: 45 }
+  ];
+
+  function engineParams(gpuId, modelId) {
+    var gpu = GPU_TIERS.find(function (g) { return g.id === gpuId; });
+    var model = MODEL_SIZES.find(function (m) { return m.id === modelId; });
+    return {
+      tokensPerSec: gpu.computeMult * model.computeTokPerSec,
+      floorMs: model.floorMs / gpu.floorDivisor
+    };
+  }
+
+  // ---------- Scenarios ----------
+  var SCENARIOS = {
+    chat: {
+      label: "Chat Application",
+      blurb: "Customer-support chatbot — every millisecond of first-token wait and typing cadence is felt directly.",
+      slo: { ttft: 200, itl: 50, latency: null },
+      defaults: {
+        loadPct: 35, gpuTier: "h100x1", modelSize: "7b",
+        tokenBudget: 4096, maxSeqs: 128,
+        promptTokens: 300, outputTokens: 150,
+        retrievalLatency: 0, steps: 1, toolLatency: 0,
+        sampleSize: 2000
+      },
+      hasRetrieval: false, hasSteps: false
+    },
+    rag: {
+      label: "Retrieval-Augmented Generation",
+      blurb: "Retrieval adds a fixed pre-generation delay; prompts are longer because retrieved context is injected.",
+      slo: { ttft: 300, itl: 100, latency: 3000 },
+      defaults: {
+        loadPct: 20, gpuTier: "h100x1", modelSize: "13b",
+        tokenBudget: 4096, maxSeqs: 96,
+        promptTokens: 700, outputTokens: 100,
+        retrievalLatency: 150, steps: 1, toolLatency: 0,
+        sampleSize: 2000
+      },
+      hasRetrieval: true, hasSteps: false
+    },
+    agents: {
+      label: "Agents",
+      blurb: "A task is several sequential LLM calls with tool round-trips in between; only end-to-end latency is user-visible.",
+      slo: { ttft: null, itl: null, latency: 5000 },
+      defaults: {
+        loadPct: 20, gpuTier: "h100x1", modelSize: "13b",
+        tokenBudget: 4096, maxSeqs: 64,
+        promptTokens: 500, outputTokens: 100,
+        retrievalLatency: 0, steps: 2, toolLatency: 300,
+        sampleSize: 1200
+      },
+      hasRetrieval: false, hasSteps: true
+    }
+  };
+  var scenarioOrder = ["chat", "rag", "agents"];
+  var currentScenario = "chat";
+
+  // ---------- Simulation core ----------
+  // config: { tokensPerSec, tokenBudget, maxSeqs, promptTokens, outputTokens,
+  //           retrievalLatency, steps, toolLatency, arrivalRate, sampleSize }
+  function simulate(config) {
+    var N = config.sampleSize;
+    var arrivals = [];
+    var t = 0;
+    for (var i = 0; i < N; i++) {
+      t += exponentialInterArrival(config.arrivalRate);
+      arrivals.push(t);
+    }
+
+    var pending = makeHeap();
+    for (i = 0; i < N; i++) {
+      var preDelay = config.retrievalLatency > 0 ? lognormalSample(config.retrievalLatency, 0.4) : 0;
+      pending.push({
+        reqId: i,
+        arrivalTime: arrivals[i],
+        readyTime: arrivals[i] + preDelay,
+        stepIndex: 0,
+        promptTokens: Math.max(1, Math.round(lognormalSample(config.promptTokens, 0.22))),
+        outputTokens: Math.max(1, Math.round(lognormalSample(config.outputTokens, 0.22)))
+      });
+    }
+
+    var reqState = new Array(N);
+    for (i = 0; i < N; i++) reqState[i] = { firstTokenTime: null, done: false };
+
+    var queue = [];
+    var running = [];
+    var currentTime = 0;
+
+    var ttftSamples = [];
+    var itlSamples = [];
+    var latencySamples = [];
+    var totalTokensProcessed = 0;
+    var iterationCount = 0;
+
+    function admitOne(job) {
+      running.push({
+        reqId: job.reqId,
+        readyTime: job.readyTime,
+        stepIndex: job.stepIndex,
+        remainingPrompt: job.promptTokens,
+        remainingOutput: job.outputTokens,
+        state: "prefilling",
+        lastDecodeTime: null,
+        admittedTime: currentTime
+      });
+    }
+
+    function scheduleNextStep(reqId, fromTime) {
+      var stepNow = ++reqSteps[reqId];
+      if (stepNow >= config.steps) {
+        var latency = fromTime - arrivals[reqId];
+        latencySamples.push(latency);
+        return;
+      }
+      var gap = config.toolLatency > 0 ? lognormalSample(config.toolLatency, 0.35) : 0;
+      pending.push({
+        reqId: reqId,
+        arrivalTime: arrivals[reqId],
+        readyTime: fromTime + gap,
+        stepIndex: stepNow,
+        promptTokens: Math.max(1, Math.round(lognormalSample(config.promptTokens, 0.22))),
+        outputTokens: Math.max(1, Math.round(lognormalSample(config.outputTokens, 0.22)))
+      });
+    }
+
+    var reqSteps = new Array(N).fill(0);
+    var guard = 0;
+    var maxIterations = 4000000;
+
+    while ((pending.size() > 0 || queue.length > 0 || running.length > 0) && guard < maxIterations) {
+      guard++;
+      while (pending.size() > 0 && pending.peek().readyTime <= currentTime) {
+        queue.push(pending.pop());
+      }
+      queue.sort(function (a, b) { return a.readyTime - b.readyTime; });
+      while (running.length < config.maxSeqs && queue.length > 0) {
+        admitOne(queue.shift());
+      }
+
+      if (running.length === 0) {
+        if (pending.size() === 0) break;
+        currentTime = pending.peek().readyTime;
+        continue;
+      }
+
+      var budget = config.tokenBudget;
+      var decoders = running.filter(function (r) { return r.state === "decoding"; })
+        .sort(function (a, b) { return a.admittedTime - b.admittedTime; });
+      var decodeCount = Math.min(decoders.length, budget);
+      budget -= decodeCount;
+
+      var prefillers = running.filter(function (r) { return r.state === "prefilling"; })
+        .sort(function (a, b) { return a.admittedTime - b.admittedTime; });
+      var tokensThisIter = decodeCount;
+      var justFinishedPrefill = [];
+      for (var pi = 0; pi < prefillers.length; pi++) {
+        if (budget <= 0) break;
+        var r = prefillers[pi];
+        var chunk = Math.min(r.remainingPrompt, budget, config.maxChunkPerRequest);
+        r.remainingPrompt -= chunk;
+        budget -= chunk;
+        tokensThisIter += chunk;
+        if (r.remainingPrompt === 0) justFinishedPrefill.push(r);
+      }
+
+      if (tokensThisIter === 0) break; // mis-configured (budget smaller than 1) — avoid infinite loop
+
+      var durationMs = config.floorMs + (tokensThisIter / config.tokensPerSec) * 1000;
+      currentTime += durationMs;
+      iterationCount++;
+      totalTokensProcessed += tokensThisIter;
+
+      var served = decoders.slice(0, decodeCount);
+      for (var di = 0; di < served.length; di++) {
+        var d = served[di];
+        if (d.lastDecodeTime !== null) itlSamples.push(currentTime - d.lastDecodeTime);
+        d.lastDecodeTime = currentTime;
+        d.remainingOutput -= 1;
+      }
+
+      for (var fi = 0; fi < justFinishedPrefill.length; fi++) {
+        var f = justFinishedPrefill[fi];
+        if (reqState[f.reqId].firstTokenTime === null && f.stepIndex === 0) {
+          reqState[f.reqId].firstTokenTime = currentTime;
+          ttftSamples.push(currentTime - f.readyTime);
+        }
+        f.remainingOutput -= 1; // first token produced at end of prefill
+        f.lastDecodeTime = currentTime;
+        f.state = f.remainingOutput <= 0 ? "done" : "decoding";
+      }
+
+      running = running.filter(function (r) {
+        var finished = (r.state === "decoding" || r.state === "done") && r.remainingOutput <= 0;
+        if (finished) {
+          scheduleNextStep(r.reqId, currentTime);
+          return false;
+        }
+        return true;
+      });
+    }
+
+    ttftSamples.sort(function (a, b) { return a - b; });
+    itlSamples.sort(function (a, b) { return a - b; });
+    latencySamples.sort(function (a, b) { return a - b; });
+
+    var wallDuration = Math.max(currentTime, 1);
+    var utilization = Math.min(1.5, totalTokensProcessed / (config.tokensPerSec * (wallDuration / 1000)));
+
+    return {
+      ttft: ttftSamples, itl: itlSamples, latency: latencySamples,
+      completedRequests: latencySamples.length,
+      utilization: utilization,
+      iterationCount: iterationCount,
+      wallDurationSec: wallDuration / 1000
+    };
+  }
+
+  // ---------- UI wiring ----------
+  var els = {
+    scenarioTabs: document.getElementById("scenarioTabs"),
+    loadPct: document.getElementById("loadPct"),
+    loadPctNum: document.getElementById("loadPctNum"),
+    arrivalRateNum: document.getElementById("arrivalRateNum"),
+    loadBarFill: document.getElementById("loadBarFill"),
+    gpuTier: document.getElementById("gpuTier"),
+    modelSize: document.getElementById("modelSize"),
+    tokenBudget: document.getElementById("tokenBudget"),
+    tokenBudgetVal: document.getElementById("tokenBudgetVal"),
+    maxSeqs: document.getElementById("maxSeqs"),
+    maxSeqsVal: document.getElementById("maxSeqsVal"),
+    promptTokens: document.getElementById("promptTokens"),
+    promptVal: document.getElementById("promptVal"),
+    promptLabel: document.getElementById("promptLabel"),
+    outputTokens: document.getElementById("outputTokens"),
+    outputVal: document.getElementById("outputVal"),
+    outputLabel: document.getElementById("outputLabel"),
+    ragField: document.getElementById("ragField"),
+    retrievalLatency: document.getElementById("retrievalLatency"),
+    retrievalVal: document.getElementById("retrievalVal"),
+    stepsField: document.getElementById("stepsField"),
+    steps: document.getElementById("steps"),
+    stepsVal: document.getElementById("stepsVal"),
+    toolField: document.getElementById("toolField"),
+    toolLatency: document.getElementById("toolLatency"),
+    toolLatencyVal: document.getElementById("toolLatencyVal"),
+    sampleSize: document.getElementById("sampleSize"),
+    sampleSizeVal: document.getElementById("sampleSizeVal"),
+    runBtn: document.getElementById("runBtn"),
+    rerollBtn: document.getElementById("rerollBtn"),
+    results: document.getElementById("results")
+  };
+
+  GPU_TIERS.forEach(function (g) {
+    var o = document.createElement("option"); o.value = g.id; o.textContent = g.label;
+    els.gpuTier.appendChild(o);
+  });
+  MODEL_SIZES.forEach(function (m) {
+    var o = document.createElement("option"); o.value = m.id; o.textContent = m.label;
+    els.modelSize.appendChild(o);
+  });
+
+  scenarioOrder.forEach(function (id) {
+    var sc = SCENARIOS[id];
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "scenario-tab";
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-pressed", id === currentScenario ? "true" : "false");
+    btn.innerHTML = "<strong>" + sc.label + "</strong><small>" + sc.blurb + "</small>";
+    btn.addEventListener("click", function () { selectScenario(id); });
+    els.scenarioTabs.appendChild(btn);
+  });
+
+  function fmtMs(v) {
+    if (v >= 1000) return (v / 1000).toFixed(2) + " s";
+    return Math.round(v) + " ms";
+  }
+  function fmtRate(v) {
+    if (v >= 10) return v.toFixed(1) + " req/s";
+    return v.toFixed(2) + " req/s";
+  }
+
+  function selectScenario(id) {
+    currentScenario = id;
+    var sc = SCENARIOS[id];
+    var d = sc.defaults;
+    Array.prototype.forEach.call(els.scenarioTabs.children, function (btn, idx) {
+      btn.setAttribute("aria-pressed", scenarioOrder[idx] === id ? "true" : "false");
+    });
+    els.loadPct.value = d.loadPct;
+    els.gpuTier.value = d.gpuTier;
+    els.modelSize.value = d.modelSize;
+    els.tokenBudget.value = d.tokenBudget;
+    els.maxSeqs.value = d.maxSeqs;
+    els.promptTokens.value = d.promptTokens;
+    els.outputTokens.value = d.outputTokens;
+    els.retrievalLatency.value = d.retrievalLatency;
+    els.steps.value = d.steps;
+    els.toolLatency.value = d.toolLatency;
+    els.sampleSize.value = d.sampleSize;
+
+    els.ragField.hidden = !sc.hasRetrieval;
+    els.stepsField.hidden = !sc.hasSteps;
+    els.toolField.hidden = !sc.hasSteps;
+    els.promptLabel.textContent = sc.hasSteps ? "Prompt tokens per step (mean)" : "Prompt tokens (mean)";
+    els.outputLabel.textContent = sc.hasSteps ? "Output tokens per step (mean)" : "Output tokens (mean)";
+
+    syncLabels();
+    runSimulation();
+  }
+
+  function readConfig() {
+    var sc = SCENARIOS[currentScenario];
+    var engine = engineParams(els.gpuTier.value, els.modelSize.value);
+    var promptTokens = Number(els.promptTokens.value);
+    var outputTokens = Number(els.outputTokens.value);
+    var steps = sc.hasSteps ? Number(els.steps.value) : 1;
+    var perRequestTokens = (promptTokens + outputTokens) * steps;
+    var capacityRPS = engine.tokensPerSec / perRequestTokens;
+    var loadPct = Number(els.loadPct.value);
+    var arrivalRate = capacityRPS * (loadPct / 100);
+    var tokenBudget = Number(els.tokenBudget.value);
+    return {
+      tokensPerSec: engine.tokensPerSec,
+      floorMs: engine.floorMs,
+      tokenBudget: tokenBudget,
+      maxChunkPerRequest: Math.min(tokenBudget, 256),
+      maxSeqs: Number(els.maxSeqs.value),
+      promptTokens: promptTokens,
+      outputTokens: outputTokens,
+      retrievalLatency: sc.hasRetrieval ? Number(els.retrievalLatency.value) : 0,
+      steps: steps,
+      toolLatency: sc.hasSteps ? Number(els.toolLatency.value) : 0,
+      arrivalRate: Math.max(0.02, arrivalRate),
+      sampleSize: Number(els.sampleSize.value),
+      capacityRPS: capacityRPS,
+      loadPct: loadPct
+    };
+  }
+
+  function syncLabels() {
+    els.tokenBudgetVal.textContent = els.tokenBudget.value;
+    els.maxSeqsVal.textContent = els.maxSeqs.value;
+    els.promptVal.textContent = els.promptTokens.value;
+    els.outputVal.textContent = els.outputTokens.value;
+    els.retrievalVal.textContent = els.retrievalLatency.value + " ms";
+    els.stepsVal.textContent = els.steps.value;
+    els.toolLatencyVal.textContent = els.toolLatency.value + " ms";
+    els.sampleSizeVal.textContent = els.sampleSize.value;
+
+    var cfg = readConfig();
+    els.loadPctNum.textContent = cfg.loadPct + "%";
+    els.arrivalRateNum.textContent = fmtRate(cfg.arrivalRate);
+    var fillPct = Math.min(100, (cfg.loadPct / 160) * 100);
+    els.loadBarFill.style.width = fillPct + "%";
+  }
+
+  function metricBlock(title, slo, samples, unitFmt) {
+    var hasTarget = slo !== null && slo !== undefined;
+    var p50 = percentile(samples, 0.5);
+    var p90 = percentile(samples, 0.9);
+    var p95 = percentile(samples, 0.95);
+    var p99 = percentile(samples, 0.99);
+    var pass = hasTarget ? p99 <= slo : null;
+
+    var html = '<div class="metric-card">';
+    html += '<div class="metric-card-head">';
+    html += "<h3>" + title + "</h3>";
+    if (hasTarget) {
+      html += '<span class="target">target: p99 ≤ ' + unitFmt(slo) + '</span>';
+      html += '<span class="badge ' + (pass ? "pass" : "fail") + '">' + (pass ? "✓ meets SLO" : "✗ misses SLO") + "</span>";
+    } else {
+      html += '<span class="badge none">no target for this profile</span>';
+    }
+    html += "</div>";
+
+    if (!samples.length) {
+      html += '<div class="field-hint">No samples recorded (workload finished before this metric applied).</div></div>';
+      return html;
+    }
+
+    html += '<div class="pct-row">';
+    [["p50", p50], ["p90", p90], ["p95", p95], ["p99", p99]].forEach(function (pair) {
+      var over = hasTarget && pair[1] > slo;
+      html += '<div class="pct-cell' + (over ? " over" : "") + '"><small>' + pair[0] + '</small><strong>' + unitFmt(pair[1]) + "</strong></div>";
+    });
+    html += "</div>";
+
+    // histogram
+    var maxVal = Math.max(percentile(samples, 0.995), hasTarget ? slo * 1.3 : 0) || samples[samples.length - 1];
+    var bins = 28;
+    var counts = new Array(bins).fill(0);
+    samples.forEach(function (v) {
+      var idx = Math.min(bins - 1, Math.floor((v / maxVal) * bins));
+      counts[idx]++;
+    });
+    var maxCount = Math.max.apply(null, counts) || 1;
+    var thresholdPct = hasTarget ? Math.min(100, (slo / maxVal) * 100) : null;
+
+    html += '<div class="hist">';
+    counts.forEach(function (c, i) {
+      var binStart = (i / bins) * maxVal;
+      var over = hasTarget && binStart > slo;
+      var h = Math.max(1, Math.round((c / maxCount) * 60));
+      html += '<i class="' + (over ? "over" : "") + '" style="height:' + h + 'px" title="' + Math.round(binStart) + '–' + Math.round(binStart + maxVal / bins) + ": " + c + ' samples"></i>';
+    });
+    if (thresholdPct !== null) {
+      html += '<div class="threshold-line" style="left:' + thresholdPct + '%"></div>';
+    }
+    html += "</div>";
+    html += '<div class="hist-axis"><span>0</span><span>' + unitFmt(maxVal) + "</span></div>";
+
+    html += "</div>";
+    return html;
+  }
+
+  function runSimulation() {
+    var cfg = readConfig();
+    var result = simulate(cfg);
+    var sc = SCENARIOS[currentScenario];
+
+    var utilPct = Math.round(result.utilization * 100);
+    var utilTone = utilPct < 75 ? "good" : utilPct < 100 ? "amber" : "bad";
+    var summaryHtml = '<div class="summary-strip">';
+    summaryHtml += '<div class="summary-card"><small>Requests completed</small><strong>' + result.completedRequests + "</strong></div>";
+    summaryHtml += '<div class="summary-card"><small>Estimated capacity</small><strong>' + fmtRate(cfg.capacityRPS) + '</strong><span class="note">tokens/sec ÷ tokens/request</span></div>';
+    summaryHtml += '<div class="summary-card"><small>Engine throughput</small><strong>' + Math.round(cfg.tokensPerSec).toLocaleString() + " tok/s</strong></div>";
+    summaryHtml += '<div class="summary-card"><small>Observed utilization</small><strong style="color:var(--' + (utilTone === "good" ? "good" : utilTone === "amber" ? "amber" : "bad") + ')">' + utilPct + "%</strong></div>";
+    summaryHtml += "</div>";
+
+    var html = summaryHtml;
+    html += metricBlock("Time to first token (TTFT)", sc.slo.ttft, result.ttft, fmtMs);
+    html += metricBlock("Inter-token latency (ITL)", sc.slo.itl, result.itl, fmtMs);
+    html += metricBlock("End-to-end request latency", sc.slo.latency, result.latency, fmtMs);
+
+    var slowAtLowLoad = utilPct < 75 && (
+      (sc.slo.ttft != null && percentile(result.ttft, 0.99) > sc.slo.ttft) ||
+      (sc.slo.itl != null && percentile(result.itl, 0.99) > sc.slo.itl) ||
+      (sc.slo.latency != null && percentile(result.latency, 0.99) > sc.slo.latency)
+    );
+
+    var insight;
+    if (utilPct >= 100) {
+      insight = "The engine is at or beyond estimated capacity — the queue never drains, so admission wait keeps growing and tail latency is dominated by queueing, not compute. Lower load, raise the token budget, add GPUs, or shrink max concurrent sequences to shed load faster.";
+    } else if (utilPct >= 80) {
+      insight = "Running hot: most iterations are near-full, so a burst of chunked prefill still steals enough time from decode cadence to push ITL tails up. This is the zone where p99 SLOs start to wobble even though p50 still looks fine.";
+    } else if (slowAtLowLoad) {
+      insight = "Utilization is low, so this isn't a queueing problem — the miss above comes from raw compute time (a large prompt to prefill, a long output to decode, or fixed retrieval/tool latency) exceeding the target regardless of load. Traffic load won't fix this; try a smaller prompt/output, a faster GPU tier, or a smaller model instead.";
+    } else {
+      insight = "Plenty of headroom: admission wait is rare and prefill chunks rarely collide with a large decode batch, so tail latency tracks compute time closely.";
+    }
+    html += '<div class="insight-line"><span class="mark">◆</span><p>' + insight + "</p></div>";
+
+    els.results.innerHTML = html;
+  }
+
+  [els.loadPct, els.gpuTier, els.modelSize, els.tokenBudget, els.maxSeqs,
+    els.promptTokens, els.outputTokens, els.retrievalLatency, els.steps,
+    els.toolLatency, els.sampleSize].forEach(function (el) {
+    el.addEventListener("input", syncLabels);
+  });
+
+  els.runBtn.addEventListener("click", runSimulation);
+  els.rerollBtn.addEventListener("click", function () { reseed(); runSimulation(); });
+
+  selectScenario("chat");
+})();
+</script>
+</body>
+</html>

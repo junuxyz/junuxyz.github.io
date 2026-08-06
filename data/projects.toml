@@ -1,4 +1,18 @@
 [[projects]]
+name = "LLM Inference SLO Simulator"
+kind = "Interactive tool"
+description = "Client-side discrete-event simulator for feeling out TTFT, inter-token latency, and end-to-end request-latency SLOs across chat, RAG, and agent workloads."
+details = [
+  "Modeled a continuous-batching scheduler where decode tokens are served first each iteration and chunked prefill spends whatever token budget remains, capped per request so one long prompt can't stall concurrent decodes.",
+  "Derived iteration wall-clock time from a fixed per-step floor (memory-bandwidth-bound weight reads) plus a compute-bound term that scales with tokens processed, so heavier models and busier iterations cost more realistically.",
+  "Built three workload presets — chat, RAG (with a retrieval delay before generation), and agents (sequential LLM calls with tool round-trips) — each checked against its own p99 SLO targets.",
+  "Let traffic load be framed as a percentage of estimated engine capacity so pushing past 100% visibly turns queueing delay into tail-latency SLO breaches.",
+]
+links = [
+  { label = "Try it", url = "/llm-inference-slo-simulator/" },
+]
+
+[[projects]]
 name = "tinyorca"
 kind = "LLM serving engine"
 description = "Minimal implementation of Orca-style LLM serving for understanding continuous batching behavior."

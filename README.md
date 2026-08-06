@@ -8,6 +8,7 @@ Public sections:
 - `/projects/` — personal projects and open-source work
 - `/blog/` — non-technical essays
 - `/llm-engine/` — interactive end-to-end LLM inference engine explainer
+- `/llm-inference-slo-simulator/` — simulator for feeling out TTFT/ITL/request-latency SLOs
 
 ML systems learning notes remain in
 [`junuxyz/mlsys-notes`](https://github.com/junuxyz/mlsys-notes).

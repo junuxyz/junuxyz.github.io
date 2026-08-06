@@ -10,6 +10,7 @@
 | `/projects/` | `content/projects/` + `data/projects.toml` | Project portfolio |
 | `/blog/` | `content/blog/` | Non-technical essays |
 | `/llm-engine/` | `llm-engine/` | Interactive LLM inference engine explainer |
+| `/llm-inference-slo-simulator/` | `static/llm-inference-slo-simulator/` | Self-contained SLO simulator (chat/RAG/agent TTFT, ITL, request latency) |
 
 Legacy technical blog posts and standalone pages are preserved under
 `archive/`, which Hugo does not publish.
@@ -42,5 +43,6 @@ The deployment workflow builds the Vite app and copies its output into
 - Essays: `content/blog/*.md`
 - ML systems notes: [`junuxyz/mlsys-notes`](https://github.com/junuxyz/mlsys-notes)
 - Interactive explainer: `llm-engine/src/`
+- SLO simulator: `static/llm-inference-slo-simulator/index.html` (plain HTML/CSS/JS, no build step)
 - Shared styling: `static/css/main.css`
 - Home styling: `static/css/home.css`
